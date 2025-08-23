@@ -39,13 +39,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String login(LoginDto dto) {
+    public User validateUser(LoginDto dto) {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email"));
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
-        String role = user.getRoles().stream().findFirst().orElse("ROLE_USER");
-        return jwtUtil.createToken(user.getEmail(), role);
+        return user;
     }
 }
