@@ -2,6 +2,7 @@ package com.example.expensetracker.service;
 
 import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
@@ -35,7 +36,7 @@ public class UserService {
         if (user.getRoles() == null) {
             user.setRoles(new HashSet<>());
         }
-        user.getRoles().add("ROLE_USER");
+        user.getRoles().add(Role.ROLE_USER);
         return userRepository.save(user);
     }
 
@@ -46,5 +47,18 @@ public class UserService {
             throw new RuntimeException("Invalid password");
         }
         return user;
+    }
+
+    public User createAdmin(RegisterDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already in use");
+        }
+        User user = User.builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .build();
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(Role.ROLE_ADMIN);
+        return userRepository.save(user);
     }
 }

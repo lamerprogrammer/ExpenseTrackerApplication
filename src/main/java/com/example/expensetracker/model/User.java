@@ -26,7 +26,21 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
-    private Set<String> roles = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>();
+
+    @Column(nullable = false)
+    private boolean banned = false;
+
+    public User() {}
+
+    public User(Long id, String email, String password, Set<Role> roles,  boolean banned) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.banned = banned;
+    }
 
     public Long getId() {
         return id;
@@ -52,28 +66,28 @@ public class User {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public User() {}
+    public boolean isBanned() {
+        return banned;
+    }
 
-    public User(Long id, String email, String password, Set<String> roles) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 
     public static class UserBuilder {
         private Long id;
         private String email;
         private String password;
-        private Set<String> roles = new HashSet<>();
+        private Set<Role> roles = new HashSet<>();
+        private boolean banned = false;
 
         public UserBuilder id(Long id) {
             this.id = id;
@@ -90,13 +104,18 @@ public class User {
             return this;
         }
 
-        public UserBuilder roles(Set<String> roles) {
+        public UserBuilder roles(Set<Role> roles) {
             this.roles = roles;
             return this;
         }
 
+        public UserBuilder banned(boolean banned) {
+            this.banned = banned;
+            return this;
+        }
+
         public User build() {
-            return new User(id, email, password, roles);
+            return new User(id, email, password, roles,  banned);
         }
     }
 
