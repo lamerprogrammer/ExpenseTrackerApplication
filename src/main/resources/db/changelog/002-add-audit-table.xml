@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="002-add-audit-table" author="lamer">
+        <createTable tableName="admin_audit">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="action" type="varchar(20)">
+                    <constraints nullable="false"/>
+            </column>
+            <column name="target_user_id" type="bigint"/>
+            <column name="performed_by" type="varchar(255)"/>
+            <column name="time_stamp" type="timestamp"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

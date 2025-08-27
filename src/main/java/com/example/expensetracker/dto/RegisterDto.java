@@ -7,6 +7,9 @@ import java.util.Objects;
 
 public class RegisterDto {
 
+    @NotBlank
+    private String name;
+
     @Email
     @NotBlank
     private String email;
@@ -16,7 +19,8 @@ public class RegisterDto {
 
     public RegisterDto() {}
 
-    public RegisterDto(String email, String password) {
+    public RegisterDto(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -42,18 +46,19 @@ public class RegisterDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegisterDto that = (RegisterDto) o;
-        return Objects.equals(email, that.email) && Objects.equals(password, that.password);
+        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password);
+        return Objects.hash(name, email, password);
     }
 
     @Override
     public String toString() {
         return "RegisterDto{" +
-                "email='" + email + '\'' +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", password=****}";
     }
 }

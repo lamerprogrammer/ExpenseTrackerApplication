@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    
+    <changeSet id="003-insert-test-audit-data" author="lamer">
+        <insert tableName="admin_audit">
+            <column name="action" value="BAN"/>
+            <column name="target_user_id" valueNumeric="7"/>
+            <column name="performed_by" value="admin@example.com"/>
+            <column name="time_stamp" valueDate="2025-08-20T13:37:00"/>
+        </insert>
+
+        <insert tableName="admin_audit">
+            <column name="action" value="UNBAN"/>
+            <column name="target_user_id" valueNumeric="7"/>
+            <column name="performed_by" value="admin@example.com"/>
+            <column name="time_stamp" valueDate="2025-08-20T14:05:00"/>
+        </insert>
+
+        <insert tableName="admin_audit">
+            <column name="action" value="DELETE"/>
+            <column name="target_user_id" valueNumeric="4"/>
+            <column name="performed_by" value="admin@example.com"/>
+            <column name="time_stamp" valueDate="2025-08-20T14:15:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

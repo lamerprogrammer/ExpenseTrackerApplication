@@ -70,7 +70,7 @@ public class JwtUtil {
     public Jws<Claims> parse(String token) {
         log.info("Анализ токена");
         return Jwts.parser()
-                .setSigningKey(secret)
+                .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token);
     }
