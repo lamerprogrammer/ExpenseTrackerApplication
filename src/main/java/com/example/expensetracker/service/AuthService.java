@@ -9,6 +9,7 @@ import com.example.expensetracker.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public String register(RegisterDto dto) {
+    public Map<String, String> register(RegisterDto dto) {
         Optional<User> existing = userRepository.findByEmail(dto.getEmail());
         if (existing.isPresent()) {
             throw new IllegalArgumentException("Почта уже используется.");
@@ -37,10 +38,13 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return jwtUtil.createToken(user.getEmail(), user.getRoles().iterator().next());
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+
+        return Map.of("accessToken", accessToken, "refreshToken", refreshToken);
     }
 
-    public String login(LoginDto dto) {
+    public Map<String, String> login(LoginDto dto) {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Неверный адрес почты."));
 
@@ -48,6 +52,9 @@ public class AuthService {
             throw new IllegalArgumentException("Неверный пароль.");
         }
 
-        return jwtUtil.createToken(user.getEmail(), user.getRoles().iterator().next());
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+
+        return Map.of("accessToken", accessToken, "refreshToken", refreshToken);
     }
 }

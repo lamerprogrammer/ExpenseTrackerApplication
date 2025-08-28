@@ -24,7 +24,7 @@ public class LogController {
         return logService.findAll();
     }
 
-    @GetMapping
+    @GetMapping("/user/{email}")
     public List<AppLog> getByUser(@PathVariable String email) {
         return logService.findByUserEmail(email);
     }
