@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     
-    <changeSet id="003-insert-test-audit-data" author="lamer">
+    <changeSet id="003-insert-test-audit-data" author="lamer" context="dev">
         <insert tableName="admin_audit">
             <column name="action" value="BAN"/>
             <column name="target_user_id" valueNumeric="7"/>

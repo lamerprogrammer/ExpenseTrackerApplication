@@ -12,25 +12,54 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d expense_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
   elasticsearch:
     image: elasticsearch:8.15.0
-    container_name: elasticsearch
+    container_name: expense_elastic
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
     ports:
       - "9200:9200"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 20s
 
   kibana:
     image: kibana:8.15.0
-    container_name: kibana
+    container_name: expense_kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - "5601:5601"
     depends_on:
       - elasticsearch
+
+  expense-tracker:
+    build: .
+    container_name: expense_app
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/expense_tracker
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
 
 volumes:
   postgres_data:

@@ -1,22 +1,12 @@
 spring:
   application:
     name: expense-tracker
-  datasource:
-    url: jdbc:postgresql://localhost:5432/expense_tracker
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-  liquibase:
-    change-log: classpath:db/changelog-master.xml
-  elasticsearch:
-    uris: http://localhost:9200
+  messages:
+    basename: ValidationMessages
+    encoding: UTF-8
+  web:
+    locale: ru
+    locale-resolver: fixed
 
 logging:
   level:

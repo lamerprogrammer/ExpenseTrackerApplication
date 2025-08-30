@@ -60,4 +60,8 @@ public class JwtUtil {
                 .build()
                 .parseSignedClaims(token);
     }
+
+    public String getSubject(String token) {
+        return parse(token).getPayload().getSubject();
+    }
 }

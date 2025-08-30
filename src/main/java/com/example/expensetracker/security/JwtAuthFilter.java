@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -27,38 +28,41 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final CustomUserDetailsService userDetailsService;
 
-    public JwtAuthFilter(JwtUtil jwtUtil, UserRepository userRepository) {
+    public JwtAuthFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         log.info("Мы внутри фильтра! URI: {}", request.getRequestURI());
-        String header = request.getHeader("Authorization");
-        if (header != null) {
-            log.info("Заголовок входящей авторизации: {}", header);
-        }
-        if (header != null && header.startsWith("Bearer ") && SecurityContextHolder.getContext().getAuthentication() == null) {
-            String token = header.substring(7);
+        String token = resolveToken(request);
+            log.info("Заголовок входящей авторизации: {}", request.getHeader("Authorization"));
+        if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
-                Jws<Claims> claims = jwtUtil.parse(token);
-                String email = claims.getPayload().getSubject();
-                Role role = Role.valueOf(claims.getPayload().get("role", String.class));
+                String email = jwtUtil.getSubject(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-                SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.name());
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email,
-                        null, List.of(simpleGrantedAuthority));
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
 
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {
-                log.warn("Ошибка при разборе JWT: {}", e.getMessage());
+                log.warn("Ошибка при разборе токена: {}", e.getMessage());
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (bearer != null && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
+        }
+        return null;
     }
 }

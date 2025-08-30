@@ -34,7 +34,7 @@ public class DataSeeder implements CommandLineRunner {
             User admin = new User();
             admin.setEmail(adminEmail);
             admin.setPassword(encoder.encode(adminPassword));
-            admin.setRoles(Set.of(Role.ROLE_ADMIN));
+            admin.setRoles(Set.of(Role.ADMIN));
             userRepository.save(admin);
             System.out.println("Администратор создан: почта=" + admin.getEmail() + " пароль=" + admin.getPassword());
         } else {
