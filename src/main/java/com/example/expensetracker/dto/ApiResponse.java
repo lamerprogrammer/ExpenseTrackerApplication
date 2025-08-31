@@ -1,5 +1,8 @@
 package com.example.expensetracker.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 
 public class ApiResponse {
@@ -10,7 +13,12 @@ public class ApiResponse {
     private final String message;
     private final String path;
 
-    public ApiResponse(Instant timestamp, int status, String error, String message, String path) {
+    @JsonCreator
+    public ApiResponse(@JsonProperty("timestamp") Instant timestamp,
+                       @JsonProperty("status") int status,
+                       @JsonProperty("error") String error,
+                       @JsonProperty("message") String message,
+                       @JsonProperty("path") String path) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
