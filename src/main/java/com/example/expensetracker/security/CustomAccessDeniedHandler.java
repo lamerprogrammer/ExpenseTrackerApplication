@@ -2,7 +2,6 @@ package com.example.expensetracker.security;
 
 import com.example.expensetracker.dto.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -17,20 +16,17 @@ import java.time.Instant;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
+    private final ApiResponseFactory apiResponseFactory;
 
-    public CustomAccessDeniedHandler(ObjectMapper objectMapper) {
+    public CustomAccessDeniedHandler(ObjectMapper objectMapper, ApiResponseFactory apiResponseFactory) {
         this.objectMapper = objectMapper;
+        this.apiResponseFactory = apiResponseFactory;
     }
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
-                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        ApiResponse apiResponse = new ApiResponse(
-                Instant.now(),
-                HttpStatus.FORBIDDEN.value(),
-                HttpStatus.FORBIDDEN.getReasonPhrase(),
-                "У вас недостаточно прав для доступа к этому ресурсу.",
-                request.getRequestURI());
+                       AccessDeniedException accessDeniedException) throws IOException {
+        ApiResponse apiResponse = apiResponseFactory.forbidden(request.getRequestURI());
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

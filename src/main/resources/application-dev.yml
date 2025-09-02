@@ -13,6 +13,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     change-log: classpath:db/changelog-master.xml
-    contexts: dev #так брат?
+    contexts: dev
   elasticsearch:
     uris: http://localhost:9200
+server:
+    port: 8081

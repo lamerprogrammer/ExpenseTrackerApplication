@@ -2,7 +2,6 @@ package com.example.expensetracker.security;
 
 import com.example.expensetracker.dto.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -16,17 +15,18 @@ import java.time.Instant;
 @Component
 public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+    private final ApiResponseFactory apiResponseFactory;
+
+    public CustomAuthEntryPoint(ObjectMapper objectMapper, ApiResponseFactory apiResponseFactory) {
+        this.objectMapper = objectMapper;
+        this.apiResponseFactory = apiResponseFactory;
+    }
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-            throws IOException, ServletException {
-        ApiResponse apiResponse = new ApiResponse(
-                Instant.now(),
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                "Доступ запрещён: требуется авторизация",
-                request.getRequestURI());
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException {
+        ApiResponse apiResponse = apiResponseFactory.unauthorized(request.getRequestURI());
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
