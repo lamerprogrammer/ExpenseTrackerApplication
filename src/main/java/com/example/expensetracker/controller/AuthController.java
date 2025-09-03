@@ -8,6 +8,7 @@ import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
 import com.example.expensetracker.service.AuthService;
 import com.example.expensetracker.service.UserService;
+import com.example.expensetracker.service.UserServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.http.HttpStatus;

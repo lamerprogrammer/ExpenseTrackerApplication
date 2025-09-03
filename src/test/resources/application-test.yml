@@ -1,4 +1,7 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration
   liquibase:
     enabled: false
   datasource:

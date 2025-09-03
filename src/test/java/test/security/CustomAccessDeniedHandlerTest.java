@@ -1,12 +1,9 @@
-package test;
+package test.security;
 
-
-import com.example.expensetracker.dto.ApiResponse;
-import com.example.expensetracker.exception.UnauthorizedException;
 import com.example.expensetracker.security.ApiResponseFactory;
-import com.example.expensetracker.security.CustomAccessDeniedHandler;
-import com.example.expensetracker.security.CustomAuthEntryPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.expensetracker.dto.ApiResponse;
+import com.example.expensetracker.security.CustomAccessDeniedHandler;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,22 +12,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 import static test.util.UtilForTests.writeByteToStream;
 
 @ExtendWith(MockitoExtension.class)
-public class CustomAuthEntryPointTest {
+public class CustomAccessDeniedHandlerTest {
 
     private ObjectMapper objectMapper;
-    private CustomAuthEntryPoint customAuthEntryPoint;
+    private CustomAccessDeniedHandler handler;
     private ApiResponseFactory factory;
     private Instant now = Instant.now();
 
@@ -39,69 +34,67 @@ public class CustomAuthEntryPointTest {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         factory = mock(ApiResponseFactory.class);
-        customAuthEntryPoint = new CustomAuthEntryPoint(objectMapper, factory);
+        handler = new CustomAccessDeniedHandler(objectMapper, factory);
     }
 
     @Test
-    public void shouldReturnUnauthorizedResponse_whenAuthenticationFails() throws Exception {
+    public void shouldReturnForbiddenResponse_whenAccessDenied() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        when(request.getRequestURI()).thenReturn("/api/auth/login");
+        when(request.getRequestURI()).thenReturn("/api/admin/users");
         when(response.getOutputStream()).thenReturn(writeByteToStream(baos));
-        when(factory.unauthorized(any())).thenReturn(new ApiResponse(
+        when(factory.forbidden(any())).thenReturn(new ApiResponse(
                 now,
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
                 "Mocked message.",
-                "/api/auth/login"));
+                "/api/admin/users"));
 
-        customAuthEntryPoint.commence(request, response,
-                new AuthenticationCredentialsNotFoundException("No auth"));
+        handler.handle(request, response, new AccessDeniedException("Forbidden"));
 
-        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
         verify(response).setContentType("application/json");
-        verify(factory).unauthorized("/api/auth/login");
+        verify(factory).forbidden("/api/admin/users");
 
         String json = baos.toString();
         ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
         assertThat(apiResponse.getTimestamp()).isEqualTo(now);
-        assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(apiResponse.getError()).isEqualTo(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        assertThat(apiResponse.getError()).isEqualTo(HttpStatus.FORBIDDEN.getReasonPhrase());
         assertThat(apiResponse.getMessage()).isEqualTo("Mocked message.");
-        assertThat(apiResponse.getPath()).isEqualTo("/api/auth/login");
+        assertThat(apiResponse.getPath()).isEqualTo("/api/admin/users");
     }
 
     @Test
-    public void shouldReturnUnauthorizedResponse_whenRequestUriIsNull() throws Exception {
+    public void shouldReturnForbiddenResponse_whenRequestUriIsNull() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         when(request.getRequestURI()).thenReturn(null);
         when(response.getOutputStream()).thenReturn(writeByteToStream(baos));
-        when(factory.unauthorized(any())).thenReturn(new ApiResponse(
+        when(factory.forbidden(any())).thenReturn(new ApiResponse(
                 now,
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
                 "Mocked message.",
                 null));
 
-        customAuthEntryPoint.commence(request, response,
-                new AuthenticationCredentialsNotFoundException("No auth"));
+        handler.handle(request, response, new AccessDeniedException("Forbidden"));
 
-        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
         verify(response).setContentType("application/json");
-        verify(factory).unauthorized(isNull());
+        verify(factory).forbidden(isNull());
 
         String json = baos.toString();
         ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
         assertThat(apiResponse.getTimestamp()).isEqualTo(now);
-        assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(apiResponse.getError()).isEqualTo(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        assertThat(apiResponse.getError()).isEqualTo(HttpStatus.FORBIDDEN.getReasonPhrase());
         assertThat(apiResponse.getMessage()).isEqualTo("Mocked message.");
         assertThat(apiResponse.getPath()).isEqualTo(null);
     }
