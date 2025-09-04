@@ -27,6 +27,17 @@ public class LogService {
         appLogRepository.save(log);
     }
 
+    public void log(String json) {
+        AppLog log = new AppLog();
+        log.setTimestamp(Instant.now());
+        log.setLevel(json);
+        log.setMessage(json);
+        log.setUserEmail(json);
+        log.setEndPoint(json);
+
+        appLogRepository.save(log);
+    }
+
     public List<AppLog> findAll() {
         return StreamSupport.stream(appLogRepository.findAll().spliterator(), false).toList();
     }

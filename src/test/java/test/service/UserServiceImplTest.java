@@ -6,6 +6,7 @@ import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
+import com.example.expensetracker.service.UserService;
 import com.example.expensetracker.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,14 +27,14 @@ public class UserServiceImplTest {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private JwtUtil jwtUtil;
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
         userRepository = mock(UserRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
         jwtUtil = mock(JwtUtil.class);
-        userServiceImpl = new UserServiceImpl(userRepository, passwordEncoder, jwtUtil);
+        userService = new UserServiceImpl(userRepository, passwordEncoder, jwtUtil);
     }
 
     @Test
@@ -44,7 +45,7 @@ public class UserServiceImplTest {
         when(passwordEncoder.encode("password")).thenReturn("encoded");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        User saved = userServiceImpl.register(dto);
+        User saved = userService.register(dto);
 
         verify(userRepository).save(any(User.class));
         assertThat(saved.getEmail()).isEqualTo("john@example.com");
@@ -58,7 +59,7 @@ public class UserServiceImplTest {
 
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
 
-        assertThatThrownBy(() -> userServiceImpl.register(dto))
+        assertThatThrownBy(() -> userService.register(dto))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Эта почта уже используется.");
 
@@ -73,7 +74,7 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(dto.getPassword(), "encoded")).thenReturn(true);
 
-        User result = userServiceImpl.validateUser(dto);
+        User result = userService.validateUser(dto);
 
         assertThat(result).isEqualTo(user);
     }
@@ -84,7 +85,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userServiceImpl.validateUser(dto))
+        assertThatThrownBy(() -> userService.validateUser(dto))
                 .isInstanceOf(BadCredentialsException.class)
                 .hasMessage("Неверная почта.");
     }
@@ -97,7 +98,7 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(dto.getPassword(), "encoded")).thenReturn(false);
 
-        assertThatThrownBy(() -> userServiceImpl.validateUser(dto))
+        assertThatThrownBy(() -> userService.validateUser(dto))
                 .isInstanceOf(BadCredentialsException.class)
                 .hasMessage("Неверный пароль.");
     }
@@ -110,7 +111,7 @@ public class UserServiceImplTest {
         when(passwordEncoder.encode("password")).thenReturn("encoded");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        User result = userServiceImpl.createAdmin(dto);
+        User result = userService.createAdmin(dto);
 
         verify(userRepository).save(any(User.class));
         assertThat(result.getEmail()).isEqualTo("john@example.com");
@@ -124,7 +125,7 @@ public class UserServiceImplTest {
 
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
 
-        assertThatThrownBy(() -> userServiceImpl.createAdmin(dto))
+        assertThatThrownBy(() -> userService.createAdmin(dto))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Эта почта уже используется.");
 

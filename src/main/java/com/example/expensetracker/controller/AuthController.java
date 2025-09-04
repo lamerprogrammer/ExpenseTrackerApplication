@@ -6,9 +6,8 @@ import com.example.expensetracker.logging.LogService;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
-import com.example.expensetracker.service.AuthService;
+import com.example.expensetracker.service.AuthServiceImpl;
 import com.example.expensetracker.service.UserService;
-import com.example.expensetracker.service.UserServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.http.HttpStatus;
@@ -28,16 +27,16 @@ public class AuthController {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
     private final LogService logService;
 
     public AuthController(UserService userService, UserRepository userRepository, JwtUtil jwtUtil,
-                          PasswordEncoder passwordEncoder, AuthService authService, LogService logService) {
+                          PasswordEncoder passwordEncoder, AuthServiceImpl authServiceImpl, LogService logService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
-        this.authService = authService;
+        this.authServiceImpl = authServiceImpl;
         this.logService = logService;
     }
 
