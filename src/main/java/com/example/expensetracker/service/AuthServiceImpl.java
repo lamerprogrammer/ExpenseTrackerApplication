@@ -2,11 +2,13 @@ package com.example.expensetracker.service;
 
 import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.logging.LogEntry;
 import com.example.expensetracker.logging.LogService;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.security.JwtUtil;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Map;
 
 @Service
@@ -25,15 +27,30 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Map<String, String> register(RegisterDto dto) {
         User user = userService.register(dto);
-        logService.log("INFO", "Пользователь зарегестрирован.", user.getEmail(),
-                "/api/auth/register");
+        logService.log(LogEntry.builder()
+                .timestamp(Instant.now())
+                .level("INFO")
+                .logger("AuthServiceImpl")
+                .message("Пользователь зарегестрирован.")
+                .user(user.getEmail())
+                .path("/api/auth/register")
+                .stackTrace(null)
+                .build());
         return generateTokens(user);
     }
 
     @Override
     public Map<String, String> login(LoginDto dto) {
         User user = userService.validateUser(dto);
-        logService.log("INFO", "Пользователь вошёл в систему.", user.getEmail(), "/api/auth/login");
+        logService.log(LogEntry.builder()
+                .timestamp(Instant.now())
+                .level("INFO")
+                .logger("AuthServiceImpl")
+                .message("Пользователь вошёл в систему.")
+                .user(user.getEmail())
+                .path("/api/auth/login")
+                .stackTrace(null)
+                .build());
         return generateTokens(user);
     }
 

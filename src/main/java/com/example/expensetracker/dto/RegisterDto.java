@@ -46,7 +46,9 @@ public class RegisterDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegisterDto that = (RegisterDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+        return Objects.equals(name, that.name) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(password, that.password);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.example.expensetracker.logging;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.Instant;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LogEntry {
     private Instant timestamp;
     private String level;
@@ -67,7 +70,64 @@ public class LogEntry {
         this.stackTrace = stackTrace;
     }
 
+    public static LogEntityBuilder builder() {
+        return new LogEntityBuilder();
+    }
+
     public static class LogEntityBuilder {
-        
+        private Instant timestamp;
+        private String level;
+        private String logger;
+        private String message;
+        private String user;
+        private String path;
+        private String stackTrace;
+
+        public LogEntityBuilder timestamp(Instant timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public LogEntityBuilder level(String level) {
+            this.level = level;
+            return this;
+        }
+
+        public LogEntityBuilder logger(String logger) {
+            this.logger = logger;
+            return this;
+        }
+
+        public LogEntityBuilder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public LogEntityBuilder user(String user) {
+            this.user = user;
+            return this;
+        }
+
+        public LogEntityBuilder path(String path) {
+            this.path = path;
+            return this;
+        }
+
+        public LogEntityBuilder stackTrace(String stackTrace) {
+            this.stackTrace = stackTrace;
+            return this;
+        }
+
+        public LogEntry build() {
+            LogEntry entry = new LogEntry();
+            entry.setTimestamp(this.timestamp);
+            entry.setLevel(this.level);
+            entry.setLogger(this.logger);
+            entry.setMessage(this.message);
+            entry.setUser(this.user);
+            entry.setPath(this.path);
+            entry.setStackTrace(this.stackTrace);
+            return entry;
+        }
     }
 }

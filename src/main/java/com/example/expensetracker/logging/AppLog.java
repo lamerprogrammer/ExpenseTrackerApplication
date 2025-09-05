@@ -13,79 +13,86 @@ public class AppLog {
     private String id;
     private Instant timestamp;
     private String level;
+    private String logger;
     private String message;
     private String userEmail;
     private String endPoint;
+    private String stackTrace;
 
     public AppLog() {
     }
 
-    public AppLog(String id, Instant timestamp, String level, String message, String userEmail, String endPoint) {
+    public AppLog(String id,
+                  Instant timestamp,
+                  String level,
+                  String logger,
+                  String message,
+                  String userEmail,
+                  String endPoint,
+                  String stackTrace) {
         this.id = id;
         this.timestamp = timestamp;
+        this.level = level;
+        this.logger = logger;
         this.message = message;
         this.userEmail = userEmail;
         this.endPoint = endPoint;
+        this.stackTrace = stackTrace;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Instant getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
     }
 
     public String getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public String getLogger() {
+        return logger;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public String getUserEmail() {
         return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public String getEndPoint() {
         return endPoint;
     }
 
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+    public String getStackTrace() {
+        return stackTrace;
+    }
+
+    public static AppLogBuilder builder() {
+        return new AppLogBuilder();
     }
 
     public static class AppLogBuilder {
         private String id;
         private Instant timestamp;
         private String level;
+        private String logger;
         private String message;
         private String userEmail;
         private String endPoint;
+        private String stackTrace;
 
         public AppLogBuilder id(String id) {
             this.id = id;
+            return this;
+        }
+
+        public AppLogBuilder timestamp(Instant timestamp) {
+            this.timestamp = timestamp;
             return this;
         }
 
@@ -94,8 +101,8 @@ public class AppLog {
             return this;
         }
 
-        public AppLogBuilder timestamp(Instant timestamp) {
-            this.timestamp = timestamp;
+        public AppLogBuilder logger(String logger) {
+            this.logger = logger;
             return this;
         }
 
@@ -114,8 +121,13 @@ public class AppLog {
             return this;
         }
 
+        public AppLogBuilder stackTrace(String stackTrace) {
+            this.stackTrace = stackTrace;
+            return this;
+        }
+
         public AppLog build() {
-            return new AppLog(id, timestamp, level, message, userEmail, endPoint);
+            return new AppLog(id, timestamp, level, logger, message, userEmail, endPoint, stackTrace);
         }
     }
 }

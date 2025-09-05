@@ -1,9 +1,7 @@
 package com.example.expensetracker.logging;
 
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -16,25 +14,16 @@ public class LogService {
         this.appLogRepository = appLogRepository;
     }
 
-    public void log(String level, String message, String userEmail, String endPoint) {
-        AppLog log = new AppLog();
-        log.setTimestamp(Instant.now());
-        log.setLevel(level);
-        log.setMessage(message);
-        log.setUserEmail(userEmail);
-        log.setEndPoint(endPoint);
-
-        appLogRepository.save(log);
-    }
-
-    public void log(String json) {
-        AppLog log = new AppLog();
-        log.setTimestamp(Instant.now());
-        log.setLevel(json);
-        log.setMessage(json);
-        log.setUserEmail(json);
-        log.setEndPoint(json);
-
+    public void log(LogEntry entry) {
+        AppLog log = AppLog.builder()
+                .timestamp(entry.getTimestamp())
+                .level(entry.getLevel())
+                .logger(entry.getLogger())
+                .message(entry.getMessage())
+                .userEmail(entry.getUser())
+                .endPoint(entry.getPath())
+                .stackTrace(entry.getStackTrace())
+                .build();
         appLogRepository.save(log);
     }
 

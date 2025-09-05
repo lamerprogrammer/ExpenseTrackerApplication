@@ -2,6 +2,7 @@ package test.service;
 
 import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.logging.LogEntry;
 import com.example.expensetracker.logging.LogService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
@@ -12,6 +13,7 @@ import com.example.expensetracker.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -46,29 +48,24 @@ public class AuthServiceImplTest {
                 .roles(Set.of(Role.USER))
                 .build();
 
-        when(userService.register(any())).thenAnswer(inv -> {
-            RegisterDto arg = inv.getArgument(0);
-            return User.builder()
-                    .email(arg.getEmail())
-                    .password("encoded")
-                    .roles(Set.of(Role.USER))
-                    .build();
-                });
+        when(userService.register(any())).thenReturn(user);
         when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("access");
         when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("refresh");
 
         Map<String, String> result = authService.register(dto);
 
-        verify(userService).register(dto);
-        verify(logService).log(eq("INFO"), contains("Пользователь зарегестрирован."), eq(user.getEmail()),
-                eq("/api/auth/register"));
+        ArgumentCaptor<LogEntry> logCaptor = ArgumentCaptor.forClass(LogEntry.class);
+        verify(logService).log(logCaptor.capture());
+        LogEntry capturedLog = logCaptor.getValue();
+
+        assertLogEntry(user, capturedLog, "Пользователь зарегестрирован.", "/api/auth/register");
+        assertThat(capturedLog.getStackTrace()).isNull();
         assertThat(result)
                 .containsEntry("accessToken", "access")
                 .containsEntry("refreshToken", "refresh");
         assertThat(result.get("accessToken")).isNotEqualTo(result.get("refreshToken"));
         InOrder inOrder = inOrder(userService, logService, jwtUtil);
         inOrder.verify(userService).register(dto);
-        inOrder.verify(logService).log(any(), any(), any(), eq("/api/auth/register"));
         inOrder.verify(jwtUtil).generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
         inOrder.verify(jwtUtil).generateRefreshToken(user.getEmail());
     }
@@ -82,23 +79,33 @@ public class AuthServiceImplTest {
                 .roles(Set.of(Role.USER))
                 .build();
 
-        when(userService.validateUser(dto)).thenReturn(user);
+        when(userService.validateUser(any())).thenReturn(user);
         when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("access");
         when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("refresh");
 
         Map<String, String> result = authService.login(dto);
 
-        verify(userService).validateUser(dto);
-        verify(logService).log(eq("INFO"), contains("Пользователь вошёл в систему."), eq(user.getEmail()),
-                eq("/api/auth/login"));
+        ArgumentCaptor<LogEntry> logCaptor = ArgumentCaptor.forClass(LogEntry.class);
+        verify(logService).log(logCaptor.capture());
+        LogEntry capturedLog = logCaptor.getValue();
+
+        assertLogEntry(user, capturedLog, "Пользователь вошёл в систему.", "/api/auth/login");
         assertThat(result)
                 .containsEntry("accessToken", "access")
                 .containsEntry("refreshToken", "refresh");
         assertThat(result.get("accessToken")).isNotEqualTo(result.get("refreshToken"));
         InOrder inOrder = inOrder(userService, logService, jwtUtil);
         inOrder.verify(userService).validateUser(dto);
-        inOrder.verify(logService).log(any(), any(), any(), eq("/api/auth/login"));
         inOrder.verify(jwtUtil).generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
         inOrder.verify(jwtUtil).generateRefreshToken(user.getEmail());
+    }
+
+    private void assertLogEntry(User user, LogEntry capturedLog, String message, String path) {
+        assertThat(capturedLog.getLevel()).isEqualTo("INFO");
+        assertThat(capturedLog.getLogger()).isEqualTo("AuthServiceImpl");
+        assertThat(capturedLog.getMessage()).contains(message);
+        assertThat(capturedLog.getUser()).isEqualTo(user.getEmail());
+        assertThat(capturedLog.getPath()).isEqualTo(path);
+        assertThat(capturedLog.getStackTrace()).isNull();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.expensetracker.exception;
 
 import com.example.expensetracker.dto.ApiResponse;
+import com.example.expensetracker.logging.LogEntry;
 import com.example.expensetracker.logging.LogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,13 +17,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.AccessDeniedException;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final LogService logService;
 
     public GlobalExceptionHandler(LogService logService) {
@@ -32,66 +30,71 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), "WARN",
-                "Неверные учётные данные.", request);
+                "Неверные учётные данные.", request, ex);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiResponse> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage(), "WARN",
-                "Отказано в доступе.", request);
+                "Отказано в доступе.", request, ex);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiResponse> handleEntityNotFound(EntityNotFoundException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "WARN",
-                "Запрошенный ресурс не найден.", request);
+                "Запрошенный ресурс не найден.", request, ex);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), "WARN",
-                "Нарушение ограничений базы данных.", request);
+                "Нарушение ограничений базы данных.", request, ex);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), "WARN",
-                "Некорректный запрос.", request);
+                "Некорректный запрос.", request, ex);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleGeneric(Exception ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), "ERROR",
-                ex.getMessage(), request);
+                ex.getMessage(), request, ex);
     }
 
     private ResponseEntity<ApiResponse> buildResponse(
-            HttpStatus status, String message, String logLevel, String logMessage, HttpServletRequest request) {
+            HttpStatus status, String message, String logLevel, String logMessage, HttpServletRequest request,Exception ex) {
 
         String user = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
 
         String stackTrace = null;
         if (status.is5xxServerError() || "ERROR".equalsIgnoreCase(logLevel)) {
             StringWriter writer = new StringWriter();
-            new Exception(message).printStackTrace(new PrintWriter(writer));
+            ex.printStackTrace(new PrintWriter(writer));
             stackTrace = writer.toString();
         }
 
         try {
-            Map<String, Object> logEntry = new HashMap<>();
-            logEntry.put("timestamp", Instant.now().toString());
-            logEntry.put("level", logLevel);
-            logEntry.put("logger", "GlobalExceptionHandler");
-            logEntry.put("message", logMessage);
-            logEntry.put("user", user);
-            logEntry.put("path", request.getRequestURI());
-            if (stackTrace != null) {
-                logEntry.put("stacktrace", stackTrace);
-            }
-            String jsonLog = objectMapper.writeValueAsString(logEntry);
-            logService.log(logLevel, jsonLog, user, request.getRequestURI());
+            logService.log(LogEntry.builder()
+                    .timestamp(Instant.now())
+                    .level("WARN")
+                    .logger("GlobalExceptionHandler")
+                    .message(logMessage)
+                    .user(user)
+                    .path(request.getRequestURI())
+                    .stackTrace(stackTrace)
+                    .build());
         } catch (Exception e) {
-            logService.log("ERROR", logMessage, user, request.getRequestURI());
+            logService.log(LogEntry.builder()
+                    .timestamp(Instant.now())
+                    .level("ERROR")
+                    .logger("GlobalExceptionHandler")
+                    .message(logMessage)
+                    .user(user)
+                    .path(request.getRequestURI())
+                    .stackTrace(e.getMessage())
+                    .build());
         }
 
         ApiResponse response = new ApiResponse(
