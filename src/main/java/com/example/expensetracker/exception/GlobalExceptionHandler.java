@@ -3,7 +3,6 @@ package com.example.expensetracker.exception;
 import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.logging.LogEntry;
 import com.example.expensetracker.logging.LogService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -69,7 +68,7 @@ public class GlobalExceptionHandler {
         String user = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
 
         String stackTrace = null;
-        if (status.is5xxServerError() || "ERROR".equalsIgnoreCase(logLevel)) {
+        if (status.is5xxServerError()) {
             StringWriter writer = new StringWriter();
             ex.printStackTrace(new PrintWriter(writer));
             stackTrace = writer.toString();
@@ -78,7 +77,7 @@ public class GlobalExceptionHandler {
         try {
             logService.log(LogEntry.builder()
                     .timestamp(Instant.now())
-                    .level("WARN")
+                    .level(logLevel) // <- а так же вроде лучше, просто с параметров берём входящий logLevel
                     .logger("GlobalExceptionHandler")
                     .message(logMessage)
                     .user(user)
