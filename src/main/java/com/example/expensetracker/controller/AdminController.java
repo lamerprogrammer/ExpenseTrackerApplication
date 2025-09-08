@@ -63,7 +63,7 @@ public class AdminController {
 
     @DeleteMapping("/{id}/delete")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteUser(@PathVariable long id,
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id,
                                            @AuthenticationPrincipal User currentUser) {
         if (!userRepository.existsById(id)) {
             return  ResponseEntity.notFound().build();

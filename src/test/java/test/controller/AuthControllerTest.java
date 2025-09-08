@@ -5,11 +5,9 @@ import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RefreshRequest;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.TokenResponse;
-import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
-import com.example.expensetracker.service.AuthServiceImpl;
 import com.example.expensetracker.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -21,13 +19,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import test.util.TestData;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static test.util.Constants.USER_EMAIL;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthControllerTest {
@@ -40,8 +39,6 @@ public class AuthControllerTest {
     private JwtUtil jwtUtil;
     @Mock
     private PasswordEncoder passwordEncoder;
-    @Mock
-    private AuthServiceImpl authServiceImpl;
 
     @InjectMocks
     private AuthController authController;
@@ -53,18 +50,12 @@ public class AuthControllerTest {
         @SuppressWarnings("unchecked")
         Jws<Claims> jwsMock = mock(Jws.class);
         Claims claimsMock = mock(Claims.class);
-        String email = "john@example.com";
-        User user = User.builder()
-                .email(email)
-                .password("encoded")
-                .roles(Set.of(Role.USER))
-                .banned(false)
-                .build();
+        User user = TestData.user();
 
         when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsMock);
         when(jwsMock.getPayload()).thenReturn(claimsMock);
-        when(claimsMock.getSubject()).thenReturn(email);
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(claimsMock.getSubject()).thenReturn(USER_EMAIL);
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
         when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("new-access");
         when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("new-refresh");
 
@@ -105,12 +96,7 @@ public class AuthControllerTest {
         Jws<Claims> jwsMock = mock(Jws.class);
         Claims claimsMock = mock(Claims.class);
         String email = "john@example.com";
-        User userBanned = User.builder()
-                .email(email)
-                .password("encoded")
-                .roles(Set.of(Role.USER))
-                .banned(true)
-                .build();
+        User userBanned = TestData.userBanned();
 
         when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsMock);
         when(jwsMock.getPayload()).thenReturn(claimsMock);
@@ -137,12 +123,9 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void register_shouldReturn() {
-        RegisterDto dto = new RegisterDto("John", "john@example.com", "password");
-        User user = User.builder()
-                .email("john@example.com")
-                .password("password")
-                .build();
+    public void register_shouldReturnNewUser() {
+        RegisterDto dto = TestData.registerDto();
+        User user = TestData.user();
         when(userService.register(dto)).thenReturn(user);
 
         ResponseEntity<User> result = authController.register(dto);
@@ -154,13 +137,9 @@ public class AuthControllerTest {
 
     @Test
     public void login_shouldReturnNewTokens_whenDataIsValid() {
-        LoginRequest request = new LoginRequest("john@example.com", "password");
-        User user = User.builder()
-                .email("john@example.com")
-                .password("password")
-                .roles(Set.of(Role.USER))
-                .build();
-        when(userRepository.findByEmail("john@example.com")).thenReturn(Optional.of(user));
+        LoginRequest request = TestData.loginRequest();
+        User user = TestData.user();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.password(), user.getPassword())).thenReturn(true);
         when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("new-access");
         when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("new-refresh");
@@ -179,8 +158,8 @@ public class AuthControllerTest {
 
     @Test
     public void login_shouldThrowRuntimeException_whenUserNotExist() {
-        LoginRequest request = new LoginRequest("john@example.com", "password");
-        when(userRepository.findByEmail("john@example.com")).thenReturn(Optional.empty());
+        LoginRequest request = TestData.loginRequest();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> authController.login(request));
 
@@ -192,13 +171,9 @@ public class AuthControllerTest {
 
     @Test
     public void login_shouldThrowRuntimeException_whenPasswordNotMatches() {
-        LoginRequest request = new LoginRequest("john@example.com", "password");
-        User user = User.builder()
-                .email("john@example.com")
-                .password("password")
-                .roles(Set.of(Role.USER))
-                .build();
-        when(userRepository.findByEmail("john@example.com")).thenReturn(Optional.of(user));
+        LoginRequest request = TestData.loginRequest();
+        User user = TestData.user();
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.password(), user.getPassword())).thenReturn(false);
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> authController.login(request));
