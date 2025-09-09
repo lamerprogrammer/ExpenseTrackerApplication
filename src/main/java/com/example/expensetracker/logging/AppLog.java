@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.time.Instant;
+import java.util.Objects;
 
 
 @Document(indexName = "app-logs")
@@ -70,6 +71,26 @@ public class AppLog {
 
     public String getStackTrace() {
         return stackTrace;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppLog log = (AppLog) o;
+        return Objects.equals(id, log.id) &&
+                Objects.equals(timestamp, log.timestamp) &&
+                Objects.equals(level, log.level) &&
+                Objects.equals(logger, log.logger) &&
+                Objects.equals(message, log.message) &&
+                Objects.equals(userEmail, log.userEmail) &&
+                Objects.equals(endPoint, log.endPoint) &&
+                Objects.equals(stackTrace, log.stackTrace);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, timestamp, level, logger, message, userEmail, endPoint, stackTrace);
     }
 
     public static AppLogBuilder builder() {

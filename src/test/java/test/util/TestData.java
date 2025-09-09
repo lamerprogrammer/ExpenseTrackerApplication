@@ -2,9 +2,11 @@ package test.util;
 
 import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.logging.AppLog;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 
+import java.time.Instant;
 import java.util.Set;
 
 import static test.util.Constants.*;
@@ -52,4 +54,34 @@ public class TestData {
     public static RegisterDto registerDto() {
         return registerDto(USER_NAME, USER_EMAIL, PASSWORD);
     }
+
+    public static AppLog appLog(String id,
+                                Instant timestamp,
+                                String level,
+                                String logger,
+                                String message,
+                                String userEmail,
+                                String endPoint,
+                                String stackTrace) {
+        return new AppLog(id,
+                timestamp,
+                level,
+                logger,
+                message,
+                userEmail,
+                endPoint,
+                stackTrace);
+    }
+
+    public static AppLog appLog() {
+        return appLog("42",
+                Instant.now(),
+                "INFO",
+                "TestData",
+                "Test message",
+                USER_EMAIL,
+                "/api/test",
+                "StackTrace");
+    }
 }
+//nice job брат? :)
