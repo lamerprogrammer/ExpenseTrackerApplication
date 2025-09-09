@@ -13,6 +13,7 @@ public class TestData {
 
     public static User user(String email, String password, Set<Role> roles, boolean banned) {
         return User.builder()
+                .id(42L)
                 .email(email)
                 .password(password)
                 .roles(roles)

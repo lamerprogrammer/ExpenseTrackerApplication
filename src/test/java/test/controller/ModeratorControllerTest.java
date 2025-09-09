@@ -1,6 +1,6 @@
 package test.controller;
 
-import com.example.expensetracker.controller.AdminController;
+import com.example.expensetracker.controller.ModeratorController;
 import com.example.expensetracker.model.AuditAction;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.AuditLogRepository;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AdminControllerTest {
+public class ModeratorControllerTest {
 
     @Mock
     private UserRepository userRepository;
@@ -28,14 +28,14 @@ public class AdminControllerTest {
     private AuditLogRepository auditLogRepository;
 
     @InjectMocks
-    private AdminController adminController;
+    ModeratorController moderatorController;
 
     @Test
     public void getAllUsers_shouldReturnListOfUsers() {
         List<User> users = List.of(TestData.user());
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> result = adminController.getAllUsers();
+        List<User> result = moderatorController.getAllUsers();
 
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(users);
@@ -46,7 +46,7 @@ public class AdminControllerTest {
     public void getAllUsers_shouldReturnEmptyList_whenNoUsers() {
         when(userRepository.findAll()).thenReturn(List.of());
 
-        List<User> result = adminController.getAllUsers();
+        List<User> result = moderatorController.getAllUsers();
 
         assertThat(result).isEmpty();
         verify(userRepository).findAll();
@@ -58,7 +58,7 @@ public class AdminControllerTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.of(currentUser));
 
-        var response = adminController.banUser(id, currentUser);
+        var response = moderatorController.banUser(id, currentUser);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -77,7 +77,7 @@ public class AdminControllerTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        var response = adminController.banUser(id, currentUser);
+        var response = moderatorController.banUser(id, currentUser);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         verify(userRepository, never()).save(any());
@@ -90,7 +90,7 @@ public class AdminControllerTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.of(currentUser));
 
-        var response = adminController.unbanUser(id, currentUser);
+        var response = moderatorController.unbanUser(id, currentUser);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -99,8 +99,8 @@ public class AdminControllerTest {
         verify(userRepository).save(any());
         verify(auditLogRepository).save(argThat(log ->
                 log.getAction() == AuditAction.UNBAN &&
-                        log.getTargetUserId().equals(id) &&
-                        log.getPerformedBy().equals(currentUser.getEmail())));
+                log.getTargetUserId().equals(id) &&
+                log.getPerformedBy().equals(currentUser.getEmail())));
     }
 
     @Test
@@ -109,39 +109,10 @@ public class AdminControllerTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        var response = adminController.unbanUser(id, currentUser);
+        var response = moderatorController.unbanUser(id, currentUser);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         verify(userRepository, never()).save(any());
-        verify(auditLogRepository, never()).save(any());
-    }
-
-    @Test
-    public void deleteUser_shouldReturn204_whenUserExist() {
-        User currentUser = TestData.user();
-        Long id = currentUser.getId();
-        when(userRepository.existsById(id)).thenReturn(true);
-
-        var response = adminController.deleteUser(id, currentUser);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-        verify(userRepository).deleteById(id);
-        verify(auditLogRepository).save(argThat(log ->
-                log.getAction() == AuditAction.DELETE &&
-                        log.getTargetUserId().equals(id) &&
-                        log.getPerformedBy().equals(currentUser.getEmail())));
-    }
-
-    @Test
-    public void deleteUser_shouldReturn404_whenUserNotFound() {
-        User currentUser = TestData.user();
-        Long id = currentUser.getId();
-        when(userRepository.existsById(id)).thenReturn(false);
-
-        var response = adminController.deleteUser(id, currentUser);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        verify(userRepository, never()).deleteById(any());
         verify(auditLogRepository, never()).save(any());
     }
 }

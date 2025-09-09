@@ -43,7 +43,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode().value()).isEqualTo(401);
         checkBody(response.getBody(), 401, "User unauthorized");
 
-        verify(logService, times(1)).log(any());
+        verify(logService).log(any());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode().value()).isEqualTo(403);
         checkBody(response.getBody(), 403, "Access denied");
 
-        verify(logService, times(1)).log(any());
+        verify(logService).log(any());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode().value()).isEqualTo(404);
         checkBody(response.getBody(), 404, "User not found");
 
-        verify(logService, times(1)).log(any());
+        verify(logService).log(any());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode().value()).isEqualTo(409);
         checkBody(response.getBody(), 409, "Data integrity violation");
 
-        verify(logService, times(1)).log(any());
+        verify(logService).log(any());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode().value()).isEqualTo(400);
         checkBody(response.getBody(), 400, "Bad Request");
 
-        verify(logService, times(1)).log(any());
+        verify(logService).log(any());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(body.getStatus()).isEqualTo(500);
         assertThat(body.getMessage()).contains("Unexpected error");
 
-        verify(logService, times(1)).log(any());
+        verify(logService).log(any());
     }
 
     @Test
