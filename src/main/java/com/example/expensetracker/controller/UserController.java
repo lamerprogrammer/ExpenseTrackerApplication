@@ -1,6 +1,7 @@
 package com.example.expensetracker.controller;
 
 
+import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/users/me")
-    public User getCurrentUser(@AuthenticationPrincipal User user) {
-        return user;
+    public User getCurrentUser(@AuthenticationPrincipal UserDetailsImpl user) {
+        return user.getDomainUser();
     }
 }
