@@ -1,5 +1,6 @@
 package test.util;
 
+import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.logging.AppLog;
@@ -55,6 +56,14 @@ public class TestData {
         return registerDto(USER_NAME, USER_EMAIL, PASSWORD);
     }
 
+    public static LoginDto loginDto(String mail, String password) {
+        return new LoginDto(mail, password);
+    }
+
+    public static LoginDto loginDto() {
+        return loginDto(USER_EMAIL, PASSWORD);
+    }
+
     public static AppLog appLog(String id,
                                 Instant timestamp,
                                 String level,
@@ -84,4 +93,3 @@ public class TestData {
                 "StackTrace");
     }
 }
-//nice job брат? :)

@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class RegisterDto {
 
-    @NotBlank
+    @NotBlank(message = "{user.name.not-blank}")
     private String name;
 
-    @Email
-    @NotBlank
+    @Email(message = "{user.email.invalid}")
+    @NotBlank(message = "{user.email.not-blank}")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{user.password.not-blank}")
     private String password;
 
     public RegisterDto() {}

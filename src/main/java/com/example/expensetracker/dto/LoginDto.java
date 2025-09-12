@@ -9,11 +9,11 @@ import java.util.Objects;
 
 public class LoginDto {
 
-    @Email
-    @NotBlank
+    @Email(message = "{user.email.invalid}")
+    @NotBlank(message = "{user.email.not-blank}")
     private final String email;
 
-    @NotBlank
+    @NotBlank(message = "{user.password.not-blank}")
     private final String password;
 
     @JsonCreator
@@ -48,7 +48,6 @@ public class LoginDto {
     public String toString() {
         return "LoginDto{" +
                 "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+                ", password=****}";
     }
 }
