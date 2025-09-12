@@ -22,7 +22,7 @@ public class RegisterDtoTest {
     private static Validator validator;
 
     @BeforeAll
-    public static void setUpValidator() {
+    static void setUpValidator() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
