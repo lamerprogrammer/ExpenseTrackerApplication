@@ -15,12 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Email
-    @NotBlank
+    @Email(message = "{user.email.invalid}")
+    @NotBlank(message = "{user.email.not-blank}")
     @Column(unique = true, nullable = false)
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{user.password.not-blank}")
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
