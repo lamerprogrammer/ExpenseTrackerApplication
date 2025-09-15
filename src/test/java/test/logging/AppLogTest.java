@@ -13,6 +13,13 @@ import static test.util.Constants.API_TEST_ENDPOINT;
 import static test.util.Constants.USER_EMAIL;
 
 public class AppLogTest {
+    
+    @Test
+    void shouldCreateAppLogWithNoArgsConstructor() {
+        AppLog appLog = new AppLog();
+        
+        assertThat(appLog).isNotNull();
+    }
 
     @Test
     void shouldSetFieldsUsingConstructor() {
