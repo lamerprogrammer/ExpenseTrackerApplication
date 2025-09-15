@@ -89,7 +89,7 @@ public class TestData {
                 "TestData",
                 "Test message",
                 USER_EMAIL,
-                "/api/test",
+                API_TEST_ENDPOINT,
                 "StackTrace");
     }
 }

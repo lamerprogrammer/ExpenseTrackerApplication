@@ -17,4 +17,4 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: false
   elasticsearch:
-    uris: http://localhost:9201
+    uris: http://localhost:9200

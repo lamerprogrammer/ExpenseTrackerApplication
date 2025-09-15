@@ -20,7 +20,7 @@ public class AuditLogTest {
     }
 
     @Test
-    void shouldSetFieldsUsingSetters() {
+    void setters_shouldSetAllFieldsCorrectly() {
         AuditLog auditLog = new AuditLog();
         Instant now = Instant.now();
 
