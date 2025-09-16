@@ -6,6 +6,7 @@ import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,28 +24,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
-    }
-
-    public User register(RegisterDto dto) {
-        if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Эта почта уже используется.");
-        }
-        User user = User.builder()
-                .email(dto.getEmail())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .roles(new HashSet<>())
-                .build();
-        user.getRoles().add(Role.USER);
-        return userRepository.save(user);
-    }
-
-    public User validateUser(LoginDto dto) {
-        User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Неверная почта."));
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Неверный пароль.");
-        }
-        return user;
     }
 
     public User createAdmin(RegisterDto dto) {

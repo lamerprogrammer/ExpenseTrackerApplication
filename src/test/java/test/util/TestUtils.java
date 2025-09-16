@@ -1,19 +1,20 @@
 package test.util;
 
-import com.example.expensetracker.dto.LoginDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import org.springframework.mock.web.DelegatingServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public final class UtilForTests {
+public final class TestUtils {
 
-    private UtilForTests() {
-    }
+    private TestUtils() {}
 
     public static DelegatingServletOutputStream writeByteToStream(ByteArrayOutputStream outputStream) {
         return new DelegatingServletOutputStream(outputStream);

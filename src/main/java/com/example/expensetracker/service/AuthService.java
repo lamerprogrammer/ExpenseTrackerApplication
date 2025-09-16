@@ -1,11 +1,14 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.dto.LoginDto;
+import com.example.expensetracker.dto.RefreshRequest;
 import com.example.expensetracker.dto.RegisterDto;
-
-import java.util.Map;
+import com.example.expensetracker.dto.TokenResponse;
+import com.example.expensetracker.model.User;
 
 public interface AuthService {
-    Map<String, String> register(RegisterDto dto);
-    Map<String, String> login(LoginDto dto);
+    User register(RegisterDto dto);
+    TokenResponse login(LoginDto dto);
+    TokenResponse refresh(RefreshRequest request);
+    
 }

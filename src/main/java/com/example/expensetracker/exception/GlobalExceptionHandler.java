@@ -8,13 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ApiResponse> buildResponse(
-            HttpStatus status, String message, String logLevel, String logMessage, HttpServletRequest request,Exception ex) {
+            HttpStatus status, String message, String logLevel, String logMessage, HttpServletRequest request, Exception ex) {
 
         String user = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
 
@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
         try {
             logService.log(LogEntry.builder()
                     .timestamp(Instant.now())
-                    .level(logLevel) // <- а так же вроде лучше, просто с параметров берём входящий logLevel
+                    .level(logLevel)
                     .logger("GlobalExceptionHandler")
                     .message(logMessage)
                     .user(user)

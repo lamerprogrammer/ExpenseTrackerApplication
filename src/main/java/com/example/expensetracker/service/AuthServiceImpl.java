@@ -1,47 +1,72 @@
 package com.example.expensetracker.service;
 
-import com.example.expensetracker.dto.LoginDto;
-import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.dto.*;
 import com.example.expensetracker.logging.LogEntry;
 import com.example.expensetracker.logging.LogService;
+import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
+import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
-import java.util.Map;
+import java.util.HashSet;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final JwtUtil jwtUtil;
     private final LogService logService;
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, LogService logService, UserService userService) {
+    public AuthServiceImpl(JwtUtil jwtUtil, LogService logService,
+                           UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
         this.logService = logService;
-        this.userService = userService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public Map<String, String> register(RegisterDto dto) {
-        User user = userService.register(dto);
+    public User register(RegisterDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new DataIntegrityViolationException("Эта почта уже используется.");
+        }
+        User user = User.builder()
+                    .email(dto.getEmail())
+                    .password(passwordEncoder.encode(dto.getPassword()))
+                    .roles(new HashSet<>())
+                    .build();
+            user.getRoles().add(Role.USER);
+            User saved = userRepository.save(user);
+        
         logService.log(LogEntry.builder()
                 .timestamp(Instant.now())
                 .level("INFO")
                 .logger("AuthServiceImpl")
                 .message("Пользователь зарегестрирован.")
-                .user(user.getEmail())
+                .user(saved.getEmail())
                 .path("/api/auth/register")
                 .stackTrace(null)
                 .build());
-        return generateTokens(user);
+        return saved;
     }
 
     @Override
-    public Map<String, String> login(LoginDto dto) {
-        User user = userService.validateUser(dto);
+    public TokenResponse login(LoginDto dto) {
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Неверная почта."));
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Неверный пароль.");
+        }
         logService.log(LogEntry.builder()
                 .timestamp(Instant.now())
                 .level("INFO")
@@ -54,9 +79,36 @@ public class AuthServiceImpl implements AuthService {
         return generateTokens(user);
     }
 
-    private Map<String, String> generateTokens(User user) {
+    @Override
+    public TokenResponse refresh(RefreshRequest request) {
+        try {
+            Jws<Claims> claims = jwtUtil.parse(request.refreshToken());
+            String email = claims.getPayload().getSubject();
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден."));
+            if (user.isBanned()) {
+                throw new AccessDeniedException("Ваш аккаунт заблокирован.");
+            }
+            logService.log(LogEntry.builder()
+                    .timestamp(Instant.now())
+                    .level("INFO")
+                    .logger("AuthServiceImpl")
+                    .message("токены обновены.")
+                    .user(user.getEmail())
+                    .path("/api/auth/refresh")
+                    .stackTrace(null)
+                    .build());
+            return generateTokens(user);
+        } catch (UsernameNotFoundException | AccessDeniedException | BadCredentialsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BadCredentialsException("Невалидный токен.");
+        }
+    }
+
+    private TokenResponse generateTokens(User user) {
         String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
         String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
-        return Map.of("accessToken", accessToken, "refreshToken", refreshToken);
+        return new TokenResponse(accessToken, refreshToken);
     }
 }

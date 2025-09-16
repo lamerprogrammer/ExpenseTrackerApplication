@@ -6,6 +6,8 @@ import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.logging.AppLog;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
+import com.example.expensetracker.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
 import java.util.Set;
@@ -91,5 +93,15 @@ public class TestData {
                 USER_EMAIL,
                 API_TEST_ENDPOINT,
                 "StackTrace");
+    }
+
+    public static User user(UserRepository userRepository, PasswordEncoder encoder) {
+        User user = new User();
+        user.setId(42L);
+        user.setEmail(USER_EMAIL);
+        user.setRoles(Set.of(Role.USER));
+        user.setPassword(encoder.encode(PASSWORD));
+        userRepository.save(user);
+        return user;
     }
 }

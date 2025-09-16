@@ -30,9 +30,6 @@ public class LogServiceIntegrationTest {
     private LogService logService;
 
     @Autowired
-    private AppLogRepository appLogRepository;
-
-    @Autowired
     private ElasticsearchOperations esOps;
 
     @Test

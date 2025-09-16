@@ -9,7 +9,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import test.util.TestData;
-import test.util.UtilForTests;
+import test.util.TestUtils;
 
 import java.util.Set;
 
@@ -40,7 +40,7 @@ public class LoginDtoTest {
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Некорректная почта");
+        TestUtils.assertHasViolation(violations, "email", "Некорректная почта");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class LoginDtoTest {
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Почта обязательна");
+        TestUtils.assertHasViolation(violations, "email", "Почта обязательна");
     }
 
     @Test
@@ -58,7 +58,7 @@ public class LoginDtoTest {
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Почта обязательна");
+        TestUtils.assertHasViolation(violations, "email", "Почта обязательна");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class LoginDtoTest {
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "password", "Пароль обязателен");
+        TestUtils.assertHasViolation(violations, "password", "Пароль обязателен");
     }
 
     @Test
@@ -76,7 +76,7 @@ public class LoginDtoTest {
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "password", "Пароль обязателен");
+        TestUtils.assertHasViolation(violations, "password", "Пароль обязателен");
     }
 
     @Test

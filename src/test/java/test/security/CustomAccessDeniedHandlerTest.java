@@ -19,7 +19,7 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static test.util.UtilForTests.writeByteToStream;
+import static test.util.TestUtils.writeByteToStream;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomAccessDeniedHandlerTest {

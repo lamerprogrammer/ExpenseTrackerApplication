@@ -8,7 +8,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import test.util.UtilForTests;
+import test.util.TestUtils;
 
 import java.util.Set;
 
@@ -39,7 +39,7 @@ public class UserTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Некорректная почта");
+        TestUtils.assertHasViolation(violations, "email", "Некорректная почта");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class UserTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email",
+        TestUtils.assertHasViolation(violations, "email",
                 "Почта обязательна");
     }
 
@@ -58,7 +58,7 @@ public class UserTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email",
+        TestUtils.assertHasViolation(violations, "email",
                 "Почта обязательна");
     }
 
@@ -68,7 +68,7 @@ public class UserTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "password",
+        TestUtils.assertHasViolation(violations, "password",
                 "Пароль обязателен");
     }
 
@@ -78,7 +78,7 @@ public class UserTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "password",
+        TestUtils.assertHasViolation(violations, "password",
                 "Пароль обязателен");
     }
 

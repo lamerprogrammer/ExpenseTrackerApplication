@@ -10,7 +10,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import test.util.TestData;
-import test.util.UtilForTests;
+import test.util.TestUtils;
 
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "name", 
+        TestUtils.assertHasViolation(violations, "name", 
                 "Имя пользователя не может быть пустым");
     }
 
@@ -51,7 +51,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "name",
+        TestUtils.assertHasViolation(violations, "name",
                 "Имя пользователя не может быть пустым");
     }
 
@@ -61,7 +61,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Некорректная почта");
+        TestUtils.assertHasViolation(violations, "email", "Некорректная почта");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Почта обязательна");
+        TestUtils.assertHasViolation(violations, "email", "Почта обязательна");
     }
 
     @Test
@@ -79,7 +79,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "email", "Почта обязательна");
+        TestUtils.assertHasViolation(violations, "email", "Почта обязательна");
     }
 
     @Test
@@ -88,7 +88,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "password", "Пароль обязателен");
+        TestUtils.assertHasViolation(violations, "password", "Пароль обязателен");
     }
 
     @Test
@@ -97,7 +97,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        UtilForTests.assertHasViolation(violations, "password", "Пароль обязателен");
+        TestUtils.assertHasViolation(violations, "password", "Пароль обязателен");
     }
     
     @Test
