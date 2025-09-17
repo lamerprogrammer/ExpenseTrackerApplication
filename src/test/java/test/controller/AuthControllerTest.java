@@ -1,23 +1,26 @@
 package test.controller;
 
 import com.example.expensetracker.controller.AuthController;
-import com.example.expensetracker.dto.LoginRequest;
-import com.example.expensetracker.dto.RefreshRequest;
-import com.example.expensetracker.dto.RegisterDto;
-import com.example.expensetracker.dto.TokenResponse;
+import com.example.expensetracker.dto.*;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
+import com.example.expensetracker.service.AuthService;
 import com.example.expensetracker.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import test.util.TestData;
 
@@ -26,162 +29,132 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static test.util.Constants.PASSWORD;
 import static test.util.Constants.USER_EMAIL;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthControllerTest {
-
+    
     @Mock
-    private UserService userService;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private JwtUtil jwtUtil;
-    @Mock
-    private PasswordEncoder passwordEncoder;
+    private AuthService authService;
 
     @InjectMocks
     private AuthController authController;
 
     @Test
-    public void refresh_shouldReturnNewTokens_whenUserExistsAndNotBanned() {
-        RefreshRequest request = new RefreshRequest("refresh-token");
+    public void refresh_shouldReturnTokens_whenCredentialsValid() {
+        RefreshRequest request = mock(RefreshRequest.class);
+        when(authService.refresh(request)).thenReturn(new TokenResponse("access", "refresh"));
 
-        @SuppressWarnings("unchecked")
-        Jws<Claims> jwsMock = mock(Jws.class);
-        Claims claimsMock = mock(Claims.class);
-        User user = TestData.user();
+        ResponseEntity<TokenResponse> result = authController.refresh(request);
 
-        when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsMock);
-        when(jwsMock.getPayload()).thenReturn(claimsMock);
-        when(claimsMock.getSubject()).thenReturn(USER_EMAIL);
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
-        when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("new-access");
-        when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("new-refresh");
-
-        ResponseEntity<TokenResponse> response = authController.refresh(request);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().refreshToken()).isEqualTo("new-refresh");
-        assertThat(response.getBody().accessToken()).isEqualTo("new-access");
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().accessToken()).isEqualTo("access");
+        assertThat(result.getBody().refreshToken()).isEqualTo("refresh");
+        verify(authService).refresh(request);
     }
 
     @Test
     public void refresh_shouldThrowException_whenUserNotFound() {
-        RefreshRequest request = new RefreshRequest("refresh-token");
+        RefreshRequest request = mock(RefreshRequest.class);
+        when(authService.refresh(any(RefreshRequest.class))).thenThrow(new UsernameNotFoundException("Пользователь не найден."));
 
-        @SuppressWarnings("unchecked")
-        Jws<Claims> jwsMock = mock(Jws.class);
-        Claims claimsMock = mock(Claims.class);
-        String email = "john@example.com";
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> authController.refresh(request));
 
-        when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsMock);
-        when(jwsMock.getPayload()).thenReturn(claimsMock);
-        when(claimsMock.getSubject()).thenReturn(email);
-        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
-
-        ResponseEntity<TokenResponse> response = authController.refresh(request);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
-        verify(jwtUtil, never()).generateRefreshToken(anyString());
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(authService).refresh(any(RefreshRequest.class));
+        verifyNoMoreInteractions(authService);
     }
 
     @Test
-    public void refresh_shouldReturnForbidden_whenUserIsBanned() {
-        RefreshRequest request = new RefreshRequest("refresh-token");
+    public void refresh_shouldThrowException_whenUserIsBanned() {
+        RefreshRequest request = mock(RefreshRequest.class);
+        when(authService.refresh(any(RefreshRequest.class))).thenThrow(new AccessDeniedException("Ваш аккаунт заблокирован."));
 
-        @SuppressWarnings("unchecked")
-        Jws<Claims> jwsMock = mock(Jws.class);
-        Claims claimsMock = mock(Claims.class);
-        String email = "john@example.com";
-        User userBanned = TestData.userBanned();
+        AccessDeniedException ex = assertThrows(AccessDeniedException.class,
+                () -> authController.refresh(request));
 
-        when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsMock);
-        when(jwsMock.getPayload()).thenReturn(claimsMock);
-        when(claimsMock.getSubject()).thenReturn(email);
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(userBanned));
-
-        ResponseEntity<TokenResponse> response = authController.refresh(request);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
-        verify(jwtUtil, never()).generateRefreshToken(anyString());
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(authService).refresh(any(RefreshRequest.class));
+        verifyNoMoreInteractions(authService);
     }
 
     @Test
-    public void refresh_shouldReturnUnauthorized_whenTokenInvalid() {
-        RefreshRequest request = new RefreshRequest("invalid-token");
-        when(jwtUtil.parse(request.refreshToken())).thenThrow(new RuntimeException("Невалидный токен."));
+    public void refresh_shouldThrowException_whenTokenInvalid() {
+        RefreshRequest request = mock(RefreshRequest.class);
+        when(authService.refresh(any(RefreshRequest.class))).thenThrow(new BadCredentialsException("Невалидный токен."));
 
-        ResponseEntity<TokenResponse> response = authController.refresh(request);
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class,
+                () -> authController.refresh(request));
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
-        verify(jwtUtil, never()).generateRefreshToken(anyString());
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(authService).refresh(any(RefreshRequest.class));
+        verifyNoMoreInteractions(authService);
     }
 
     @Test
-    public void register_shouldReturnNewUser() {
+    public void register_shouldReturnNewUser_whenCredentialsValid() {
         RegisterDto dto = TestData.registerDto();
         User user = TestData.user();
-        when(userService.register(dto)).thenReturn(user);
+        when(authService.register(dto)).thenReturn(user);
 
         ResponseEntity<User> result = authController.register(dto);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody()).isEqualTo(user);
-        verify(userService, times(1)).register(dto);
+        assertThat(result.getBody()).usingRecursiveComparison().isEqualTo(user);
+        verify(authService).register(dto);
     }
 
     @Test
-    public void login_shouldReturnNewTokens_whenDataIsValid() {
-        LoginRequest request = TestData.loginRequest();
-        User user = TestData.user();
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(request.password(), user.getPassword())).thenReturn(true);
-        when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("new-access");
-        when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("new-refresh");
+    public void register_shouldThrowException_whenEmailAlreadyExists() {
+        RegisterDto dto = TestData.registerDto();
+        when(authService.register(any(RegisterDto.class))).thenThrow(new DataIntegrityViolationException(("Эта почта уже используется.")));
 
-        ResponseEntity<TokenResponse> response = authController.login(request);
+        DataIntegrityViolationException ex = assertThrows(DataIntegrityViolationException.class,
+                () -> authController.register(dto));
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().accessToken()).isEqualTo("new-access");
-        assertThat(response.getBody().refreshToken()).isEqualTo("new-refresh");
-        verify(userRepository, times(1)).findByEmail(request.email());
-        verify(passwordEncoder, times(1)).matches(request.password(), user.getPassword());
-        verify(jwtUtil, times(1)).generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
-        verify(jwtUtil, times(1)).generateRefreshToken(user.getEmail());
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(authService).register(any(RegisterDto.class));
+        verifyNoMoreInteractions(authService);
     }
 
     @Test
-    public void login_shouldThrowRuntimeException_whenUserNotExist() {
-        LoginRequest request = TestData.loginRequest();
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.empty());
+    public void login_shouldReturnTokens_whenDataIsValid() {
+        LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
+        when(authService.login(any(LoginDto.class))).thenReturn(new TokenResponse("access", "refresh"));
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> authController.login(request));
+        ResponseEntity<TokenResponse> result = authController.login(request);
 
-        assertThat(ex.getMessage()).isEqualTo("Недействительные учетные данные.");
-        verify(userRepository, times(1)).findByEmail(request.email());
-        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
-        verify(jwtUtil, never()).generateRefreshToken(anyString());
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().accessToken()).isEqualTo("access");
+        assertThat(result.getBody().refreshToken()).isEqualTo("refresh");
+        verify(authService).login(any(LoginDto.class));
     }
 
     @Test
-    public void login_shouldThrowRuntimeException_whenPasswordNotMatches() {
-        LoginRequest request = TestData.loginRequest();
-        User user = TestData.user();
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(request.password(), user.getPassword())).thenReturn(false);
+    public void login_shouldThrowException_whenUserNotExist() {
+        LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
+        when(authService.login(any(LoginDto.class))).thenThrow(new BadCredentialsException("Неверная почта."));
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> authController.login(request));
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authController.login(request));
 
-        assertThat(ex.getMessage()).isEqualTo("Недействительные учетные данные.");
-        verify(userRepository, times(1)).findByEmail(request.email());
-        verify(passwordEncoder, times(1)).matches(request.password(), user.getPassword());
-        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
-        verify(jwtUtil, never()).generateRefreshToken(anyString());
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(authService).login(any(LoginDto.class));
+        verifyNoMoreInteractions(authService);
+    }
+
+    @Test
+    public void login_shouldThrowException_whenPasswordNotMatches() {
+        LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
+        when(authService.login(any(LoginDto.class))).thenThrow(new BadCredentialsException("Неверный пароль."));
+
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authController.login(request));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(authService).login(any(LoginDto.class));
+        verifyNoMoreInteractions(authService);
     }
 }

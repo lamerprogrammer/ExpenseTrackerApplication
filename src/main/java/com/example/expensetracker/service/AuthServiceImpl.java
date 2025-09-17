@@ -9,6 +9,8 @@ import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +24,8 @@ import java.util.HashSet;
 @Service
 public class AuthServiceImpl implements AuthService {
 
+    private final static Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
+    
     private final JwtUtil jwtUtil;
     private final LogService logService;
     private final UserRepository userRepository;
@@ -37,7 +41,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User register(RegisterDto dto) {
+        log.debug("Попытка регистрации: {}", dto.getEmail());
         if (userRepository.existsByEmail(dto.getEmail())) {
+            log.warn("Регистрации провалилась: почта {} уже используется", dto.getEmail());
             throw new DataIntegrityViolationException("Эта почта уже используется.");
         }
         User user = User.builder()
@@ -47,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
                     .build();
             user.getRoles().add(Role.USER);
             User saved = userRepository.save(user);
-        
+            log.info("Успешная регистрация: {}", saved.getEmail());
         logService.log(LogEntry.builder()
                 .timestamp(Instant.now())
                 .level("INFO")
@@ -62,11 +68,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse login(LoginDto dto) {
+        log.debug("Попытка авторизации: {}", dto.getEmail());
         User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Неверная почта."));
+                .orElseThrow(() -> {
+                    log.warn("Авторизация провалилась: почта {} не найдена", dto.getEmail());
+                    return new BadCredentialsException("Неверная почта.");
+                });
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            log.warn("Авторизация провалилась: не верный пароль для почты {}", dto.getEmail());
             throw new BadCredentialsException("Неверный пароль.");
         }
+        log.info("Успешная авторизация: {}", dto.getEmail());
         logService.log(LogEntry.builder()
                 .timestamp(Instant.now())
                 .level("INFO")
@@ -81,14 +93,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse refresh(RefreshRequest request) {
+        log.debug("Попытка обновления токена");
         try {
             Jws<Claims> claims = jwtUtil.parse(request.refreshToken());
             String email = claims.getPayload().getSubject();
             User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден."));
+                    .orElseThrow(() -> {
+                        log.warn("Неудачная попытка обновления токена, пользователь {} не найден", email);
+                        return new UsernameNotFoundException("Пользователь не найден.");
+                    });
             if (user.isBanned()) {
+                log.warn("Неудачная попытка обновления токена, пользователь {} заблокирован", email);
                 throw new AccessDeniedException("Ваш аккаунт заблокирован.");
             }
+            log.info("Успешное обновление токена, пользователя {}", email);
             logService.log(LogEntry.builder()
                     .timestamp(Instant.now())
                     .level("INFO")
@@ -102,6 +120,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (UsernameNotFoundException | AccessDeniedException | BadCredentialsException e) {
             throw e;
         } catch (Exception e) {
+            log.error("Ошибка обновление токена, пользователя {}", e.getMessage(), e);
             throw new BadCredentialsException("Невалидный токен.");
         }
     }
