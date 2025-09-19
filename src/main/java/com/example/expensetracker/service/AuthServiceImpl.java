@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Locale;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -45,10 +44,6 @@ public class AuthServiceImpl implements AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.messageSource = messageSource;
-    }
-    
-    private String msg(String code) {
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 
     @Override
@@ -123,7 +118,7 @@ public class AuthServiceImpl implements AuthService {
                     .timestamp(Instant.now())
                     .level("INFO")
                     .logger("AuthServiceImpl")
-                    .message("токены обновены.")
+                    .message("Токены обновлены.")
                     .user(user.getEmail())
                     .path("/api/auth/refresh")
                     .stackTrace(null)
@@ -141,5 +136,9 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
         String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
         return new TokenResponse(accessToken, refreshToken);
+    }
+
+    private String msg(String code) {
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 }

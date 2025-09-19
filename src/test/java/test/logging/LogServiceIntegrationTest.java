@@ -40,7 +40,7 @@ public class LogServiceIntegrationTest {
         entry.setTimestamp(now);
 
         logService.log(entry);
-        esOps.indexOps(AppLog.class).refresh();
+        esOps.indexOps(AppLog.class).refresh();//org.springframework.dao.DataAccessResourceFailureException: Connection refused: getsockopt 
         List<AppLog> logs = logService.findAll();
 
         assertThat(logs)
@@ -64,7 +64,7 @@ public class LogServiceIntegrationTest {
         entry.setTimestamp(now);
 
         logService.log(entry);
-        esOps.indexOps(AppLog.class).refresh();
+        esOps.indexOps(AppLog.class).refresh();//org.springframework.dao.DataAccessResourceFailureException: Connection refused: getsockopt 
         List<AppLog> logs = logService.findByUserEmail(email);
 
         assertThat(logs)
