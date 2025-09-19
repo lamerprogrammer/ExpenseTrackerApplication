@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,7 +42,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleBadCredentials_shouldReturnUnauthorizedResponse() {
+    void handleBadCredentials_shouldReturnUnauthorizedResponse() {
         BadCredentialsException ex = new BadCredentialsException("");
 
         var response = handler.handleBadCredentials(ex, request);
@@ -51,7 +52,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleBadCredentials_shouldUsePrincipalNameWhenPresent() {
+    void handleBadCredentials_shouldUsePrincipalNameWhenPresent() {
         request.setUserPrincipal(() -> "test-user");
         BadCredentialsException ex = new BadCredentialsException("");
 
@@ -61,7 +62,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleAccessDenied_shouldReturnForbiddenResponse() {
+    void handleAccessDenied_shouldReturnForbiddenResponse() {
         AccessDeniedException ex = new AccessDeniedException("");
 
         var response = handler.handleAccessDenied(ex, request);
@@ -71,7 +72,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleEntityNotFound_shouldReturnNotFoundResponse() {
+    void handleEntityNotFound_shouldReturnNotFoundResponse() {
         EntityNotFoundException ex = new EntityNotFoundException("");
 
         var response = handler.handleEntityNotFound(ex, request);
@@ -81,7 +82,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleDataIntegrityViolation_shouldReturnConflictResponse() {
+    void handleDataIntegrityViolation_shouldReturnConflictResponse() {
         DataIntegrityViolationException ex = new DataIntegrityViolationException("");
 
         var response = handler.handleDataIntegrityViolation(ex, request);
@@ -91,7 +92,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleIllegalArgument_shouldReturnBadRequestResponse() {
+    void handleIllegalArgument_shouldReturnBadRequestResponse() {
         IllegalArgumentException ex = new IllegalArgumentException("");
 
         var response = handler.handleIllegalArgument(ex, request);
@@ -101,7 +102,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleMethodArgumentNotValid_shouldReturnBadRequestResponseWithValidationMessage() {
+    void handleMethodArgumentNotValid_shouldReturnBadRequestResponseWithValidationMessage() {
         MethodArgumentNotValidException ex = new MethodArgumentNotValidException(
                 mock(MethodParameter.class), mock(BindingResult.class)
         );
@@ -113,7 +114,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleGeneric_shouldReturnInternalServerErrorResponse() {
+    void handleGeneric_shouldReturnInternalServerErrorResponse() {
         Exception ex = new RuntimeException("");
 
         var response = handler.handleGeneric(ex, request);
@@ -126,7 +127,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void handleGeneric_shouldIncludeStackTraceFor5xxErrors() {
+    void handleGeneric_shouldIncludeStackTraceFor5xxErrors() {
         request.setUserPrincipal(() -> "stack-user");
         Exception ex = new RuntimeException("Exception");
 

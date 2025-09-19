@@ -94,11 +94,8 @@ public class GlobalExceptionHandler {
             ex.printStackTrace(new PrintWriter(writer));
             log.error("GlobalExceptionHandler | user={} path={} status={} message={}\n{}",
                     user, request.getRequestURI(), status.value(), message, writer);
-        } else if (status.is4xxClientError()) {
-            log.warn("GlobalExceptionHandler: пользователь: {} путь: {} сообщение: {}",
-                    user, request.getRequestURI(), message);
         } else {
-            log.info("GlobalExceptionHandler: пользователь: {} путь: {} сообщение: {}",
+            log.warn("GlobalExceptionHandler: пользователь: {} путь: {} сообщение: {}",
                     user, request.getRequestURI(), message);
         }
 
