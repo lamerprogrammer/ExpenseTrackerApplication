@@ -100,6 +100,18 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
+    void register_shouldThrowException_whenEmailIsEmpty() throws Exception {
+        RegisterDto registerDto = new RegisterDto("Test User", "", password);
+        mockMvc.perform(post("/api/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto)));
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registerDto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void login_shouldThrowException_whenUserNotFound() throws Exception {
         LoginDto loginRequest = new LoginDto(email, password);
         mockMvc.perform(post("/api/auth/login")
@@ -130,7 +142,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    void refresh_shouldReturnForbidden_whenUserIsBanned() throws Exception {// О Б Р А З Е Ц
+    void refresh_shouldReturnForbidden_whenUserIsBanned() throws Exception {
         registerUser(name, email, password);
         userRepository.findByEmail(email).ifPresent(user -> {
             user.setBanned(true);
@@ -158,12 +170,5 @@ public class AuthControllerIntegrationTest {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerDto)));
-    }
-
-    private void loginUser(String email, String password) throws Exception {
-        LoginDto loginRequest = new LoginDto(email, password);
-        mockMvc.perform(post("/api/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(loginRequest)));
     }
 }

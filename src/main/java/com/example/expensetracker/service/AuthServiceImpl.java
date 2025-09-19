@@ -11,6 +11,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Locale;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -30,13 +33,22 @@ public class AuthServiceImpl implements AuthService {
     private final LogService logService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, LogService logService,
-                           UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthServiceImpl(JwtUtil jwtUtil, 
+                           LogService logService, 
+                           UserRepository userRepository, 
+                           PasswordEncoder passwordEncoder, 
+                           MessageSource messageSource) {
         this.jwtUtil = jwtUtil;
         this.logService = logService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.messageSource = messageSource;
+    }
+    
+    private String msg(String code) {
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 
     @Override
@@ -44,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         log.debug("Попытка регистрации: {}", dto.getEmail());
         if (userRepository.existsByEmail(dto.getEmail())) {
             log.warn("Регистрации провалилась: почта {} уже используется", dto.getEmail());
-            throw new DataIntegrityViolationException("Эта почта уже используется.");
+            throw new DataIntegrityViolationException(msg("user.email.already-exists"));
         }
         User user = User.builder()
                     .email(dto.getEmail())
@@ -72,11 +84,11 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> {
                     log.warn("Авторизация провалилась: почта {} не найдена", dto.getEmail());
-                    return new BadCredentialsException("Неверная почта.");
+                    return new BadCredentialsException(msg("user.email.incorrect"));
                 });
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             log.warn("Авторизация провалилась: не верный пароль для почты {}", dto.getEmail());
-            throw new BadCredentialsException("Неверный пароль.");
+            throw new BadCredentialsException(msg("user.password.incorrect"));
         }
         log.info("Успешная авторизация: {}", dto.getEmail());
         logService.log(LogEntry.builder()
@@ -100,11 +112,11 @@ public class AuthServiceImpl implements AuthService {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> {
                         log.warn("Неудачная попытка обновления токена, пользователь {} не найден", email);
-                        return new UsernameNotFoundException("Пользователь не найден.");
+                        return new UsernameNotFoundException(msg("user.not-found"));
                     });
             if (user.isBanned()) {
                 log.warn("Неудачная попытка обновления токена, пользователь {} заблокирован", email);
-                throw new AccessDeniedException("Ваш аккаунт заблокирован.");
+                throw new AccessDeniedException(msg("account.banned"));
             }
             log.info("Успешное обновление токена, пользователя {}", email);
             logService.log(LogEntry.builder()
@@ -121,7 +133,7 @@ public class AuthServiceImpl implements AuthService {
             throw e;
         } catch (Exception e) {
             log.error("Ошибка обновление токена, пользователя {}", e.getMessage(), e);
-            throw new BadCredentialsException("Невалидный токен.");
+            throw new BadCredentialsException(msg("token.invalid"));
         }
     }
 

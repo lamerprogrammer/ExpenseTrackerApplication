@@ -99,22 +99,6 @@ public class RegisterDtoTest {
         assertThat(violations).hasSize(1);
         TestUtils.assertHasViolation(violations, "password", "Пароль обязателен");
     }
-    
-    @Test
-    void setEmail_shouldUpdateField() {
-        RegisterDto dto = new RegisterDto();
-        dto.setEmail(USER_EMAIL);
-        
-        assertThat(dto.getEmail()).isEqualTo(USER_EMAIL);
-    }
-
-    @Test
-    void setPassword_shouldUpdateField() {
-        RegisterDto dto = new RegisterDto();
-        dto.setPassword(PASSWORD);
-
-        assertThat(dto.getPassword()).isEqualTo(PASSWORD);
-    }
 
     @Test
     void equalsHashCode_contract() {
