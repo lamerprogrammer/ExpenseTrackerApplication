@@ -14,7 +14,7 @@ import test.security.WithMockCustomUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static test.util.Constants.USER_EMAIL;
+import static test.util.Constants.*;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,9 +27,31 @@ public class UserControllerIntegrationTest {
 
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
-    public void getCurrentUser_shouldReturnAuthenticatedUser() throws Exception {
+    public void getCurrentUser_shouldReturnAuthenticatedUser_whenUserLoggedIn() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(USER_EMAIL));
+    }
+
+    @Test
+    @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
+    public void getCurrentUser_shouldReturnAuthenticatedModerator_whenModeratorLoggedIn() throws Exception {
+        mockMvc.perform(get("/api/users/me"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(MODERATOR_EMAIL));
+    }
+
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    public void getCurrentUser_shouldReturnAuthenticatedAdmin_whenAdminLoggedIn() throws Exception {
+        mockMvc.perform(get("/api/users/me"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(ADMIN_EMAIL));
+    }
+
+    @Test
+    public void getCurrentUser_shouldReturnUnauthorized_whenNoUserLoggedIn() throws Exception {
+        mockMvc.perform(get("/api/users/me"))
+                .andExpect(status().isUnauthorized());
     }
 }

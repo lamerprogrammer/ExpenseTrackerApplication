@@ -1,196 +1,89 @@
-16:35:26.815 [main] INFO  t.logging.LogServiceIntegrationTest - Starting LogServiceIntegrationTest using Java 17.0.16 with PID 16212 (started by lamer in C:\Users\lamer\IdeaProjects\expense-tracker)
-16:35:26.815 [main] INFO  t.logging.LogServiceIntegrationTest - The following 1 profile is active: "test"
-16:35:26.914 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-16:35:26.914 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-16:35:26.918 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.expensetracker.logging.AppLogRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
-16:35:26.921 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 2 JPA repository interfaces.
-16:35:26.981 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
-16:35:26.982 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-11"]
-16:35:26.982 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-16:35:26.982 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.44]
-16:35:26.989 [main] INFO  o.a.c.c.C.[Tomcat-1].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-16:35:26.989 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 173 ms
-16:35:27.011 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-16:35:27.013 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-16:35:27.018 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-16:35:27.019 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Starting...
-16:35:27.019 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-12 - Added connection conn105: url=jdbc:h2:mem:testdb user=SA
-16:35:27.019 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Start completed.
-16:35:27.019 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-16:35:27.019 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-12)']
+09:55:24.548 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+09:55:24.579 [main] INFO  t.c.UserControllerIntegrationTest - Starting UserControllerIntegrationTest using Java 17.0.16 with PID 10028 (started by lamer in C:\Users\lamer\IdeaProjects\expense-tracker)
+09:55:24.579 [main] INFO  t.c.UserControllerIntegrationTest - The following 1 profile is active: "test"
+09:55:24.976 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+09:55:24.976 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+09:55:24.996 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.expensetracker.logging.AppLogRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
+09:55:25.008 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 26 ms. Found 2 JPA repository interfaces.
+09:55:25.338 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
+09:55:25.346 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
+09:55:25.346 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+09:55:25.346 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.44]
+09:55:25.381 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+09:55:25.383 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 798 ms
+09:55:25.445 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+09:55:25.480 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.26.Final
+09:55:25.498 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+09:55:25.642 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+09:55:25.659 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+09:55:25.756 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+09:55:25.756 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+09:55:25.767 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+09:55:25.779 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 2.3.232
 	Autocommit mode: undefined/unknown
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-16:35:27.040 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-16:35:27.040 [main] DEBUG org.hibernate.SQL - drop table if exists admin_audit cascade 
-16:35:27.040 [main] DEBUG org.hibernate.SQL - drop table if exists user_roles cascade 
-16:35:27.040 [main] DEBUG org.hibernate.SQL - drop table if exists users cascade 
-16:35:27.040 [main] DEBUG org.hibernate.SQL - create table admin_audit (id bigint generated by default as identity, target_user_id bigint, time_stamp timestamp(6) with time zone, performed_by varchar(255), action enum ('BAN','DELETE','UNBAN'), primary key (id))
-16:35:27.040 [main] DEBUG org.hibernate.SQL - create table user_roles (user_id bigint not null, role enum ('ADMIN','MODERATOR','USER'))
-16:35:27.041 [main] DEBUG org.hibernate.SQL - create table users (banned boolean not null, id bigint generated by default as identity, email varchar(255) not null unique, password varchar(255) not null, primary key (id))
-16:35:27.041 [main] DEBUG org.hibernate.SQL - alter table if exists user_roles add constraint FKhfh9dx7w3ubf1co1vdev94g3f foreign key (user_id) references users
-16:35:27.042 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-16:35:27.063 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
-16:35:27.117 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-16:35:27.125 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
-16:35:27.144 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 20 mappings in 'requestMappingHandlerMapping'
-16:35:27.159 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
-16:35:27.174 [main] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, JwtAuthFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
-16:35:27.187 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-16:35:27.194 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
-16:35:27.261 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-11"]
-16:35:27.264 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 54985 (http) with context path '/'
-16:35:27.266 [main] INFO  t.logging.LogServiceIntegrationTest - Started LogServiceIntegrationTest in 0.464 seconds (process running for 13.965)
-16:35:27.267 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.email,u1_0.password from users u1_0 where u1_0.email=?
-16:35:27.316 [main] DEBUG org.hibernate.SQL - insert into users (banned,email,password,id) values (?,?,?,default)
-16:35:27.317 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-16:35:27.325 [main] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-16:35:27.326 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-auto-11-54985"]
-16:35:27.439 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-16:35:27.439 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-auto-11"]
-16:35:27.441 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-16:35:27.441 [main] DEBUG org.hibernate.SQL - drop table if exists admin_audit cascade 
-16:35:27.442 [main] DEBUG org.hibernate.SQL - drop table if exists user_roles cascade 
-16:35:27.442 [main] DEBUG org.hibernate.SQL - drop table if exists users cascade 
-16:35:27.443 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Shutdown initiated...
-16:35:27.443 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Shutdown completed.
-16:35:27.670 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: 
-16:35:27.670 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: Bearer invalid.token
-16:35:27.670 [main] WARN  c.e.e.security.JwtAuthFilter - Ошибка при разборе токена: JWT is invalid
-16:35:27.673 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: 
-16:35:27.673 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: Bearer valid.token
-16:35:27.674 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: 
-16:35:27.674 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-16:35:27.675 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: 
-16:35:27.675 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: Bearer valid.token
-16:35:27.677 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан refresh-токен для user@example.com
-16:35:27.678 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
-16:35:27.679 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
-16:35:27.679 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
-16:35:27.679 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
-16:35:27.680 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
-16:35:27.680 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
-16:35:27.685 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
-16:35:27.687 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
-16:35:27.687 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
-16:35:27.691 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка авторизации: user@example.com
-16:35:27.691 [main] WARN  c.e.e.service.AuthServiceImpl - Авторизация провалилась: почта user@example.com не найдена
-16:35:27.692 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка обновления токена
-16:35:27.692 [main] ERROR c.e.e.service.AuthServiceImpl - Ошибка обновление токена, пользователя null
-java.lang.RuntimeException: null
-	at com.example.expensetracker.security.JwtUtil.parse(JwtUtil.java:57)
-	at com.example.expensetracker.service.AuthServiceImpl.refresh(AuthServiceImpl.java:105)
-	at test.service.AuthServiceImplTest.lambda$refresh_shouldThrowException_whenTokenInvalid$8(AuthServiceImplTest.java:181)
-	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
-	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
-	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3128)
-	at test.service.AuthServiceImplTest.refresh_shouldThrowException_whenTokenInvalid(AuthServiceImplTest.java:181)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:775)
-	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:479)
-	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
-	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:161)
-	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:152)
-	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:91)
-	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:112)
-	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:94)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
-	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:93)
-	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:87)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:216)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:212)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:137)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
-	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
-	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
-	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
-	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
-	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
-	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:201)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:170)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:94)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:59)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:142)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:58)
-	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
-	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
-	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
-	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$1(InterceptingLauncher.java:39)
-	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
-	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:38)
-	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
-	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
-	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
-	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
-	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
-	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
-	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
-16:35:27.694 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка регистрации: user@example.com
-16:35:27.694 [main] INFO  c.e.e.service.AuthServiceImpl - Успешная регистрация: user@example.com
-16:35:27.802 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка обновления токена
-16:35:27.802 [main] WARN  c.e.e.service.AuthServiceImpl - Неудачная попытка обновления токена, пользователь user@example.com не найден
-16:35:27.804 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка обновления токена
-16:35:27.804 [main] WARN  c.e.e.service.AuthServiceImpl - Неудачная попытка обновления токена, пользователь user@example.com заблокирован
-16:35:27.805 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка авторизации: user@example.com
-16:35:27.805 [main] WARN  c.e.e.service.AuthServiceImpl - Авторизация провалилась: не верный пароль для почты user@example.com
-16:35:27.806 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка регистрации: user@example.com
-16:35:27.807 [main] WARN  c.e.e.service.AuthServiceImpl - Регистрации провалилась: почта user@example.com уже используется
-16:35:27.808 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка авторизации: user@example.com
-16:35:27.808 [main] INFO  c.e.e.service.AuthServiceImpl - Успешная авторизация: user@example.com
-16:35:27.810 [main] DEBUG c.e.e.service.AuthServiceImpl - Попытка обновления токена
-16:35:27.810 [main] INFO  c.e.e.service.AuthServiceImpl - Успешное обновление токена, пользователя user@example.com
-16:35:27.817 [SpringApplicationShutdownHook] DEBUG o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@6ace919c, started on Fri Sep 19 16:35:14 MSK 2025
-16:35:27.819 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-16:35:27.819 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists admin_audit cascade 
-16:35:27.819 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists user_roles cascade 
-16:35:27.819 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists users cascade 
-16:35:27.819 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-16:35:27.820 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-16:35:27.820 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-16:35:27.931 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-16:35:27.932 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-16:35:27.932 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists admin_audit cascade 
-16:35:27.932 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists user_roles cascade 
-16:35:27.932 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists users cascade 
-16:35:27.933 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-10 - Shutdown initiated...
-16:35:27.933 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-10 - Shutdown completed.
+09:55:26.227 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+09:55:26.235 [main] DEBUG org.hibernate.SQL - drop table if exists admin_audit cascade 
+09:55:26.239 [main] DEBUG org.hibernate.SQL - drop table if exists user_roles cascade 
+09:55:26.239 [main] DEBUG org.hibernate.SQL - drop table if exists users cascade 
+09:55:26.242 [main] DEBUG org.hibernate.SQL - create table admin_audit (id bigint generated by default as identity, target_user_id bigint, time_stamp timestamp(6) with time zone, performed_by varchar(255), action enum ('BAN','DELETE','UNBAN'), primary key (id))
+09:55:26.246 [main] DEBUG org.hibernate.SQL - create table user_roles (user_id bigint not null, role enum ('ADMIN','MODERATOR','USER'))
+09:55:26.246 [main] DEBUG org.hibernate.SQL - create table users (banned boolean not null, id bigint generated by default as identity, email varchar(255) not null unique, password varchar(255) not null, primary key (id))
+09:55:26.246 [main] DEBUG org.hibernate.SQL - alter table if exists user_roles add constraint FKhfh9dx7w3ubf1co1vdev94g3f foreign key (user_id) references users
+09:55:26.254 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+09:55:26.419 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+09:55:26.797 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+09:55:26.814 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+09:55:26.882 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 20 mappings in 'requestMappingHandlerMapping'
+09:55:26.924 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+09:55:26.947 [main] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, JwtAuthFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+09:55:26.975 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+09:55:27.001 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+09:55:27.262 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+09:55:27.262 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring TestDispatcherServlet ''
+09:55:27.262 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+09:55:27.262 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
+09:55:27.303 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
+09:55:27.311 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 52027 (http) with context path '/'
+09:55:27.319 [main] INFO  t.c.UserControllerIntegrationTest - Started UserControllerIntegrationTest in 2.908 seconds (process running for 3.434)
+09:55:27.379 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.email,u1_0.password from users u1_0 where u1_0.email=?
+09:55:27.490 [main] DEBUG org.hibernate.SQL - insert into users (banned,email,password,id) values (?,?,?,default)
+09:55:27.502 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+09:55:27.528 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
+09:55:27.530 [main] INFO  c.e.e.security.JwtAuthFilter - РњС‹ РІРЅСѓС‚СЂРё С„РёР»СЊС‚СЂР°! URI: /api/users/me
+09:55:27.530 [main] INFO  c.e.e.security.JwtAuthFilter - Р—Р°РіРѕР»РѕРІРѕРє РІС…РѕРґСЏС‰РµР№ Р°РІС‚РѕСЂРёР·Р°С†РёРё: null
+09:55:27.532 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/me
+09:55:27.534 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.UserController#getCurrentUser(UserDetailsImpl)
+09:55:27.555 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+09:55:27.559 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.example.expensetracker.model.User@40a38a44]
+09:55:27.596 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
+09:55:27.596 [main] INFO  c.e.e.security.JwtAuthFilter - РњС‹ РІРЅСѓС‚СЂРё С„РёР»СЊС‚СЂР°! URI: /api/users/me
+09:55:27.596 [main] INFO  c.e.e.security.JwtAuthFilter - Р—Р°РіРѕР»РѕРІРѕРє РІС…РѕРґСЏС‰РµР№ Р°РІС‚РѕСЂРёР·Р°С†РёРё: null
+09:55:27.597 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/me
+09:55:27.597 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.UserController#getCurrentUser(UserDetailsImpl)
+09:55:27.597 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+09:55:27.597 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.example.expensetracker.model.User@6ea04064]
+09:55:27.601 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
+09:55:27.601 [main] INFO  c.e.e.security.JwtAuthFilter - РњС‹ РІРЅСѓС‚СЂРё С„РёР»СЊС‚СЂР°! URI: /api/users/me
+09:55:27.601 [main] INFO  c.e.e.security.JwtAuthFilter - Р—Р°РіРѕР»РѕРІРѕРє РІС…РѕРґСЏС‰РµР№ Р°РІС‚РѕСЂРёР·Р°С†РёРё: null
+09:55:27.601 [main] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+09:55:27.608 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
+09:55:27.608 [main] INFO  c.e.e.security.JwtAuthFilter - РњС‹ РІРЅСѓС‚СЂРё С„РёР»СЊС‚СЂР°! URI: /api/users/me
+09:55:27.608 [main] INFO  c.e.e.security.JwtAuthFilter - Р—Р°РіРѕР»РѕРІРѕРє РІС…РѕРґСЏС‰РµР№ Р°РІС‚РѕСЂРёР·Р°С†РёРё: null
+09:55:27.608 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/me
+09:55:27.608 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.UserController#getCurrentUser(UserDetailsImpl)
+09:55:27.608 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+09:55:27.608 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.example.expensetracker.model.User@62ee7e50]
+09:55:27.612 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+09:55:27.736 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+09:55:27.740 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+09:55:27.740 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists admin_audit cascade 
+09:55:27.740 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists user_roles cascade 
+09:55:27.740 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - drop table if exists users cascade 
+09:55:27.742 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+09:55:27.742 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
