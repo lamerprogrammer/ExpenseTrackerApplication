@@ -1,6 +1,5 @@
 package test.controller;
 
-
 import com.example.expensetracker.ExpenseTrackerApplication;
 import com.example.expensetracker.config.TestBeansConfig;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
-    public void getCurrentUser_shouldReturnAuthenticatedUser_whenUserLoggedIn() throws Exception {
+    void getCurrentUser_shouldReturnAuthenticatedUser_whenUserLoggedIn() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(USER_EMAIL));
@@ -35,7 +34,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
-    public void getCurrentUser_shouldReturnAuthenticatedModerator_whenModeratorLoggedIn() throws Exception {
+    void getCurrentUser_shouldReturnAuthenticatedModerator_whenModeratorLoggedIn() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(MODERATOR_EMAIL));
@@ -43,14 +42,14 @@ public class UserControllerIntegrationTest {
 
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
-    public void getCurrentUser_shouldReturnAuthenticatedAdmin_whenAdminLoggedIn() throws Exception {
+    void getCurrentUser_shouldReturnAuthenticatedAdmin_whenAdminLoggedIn() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(ADMIN_EMAIL));
     }
 
     @Test
-    public void getCurrentUser_shouldReturnUnauthorized_whenNoUserLoggedIn() throws Exception {
+    void getCurrentUser_shouldReturnUnauthorized_whenNoUserLoggedIn() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isUnauthorized());
     }

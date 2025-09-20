@@ -1,9 +1,10 @@
 package com.example.expensetracker.controller;
 
-import com.example.expensetracker.model.AuditLog;
+import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.dto.UserResponseDto;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.repository.AuditLogRepository;
-import com.example.expensetracker.repository.UserRepository;
+import com.example.expensetracker.service.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,67 +12,50 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.expensetracker.model.AuditAction.*;
-
 @RestController
 @RequestMapping("/api/admin/users")
 public class AdminController {
 
-    private final UserRepository userRepository;
-    private final AuditLogRepository auditLogRepository;
+    private final AdminService adminService;
 
-    public AdminController(UserRepository userRepository, AuditLogRepository auditLogRepository) {
-        this.userRepository = userRepository;
-        this.auditLogRepository = auditLogRepository;
+
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDto> getAllUsers() {
+        return UserResponseDto.fromEntities(adminService.getAllUsers());
     }
 
-    @DeleteMapping("/{id}/ban")
+    @PutMapping("/{id}/ban")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> banUser(@PathVariable Long id,
-                                     @AuthenticationPrincipal User currentUser) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setBanned(true);
-                    userRepository.save(user);
-
-                    auditLogRepository.save(new AuditLog(BAN, user.getId(), currentUser.getEmail()));
-
-                    return ResponseEntity.ok("Пользователь" + user.getEmail() + " заблокирован");
-                }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<String> banUser(@PathVariable Long id,
+                                          @AuthenticationPrincipal User currentUser) {
+        User user = adminService.banUser(id, currentUser);
+        return ResponseEntity.ok("Пользователь " + user.getEmail() + " заблокирован");
     }
 
-    @DeleteMapping("/{id}/unban")
+    @PutMapping("/{id}/unban")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> unbanUser(@PathVariable Long id,
-                                       @AuthenticationPrincipal User currentUser) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setBanned(false);
-                    userRepository.save(user);
-
-                    auditLogRepository.save(new AuditLog(UNBAN, user.getId(), currentUser.getEmail()));
-
-                    return ResponseEntity.ok("Пользователь" + user.getEmail() + " разблокирован");
-                }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<String> unbanUser(@PathVariable Long id,
+                                            @AuthenticationPrincipal User currentUser) {
+        User user = adminService.unbanUser(id, currentUser);
+        return ResponseEntity.ok("Пользователь " + user.getEmail() + " разблокирован");
     }
 
     @DeleteMapping("/{id}/delete")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id,
-                                           @AuthenticationPrincipal User currentUser) {
-        if (!userRepository.existsById(id)) {
-            return  ResponseEntity.notFound().build();
-        }
-        userRepository.deleteById(id);
+    public ResponseEntity<String> deleteUser(@PathVariable Long id,
+                                             @AuthenticationPrincipal User currentUser) {
+        User user = adminService.deleteUser(id, currentUser);
+        return ResponseEntity.ok("Пользователь " + user.getEmail() + " удалён");
+    }
 
-        auditLogRepository.save(new AuditLog(DELETE, id, currentUser.getEmail()));
-
-        return ResponseEntity.noContent().build();
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponseDto> createAdmin(@Valid @RequestBody RegisterDto dto) {
+        return ResponseEntity.ok(UserResponseDto.fromEntity(adminService.createAdmin(dto)));
     }
 }

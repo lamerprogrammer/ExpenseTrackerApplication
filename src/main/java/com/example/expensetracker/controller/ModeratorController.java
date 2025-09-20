@@ -1,6 +1,7 @@
 package com.example.expensetracker.controller;
 
 import com.example.expensetracker.model.AuditLog;
+import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
@@ -9,7 +10,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Set;
 
 import static com.example.expensetracker.model.AuditAction.BAN;
 import static com.example.expensetracker.model.AuditAction.UNBAN;
@@ -38,12 +41,14 @@ public class ModeratorController {
                                      @AuthenticationPrincipal User currentUser) {
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setBanned(true);
-                    userRepository.save(user);
-
-                    auditLogRepository.save(new AuditLog(BAN, user.getId(), currentUser.getEmail()));
-
-                    return ResponseEntity.ok("Пользователь" + user.getEmail() + " заблокирован");
+                    if (!user.getRoles().contains(Role.ADMIN) && !user.getRoles().contains(Role.MODERATOR)) {
+                        user.setBanned(true);
+                        userRepository.save(user);
+                        auditLogRepository.save(new AuditLog(BAN, user.getId(), currentUser.getEmail()));
+                        return ResponseEntity.ok("Пользователь" + user.getEmail() + " заблокирован");
+                    }
+                    return ResponseEntity.ok("Пользователь" + user.getEmail() + " не заблокирован, так как он " +
+                            user.getRoles().iterator().next());//тут наверно можно лучше сделать
                 }).orElse(ResponseEntity.notFound().build());
     }
 
