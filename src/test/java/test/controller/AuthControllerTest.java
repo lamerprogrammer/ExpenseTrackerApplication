@@ -58,7 +58,8 @@ public class AuthControllerTest {
     @Test
     public void refresh_shouldThrowException_whenUserNotFound() {
         RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(any(RefreshRequest.class))).thenThrow(new UsernameNotFoundException("Пользователь не найден."));
+        when(authService.refresh(any(RefreshRequest.class))).thenThrow(
+                new UsernameNotFoundException("Пользователь не найден."));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> authController.refresh(request));
@@ -71,7 +72,8 @@ public class AuthControllerTest {
     @Test
     public void refresh_shouldThrowException_whenUserIsBanned() {
         RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(any(RefreshRequest.class))).thenThrow(new AccessDeniedException("Ваш аккаунт заблокирован."));
+        when(authService.refresh(any(RefreshRequest.class))).thenThrow(
+                new AccessDeniedException("Ваш аккаунт заблокирован."));
 
         AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> authController.refresh(request));
@@ -84,7 +86,8 @@ public class AuthControllerTest {
     @Test
     public void refresh_shouldThrowException_whenTokenInvalid() {
         RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(any(RefreshRequest.class))).thenThrow(new BadCredentialsException("Невалидный токен."));
+        when(authService.refresh(any(RefreshRequest.class))).thenThrow(
+                new BadCredentialsException("Невалидный токен."));
 
         BadCredentialsException ex = assertThrows(BadCredentialsException.class,
                 () -> authController.refresh(request));
@@ -110,7 +113,8 @@ public class AuthControllerTest {
     @Test
     public void register_shouldThrowException_whenEmailAlreadyExists() {
         RegisterDto dto = TestData.registerDto();
-        when(authService.register(any(RegisterDto.class))).thenThrow(new DataIntegrityViolationException(("Эта почта уже используется.")));
+        when(authService.register(any(RegisterDto.class))).thenThrow(
+                new DataIntegrityViolationException(("Эта почта уже используется.")));
 
         DataIntegrityViolationException ex = assertThrows(DataIntegrityViolationException.class,
                 () -> authController.register(dto));
@@ -123,7 +127,8 @@ public class AuthControllerTest {
     @Test
     public void login_shouldReturnTokens_whenDataIsValid() {
         LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
-        when(authService.login(any(LoginDto.class))).thenReturn(new TokenResponse("access", "refresh"));
+        when(authService.login(any(LoginDto.class))).thenReturn(
+                new TokenResponse("access", "refresh"));
 
         ResponseEntity<TokenResponse> result = authController.login(request);
 
