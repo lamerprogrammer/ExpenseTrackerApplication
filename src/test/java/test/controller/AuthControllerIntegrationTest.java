@@ -103,9 +103,6 @@ public class AuthControllerIntegrationTest {
     void register_shouldThrowException_whenEmailIsEmpty() throws Exception {
         RegisterDto registerDto = new RegisterDto("Test User", "", password);
         mockMvc.perform(post("/api/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerDto)));
-        mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerDto)))
                 .andExpect(status().isBadRequest());

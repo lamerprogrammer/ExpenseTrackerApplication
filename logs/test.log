@@ -1,76 +1,12 @@
-10:10:24.266 [main] INFO  t.c.UserControllerIntegrationTest - Starting UserControllerIntegrationTest using Java 17.0.16 with PID 304 (started by lamer in C:\Users\lamer\IdeaProjects\expense-tracker)
-10:10:24.266 [main] INFO  t.c.UserControllerIntegrationTest - The following 1 profile is active: "test"
-10:10:24.350 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-10:10:24.350 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-10:10:24.352 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.expensetracker.logging.AppLogRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
-10:10:24.356 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 4 ms. Found 2 JPA repository interfaces.
-10:10:24.432 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
-10:10:24.432 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-11"]
-10:10:24.432 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-10:10:24.432 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.44]
-10:10:24.439 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-10:10:24.439 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 173 ms
-10:10:24.462 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-10:10:24.462 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-10:10:24.466 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-10:10:24.467 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Starting...
-10:10:24.467 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-11 - Added connection conn72: url=jdbc:h2:mem:testdb user=SA
-10:10:24.467 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Start completed.
-10:10:24.467 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-10:10:24.468 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-11)']
-	Database driver: undefined/unknown
-	Database version: 2.3.232
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-10:10:24.481 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-10:10:24.482 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-10:10:24.501 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
-10:10:24.546 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-10:10:24.552 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
-10:10:24.565 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 21 mappings in 'requestMappingHandlerMapping'
-10:10:24.576 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
-10:10:24.587 [main] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, JwtAuthFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
-10:10:24.593 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-10:10:24.597 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
-10:10:24.643 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
-10:10:24.643 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring TestDispatcherServlet ''
-10:10:24.643 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
-10:10:24.643 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
-10:10:24.647 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-11"]
-10:10:24.647 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 51180 (http) with context path '/'
-10:10:24.651 [main] INFO  t.c.UserControllerIntegrationTest - Started UserControllerIntegrationTest in 0.392 seconds (process running for 9.793)
-10:10:24.651 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.email,u1_0.password from users u1_0 where u1_0.email=?
-10:10:24.651 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-10:10:24.655 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
-10:10:24.655 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/users/me
-10:10:24.655 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-10:10:24.655 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/me
-10:10:24.655 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.UserController#getCurrentUser(UserDetailsImpl)
-10:10:24.659 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-10:10:24.659 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.example.expensetracker.model.User@1e553a05]
-10:10:24.662 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
-10:10:24.662 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/users/me
-10:10:24.662 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-10:10:24.662 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/me
-10:10:24.662 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.UserController#getCurrentUser(UserDetailsImpl)
-10:10:24.662 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-10:10:24.662 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.example.expensetracker.model.User@1d97d705]
-10:10:24.664 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
-10:10:24.664 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/users/me
-10:10:24.664 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-10:10:24.664 [main] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
-10:10:24.667 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/me
-10:10:24.667 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/users/me
-10:10:24.667 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-10:10:24.667 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/me
-10:10:24.667 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.UserController#getCurrentUser(UserDetailsImpl)
-10:10:24.667 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-10:10:24.667 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.example.expensetracker.model.User@e072359]
-10:10:24.783 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-10:10:24.880 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-10:10:24.883 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-10:10:24.883 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Shutdown initiated...
-10:10:24.906 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Shutdown completed.
+15:49:55.317 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан refresh-токен для user@example.com
+15:49:55.494 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
+15:49:55.549 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
+15:49:55.550 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
+15:49:55.551 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
+15:49:55.552 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
+15:49:55.553 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
+15:49:55.553 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
+15:49:55.554 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
+15:49:55.555 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена
+15:49:55.560 [main] INFO  c.e.expensetracker.security.JwtUtil - Создан access-токен для user@example.com
+15:49:55.560 [main] INFO  c.e.expensetracker.security.JwtUtil - Анализ токена

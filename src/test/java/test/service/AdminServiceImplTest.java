@@ -184,7 +184,7 @@ public class AdminServiceImplTest {
     private void checkLoggerData(AuditAction action, User targetUser, User performedBy) {
         verify(auditLogRepository).save(argThat(log ->
                 log.getAction() == action &&
-                        log.getTargetUser().equals(targetUser) &&
-                        log.getPerformedBy().equals(performedBy)));
+                        log.getTargetUser().getEmail().equals(targetUser.getEmail()) &&
+                        log.getPerformedBy().getEmail().equals(performedBy.getEmail())));
     }
 }

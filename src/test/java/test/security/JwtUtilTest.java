@@ -5,11 +5,10 @@ import com.example.expensetracker.security.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.security.SignatureException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import io.jsonwebtoken.security.SignatureException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,31 +27,33 @@ public class JwtUtilTest {
     }
 
     @Test
-    public void generateAccessToken_shouldContainEmailAndRole() {
+    void generateAccessToken_shouldContainEmailAndRole() {
         String token = jwtUtil.generateAccessToken(USER_EMAIL, Role.USER);
         Jws<Claims> claimsJws = jwtUtil.parse(token);
 
         assertThat(claimsJws.getPayload().getSubject()).isEqualTo(USER_EMAIL);
         assertThat(claimsJws.getPayload().get("role")).isEqualTo("USER");
+        assertThat(claimsJws.getPayload().get("jti")).isNotNull();
     }
 
     @Test
-    public void generateRefreshToken_shouldContainEmailAndNoRole() {
+    void generateRefreshToken_shouldContainEmailAndNoRole() {
         String token = jwtUtil.generateRefreshToken(USER_EMAIL);
         Jws<Claims> claimsJws = jwtUtil.parse(token);
 
         assertThat(claimsJws.getPayload().getSubject()).isEqualTo(USER_EMAIL);
         assertThat(claimsJws.getPayload().get("role")).isNull();
+        assertThat(claimsJws.getPayload().get("jti")).isNotNull();
     }
 
     @Test
-    public void getSubject_shouldReturnEmailFromToken() {
+    void getSubject_shouldReturnEmailFromToken() {
         String token = jwtUtil.generateAccessToken(USER_EMAIL, Role.USER);
         assertThat(jwtUtil.getSubject(token)).isEqualTo(USER_EMAIL);
     }
 
     @Test
-    public void parse_shouldThrow_whenTokenSignatureInvalid() {
+    void parse_shouldThrow_whenTokenSignatureInvalid() {
         String token = jwtUtil.generateAccessToken(USER_EMAIL, Role.USER);
         String invalidToken = token + "tampered";
 
@@ -60,12 +61,18 @@ public class JwtUtilTest {
     }
 
     @Test
-    public void parse_shouldThrow_whenTokenExpired() throws InterruptedException {
-        ReflectionTestUtils.setField(jwtUtil, "accessExpiration", 1L);
+    void parse_shouldThrow_whenTokenExpired() {
+        ReflectionTestUtils.setField(jwtUtil, "accessExpiration", -1L);
         String token = jwtUtil.generateAccessToken(USER_EMAIL, Role.USER);
 
-        Thread.sleep(2L);
-
         assertThatThrownBy(() -> jwtUtil.parse(token)).isInstanceOf(ExpiredJwtException.class);
+    }
+
+    @Test
+    void generateAccessToken_shouldProduceDifferentTokens() {
+        String accessToken1 = jwtUtil.generateAccessToken(USER_EMAIL, Role.USER);
+        String accessToken2 = jwtUtil.generateAccessToken(USER_EMAIL, Role.USER);
+
+        assertThat(accessToken1).isNotEqualTo(accessToken2);
     }
 }
