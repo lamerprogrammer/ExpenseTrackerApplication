@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.expensetracker.logging.AuditLevel.INFO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -40,7 +41,7 @@ public class LogServiceIntegrationTest {
         entry.setTimestamp(now);
 
         logService.log(entry);
-        esOps.indexOps(AppLog.class).refresh();//org.springframework.dao.DataAccessResourceFailureException: Connection refused: getsockopt 
+        esOps.indexOps(AppLog.class).refresh();
         List<AppLog> logs = logService.findAll();
 
         assertThat(logs)
@@ -52,7 +53,6 @@ public class LogServiceIntegrationTest {
                     assertThat(log.getMessage()).isEqualTo("Test message");
                     assertThat(log.getUserEmail()).isEqualTo(email);
                     assertThat(log.getEndPoint()).isEqualTo("/test/api");
-                    assertThat(log.getStackTrace()).isEqualTo("StackTrace");
                 });
     }
 
@@ -64,7 +64,7 @@ public class LogServiceIntegrationTest {
         entry.setTimestamp(now);
 
         logService.log(entry);
-        esOps.indexOps(AppLog.class).refresh();//org.springframework.dao.DataAccessResourceFailureException: Connection refused: getsockopt 
+        esOps.indexOps(AppLog.class).refresh();
         List<AppLog> logs = logService.findByUserEmail(email);
 
         assertThat(logs)
@@ -76,18 +76,16 @@ public class LogServiceIntegrationTest {
                     assertThat(log.getMessage()).isEqualTo("Test message");
                     assertThat(log.getUserEmail()).isEqualTo(email);
                     assertThat(log.getEndPoint()).isEqualTo("/test/api");
-                    assertThat(log.getStackTrace()).isEqualTo("StackTrace");
                 });
     }
 
     private LogEntry createLogEntryTest(String email) {
         LogEntry entry = new LogEntry();
-        entry.setLevel("INFO");
+        entry.setLevel(INFO);
         entry.setLogger("TestLogger");
         entry.setMessage("Test message");
         entry.setUser(email);
         entry.setPath("/test/api");
-        entry.setStackTrace("StackTrace");
         return entry;
     }
 }

@@ -29,6 +29,7 @@ import test.util.TestData;
 
 import java.util.Optional;
 
+import static com.example.expensetracker.logging.AuditLevel.INFO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -70,7 +71,6 @@ public class AuthServiceImplTest {
         LogEntry capturedLog = logCaptor.getValue();
 
         assertLogEntry(capturedLog, "Пользователь зарегестрирован.", "/api/auth/register");
-        assertThat(capturedLog.getStackTrace()).isNull();
         assertThat(result.getEmail()).isEqualTo(dto.getEmail());
         assertThat(result.getPassword()).isEqualTo("encoded");
         assertThat(result.getRoles()).containsExactly(Role.USER);
@@ -227,19 +227,17 @@ public class AuthServiceImplTest {
     }
 
     private void assertLogEntry(LogEntry capturedLog, String message, String path) {
-        assertThat(capturedLog.getLevel()).isEqualTo("INFO");
+        assertThat(capturedLog.getLevel()).isEqualTo(INFO);
         assertThat(capturedLog.getLogger()).isEqualTo("AuthServiceImpl");
         assertThat(capturedLog.getMessage()).contains(message);
         assertThat(capturedLog.getPath()).isEqualTo(path);
-        assertThat(capturedLog.getStackTrace()).isNull();
     }
 
     private void assertLogEntry(User user, LogEntry capturedLog, String message, String path) {
-        assertThat(capturedLog.getLevel()).isEqualTo("INFO");
+        assertThat(capturedLog.getLevel()).isEqualTo(INFO);
         assertThat(capturedLog.getLogger()).isEqualTo("AuthServiceImpl");
         assertThat(capturedLog.getMessage()).contains(message);
         assertThat(capturedLog.getUser()).isEqualTo(user.getEmail());
         assertThat(capturedLog.getPath()).isEqualTo(path);
-        assertThat(capturedLog.getStackTrace()).isNull();
     }
 }

@@ -13,24 +13,22 @@ public class AppLog {
     @Id
     private String id;
     private Instant timestamp;
-    private String level;
+    private AuditLevel level;
     private String logger;
     private String message;
     private String userEmail;
     private String endPoint;
-    private String stackTrace;
 
     public AppLog() {
     }
 
     public AppLog(String id,
                   Instant timestamp,
-                  String level,
+                  AuditLevel level,
                   String logger,
                   String message,
                   String userEmail,
-                  String endPoint,
-                  String stackTrace) {
+                  String endPoint) {
         this.id = id;
         this.timestamp = timestamp;
         this.level = level;
@@ -38,7 +36,6 @@ public class AppLog {
         this.message = message;
         this.userEmail = userEmail;
         this.endPoint = endPoint;
-        this.stackTrace = stackTrace;
     }
 
     public String getId() {
@@ -49,7 +46,7 @@ public class AppLog {
         return timestamp;
     }
 
-    public String getLevel() {
+    public AuditLevel getLevel() {
         return level;
     }
 
@@ -69,10 +66,6 @@ public class AppLog {
         return endPoint;
     }
 
-    public String getStackTrace() {
-        return stackTrace;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,13 +77,12 @@ public class AppLog {
                 Objects.equals(logger, log.logger) &&
                 Objects.equals(message, log.message) &&
                 Objects.equals(userEmail, log.userEmail) &&
-                Objects.equals(endPoint, log.endPoint) &&
-                Objects.equals(stackTrace, log.stackTrace);
+                Objects.equals(endPoint, log.endPoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, timestamp, level, logger, message, userEmail, endPoint, stackTrace);
+        return Objects.hash(id, timestamp, level, logger, message, userEmail, endPoint);
     }
 
     public static AppLogBuilder builder() {
@@ -100,12 +92,11 @@ public class AppLog {
     public static class AppLogBuilder {
         private String id;
         private Instant timestamp;
-        private String level;
+        private AuditLevel level;
         private String logger;
         private String message;
         private String userEmail;
         private String endPoint;
-        private String stackTrace;
 
         public AppLogBuilder id(String id) {
             this.id = id;
@@ -117,7 +108,7 @@ public class AppLog {
             return this;
         }
 
-        public AppLogBuilder level(String level) {
+        public AppLogBuilder level(AuditLevel level) {
             this.level = level;
             return this;
         }
@@ -142,13 +133,8 @@ public class AppLog {
             return this;
         }
 
-        public AppLogBuilder stackTrace(String stackTrace) {
-            this.stackTrace = stackTrace;
-            return this;
-        }
-
         public AppLog build() {
-            return new AppLog(id, timestamp, level, logger, message, userEmail, endPoint, stackTrace);
+            return new AppLog(id, timestamp, level, logger, message, userEmail, endPoint);
         }
     }
 }

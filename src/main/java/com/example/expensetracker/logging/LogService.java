@@ -22,7 +22,6 @@ public class LogService {
                 .message(entry.getMessage())
                 .userEmail(entry.getUser())
                 .endPoint(entry.getPath())
-                .stackTrace(entry.getStackTrace())
                 .build();
         appLogRepository.save(log);
     }

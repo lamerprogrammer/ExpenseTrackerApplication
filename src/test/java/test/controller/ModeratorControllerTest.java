@@ -67,7 +67,7 @@ public class ModeratorControllerTest {
         verify(userRepository).save(any());
         verify(auditLogRepository).save(argThat(log ->
                 log.getAction() == AuditAction.BAN &&
-                        log.getTargetUserId().equals(id) &&
+                        log.getTargetUser().equals(id) &&
                         log.getPerformedBy().equals(currentUser.getEmail())));
     }
 
@@ -99,7 +99,7 @@ public class ModeratorControllerTest {
         verify(userRepository).save(any());
         verify(auditLogRepository).save(argThat(log ->
                 log.getAction() == AuditAction.UNBAN &&
-                log.getTargetUserId().equals(id) &&
+                log.getTargetUser().equals(id) &&
                 log.getPerformedBy().equals(currentUser.getEmail())));
     }
 

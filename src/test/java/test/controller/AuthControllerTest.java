@@ -3,13 +3,7 @@ package test.controller;
 import com.example.expensetracker.controller.AuthController;
 import com.example.expensetracker.dto.*;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.repository.UserRepository;
-import com.example.expensetracker.security.JwtUtil;
 import com.example.expensetracker.service.AuthService;
-import com.example.expensetracker.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,15 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import test.util.TestData;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static test.util.Constants.PASSWORD;
+import static test.util.Constants.USER_PASSWORD;
 import static test.util.Constants.USER_EMAIL;
 
 @ExtendWith(MockitoExtension.class)
@@ -126,7 +117,7 @@ public class AuthControllerTest {
 
     @Test
     public void login_shouldReturnTokens_whenDataIsValid() {
-        LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
+        LoginRequest request = new LoginRequest(USER_EMAIL, USER_PASSWORD);
         when(authService.login(any(LoginDto.class))).thenReturn(
                 new TokenResponse("access", "refresh"));
 
@@ -141,7 +132,7 @@ public class AuthControllerTest {
 
     @Test
     public void login_shouldThrowException_whenUserNotExist() {
-        LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
+        LoginRequest request = new LoginRequest(USER_EMAIL, USER_PASSWORD);
         when(authService.login(any(LoginDto.class))).thenThrow(new BadCredentialsException("Неверная почта."));
 
         BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authController.login(request));
@@ -153,7 +144,7 @@ public class AuthControllerTest {
 
     @Test
     public void login_shouldThrowException_whenPasswordNotMatches() {
-        LoginRequest request = new LoginRequest(USER_EMAIL, PASSWORD);
+        LoginRequest request = new LoginRequest(USER_EMAIL, USER_PASSWORD);
         when(authService.login(any(LoginDto.class))).thenThrow(new BadCredentialsException("Неверный пароль."));
 
         BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authController.login(request));

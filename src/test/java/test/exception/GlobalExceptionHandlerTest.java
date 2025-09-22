@@ -21,6 +21,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static test.util.Constants.API_TEST_ENDPOINT;
 
 @ExtendWith(MockitoExtension.class)
 public class GlobalExceptionHandlerTest {
@@ -38,7 +39,7 @@ public class GlobalExceptionHandlerTest {
         when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
                 invocation.getArgument(0));
         request = new MockHttpServletRequest();
-        request.setRequestURI("/api/test");
+        request.setRequestURI(API_TEST_ENDPOINT);
     }
 
     @Test
@@ -142,6 +143,6 @@ public class GlobalExceptionHandlerTest {
         assertThat(body).isNotNull();
         assertThat(body.getStatus()).isEqualTo(status);
         assertThat(body.getMessage()).contains(message);
-        assertThat(body.getPath()).isEqualTo("/api/test");
+        assertThat(body.getPath()).isEqualTo(API_TEST_ENDPOINT);
     }
 }

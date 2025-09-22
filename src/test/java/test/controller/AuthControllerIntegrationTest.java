@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static test.util.Constants.PASSWORD;
+import static test.util.Constants.USER_PASSWORD;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,7 +53,7 @@ public class AuthControllerIntegrationTest {
     void setUp() {
         name = UUID.randomUUID().toString();
         email = "test-" + UUID.randomUUID() + "@example.com";
-        password = PASSWORD;
+        password = USER_PASSWORD;
     }
 
     @Test

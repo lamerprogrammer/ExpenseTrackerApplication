@@ -7,12 +7,11 @@ import java.time.Instant;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LogEntry {
     private Instant timestamp;
-    private String level;
+    private AuditLevel level;
     private String logger;
     private String message;
     private String user;
     private String path;
-    private String stackTrace;
 
     public Instant getTimestamp() {
         return timestamp;
@@ -22,11 +21,11 @@ public class LogEntry {
         this.timestamp = timestamp;
     }
 
-    public String getLevel() {
+    public AuditLevel getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(AuditLevel level) {
         this.level = level;
     }
 
@@ -62,33 +61,24 @@ public class LogEntry {
         this.path = path;
     }
 
-    public String getStackTrace() {
-        return stackTrace;
-    }
-
-    public void setStackTrace(String stackTrace) {
-        this.stackTrace = stackTrace;
-    }
-
     public static LogEntityBuilder builder() {
         return new LogEntityBuilder();
     }
 
     public static class LogEntityBuilder {
         private Instant timestamp;
-        private String level;
+        private AuditLevel level;
         private String logger;
         private String message;
         private String user;
         private String path;
-        private String stackTrace;
 
         public LogEntityBuilder timestamp(Instant timestamp) {
             this.timestamp = timestamp;
             return this;
         }
 
-        public LogEntityBuilder level(String level) {
+        public LogEntityBuilder level(AuditLevel level) {
             this.level = level;
             return this;
         }
@@ -113,11 +103,6 @@ public class LogEntry {
             return this;
         }
 
-        public LogEntityBuilder stackTrace(String stackTrace) {
-            this.stackTrace = stackTrace;
-            return this;
-        }
-
         public LogEntry build() {
             LogEntry entry = new LogEntry();
             entry.setTimestamp(this.timestamp);
@@ -126,7 +111,6 @@ public class LogEntry {
             entry.setMessage(this.message);
             entry.setUser(this.user);
             entry.setPath(this.path);
-            entry.setStackTrace(this.stackTrace);
             return entry;
         }
     }

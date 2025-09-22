@@ -10,7 +10,7 @@ import test.util.TestData;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static test.util.Constants.PASSWORD;
+import static test.util.Constants.USER_PASSWORD;
 import static test.util.Constants.USER_EMAIL;
 
 public class UserDetailsImplTest {
@@ -48,7 +48,7 @@ public class UserDetailsImplTest {
         UserDetailsImpl userDetails = new UserDetailsImpl(TestData.user());
 
         assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getPassword()).isEqualTo(PASSWORD);
+        assertThat(userDetails.getPassword()).isEqualTo(USER_PASSWORD);
     }
 
     @Test

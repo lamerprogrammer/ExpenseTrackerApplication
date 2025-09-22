@@ -44,11 +44,11 @@ public class ModeratorController {
                     if (!user.getRoles().contains(Role.ADMIN) && !user.getRoles().contains(Role.MODERATOR)) {
                         user.setBanned(true);
                         userRepository.save(user);
-                        auditLogRepository.save(new AuditLog(BAN, user.getId(), currentUser.getEmail()));
+                        auditLogRepository.save(new AuditLog(BAN, user, currentUser));
                         return ResponseEntity.ok("Пользователь" + user.getEmail() + " заблокирован");
                     }
                     return ResponseEntity.ok("Пользователь" + user.getEmail() + " не заблокирован, так как он " +
-                            user.getRoles().iterator().next());//тут наверно можно лучше сделать
+                            user.getRoles().iterator().next());
                 }).orElse(ResponseEntity.notFound().build());
     }
 
@@ -61,7 +61,7 @@ public class ModeratorController {
                     user.setBanned(false);
                     userRepository.save(user);
 
-                    auditLogRepository.save(new AuditLog(UNBAN, user.getId(), currentUser.getEmail()));
+                    auditLogRepository.save(new AuditLog(UNBAN, user, currentUser));
 
                     return ResponseEntity.ok("Пользователь" + user.getEmail() + " разблокирован");
                 }).orElse(ResponseEntity.notFound().build());

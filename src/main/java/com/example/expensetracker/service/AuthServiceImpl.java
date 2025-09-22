@@ -23,6 +23,8 @@ import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
 import java.util.HashSet;
 
+import static com.example.expensetracker.logging.AuditLevel.INFO;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -63,12 +65,11 @@ public class AuthServiceImpl implements AuthService {
             log.info("Успешная регистрация: {}", saved.getEmail());
         logService.log(LogEntry.builder()
                 .timestamp(Instant.now())
-                .level("INFO")
+                .level(INFO)
                 .logger("AuthServiceImpl")
                 .message("Пользователь зарегестрирован.")
                 .user(saved.getEmail())
                 .path("/api/auth/register")
-                .stackTrace(null)
                 .build());
         return saved;
     }
@@ -88,12 +89,11 @@ public class AuthServiceImpl implements AuthService {
         log.info("Успешная авторизация: {}", dto.getEmail());
         logService.log(LogEntry.builder()
                 .timestamp(Instant.now())
-                .level("INFO")
+                .level(INFO)
                 .logger("AuthServiceImpl")
                 .message("Пользователь вошёл в систему.")
                 .user(user.getEmail())
                 .path("/api/auth/login")
-                .stackTrace(null)
                 .build());
         return generateTokens(user);
     }
@@ -116,12 +116,11 @@ public class AuthServiceImpl implements AuthService {
             log.info("Успешное обновление токена, пользователя {}", email);
             logService.log(LogEntry.builder()
                     .timestamp(Instant.now())
-                    .level("INFO")
+                    .level(INFO)
                     .logger("AuthServiceImpl")
                     .message("Токены обновлены.")
                     .user(user.getEmail())
                     .path("/api/auth/refresh")
-                    .stackTrace(null)
                     .build());
             return generateTokens(user);
         } catch (UsernameNotFoundException | AccessDeniedException | BadCredentialsException e) {

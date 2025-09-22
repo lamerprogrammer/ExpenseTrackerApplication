@@ -28,7 +28,7 @@ public class LoginDtoTest {
 
     @Test
     void shouldPass_whenAllFieldsValid() {
-        LoginDto loginDto = new LoginDto(USER_EMAIL, PASSWORD);
+        LoginDto loginDto = new LoginDto(USER_EMAIL, USER_PASSWORD);
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).isEmpty();
@@ -36,7 +36,7 @@ public class LoginDtoTest {
 
     @Test
     void shouldFail_whenEmailInvalid() {
-        LoginDto registerDto = new LoginDto("not-email", PASSWORD);
+        LoginDto registerDto = new LoginDto("not-email", USER_PASSWORD);
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
@@ -45,7 +45,7 @@ public class LoginDtoTest {
 
     @Test
     void shouldFail_whenEmailIsNull() {
-        LoginDto loginDto = new LoginDto(null, PASSWORD);
+        LoginDto loginDto = new LoginDto(null, USER_PASSWORD);
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).hasSize(1);
@@ -54,7 +54,7 @@ public class LoginDtoTest {
 
     @Test
     void shouldFail_whenEmailIsEmpty() {
-        LoginDto loginDto = new LoginDto("", PASSWORD);
+        LoginDto loginDto = new LoginDto("", USER_PASSWORD);
         Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
         assertThat(violations).hasSize(1);

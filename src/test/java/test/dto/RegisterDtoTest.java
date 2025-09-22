@@ -29,7 +29,7 @@ public class RegisterDtoTest {
 
     @Test
     void shouldPass_whenAllFieldsValid() {
-        RegisterDto registerDto = new RegisterDto(USER_NAME, USER_EMAIL, PASSWORD);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, USER_EMAIL, USER_PASSWORD);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).isEmpty();
@@ -37,7 +37,7 @@ public class RegisterDtoTest {
 
     @Test
     void shouldFail_whenNameIsNull() {
-        RegisterDto registerDto = new RegisterDto(null, USER_EMAIL, PASSWORD);
+        RegisterDto registerDto = new RegisterDto(null, USER_EMAIL, USER_PASSWORD);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
@@ -47,7 +47,7 @@ public class RegisterDtoTest {
 
     @Test
     void shouldFail_whenNameIsEmpty() {
-        RegisterDto registerDto = new RegisterDto("", USER_EMAIL, PASSWORD);
+        RegisterDto registerDto = new RegisterDto("", USER_EMAIL, USER_PASSWORD);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
@@ -57,7 +57,7 @@ public class RegisterDtoTest {
 
     @Test
     void shouldFail_whenEmailInvalid() {
-        RegisterDto registerDto = new RegisterDto(USER_NAME, "not-email", PASSWORD);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, "not-email", USER_PASSWORD);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
@@ -66,7 +66,7 @@ public class RegisterDtoTest {
 
     @Test
     void shouldFail_whenEmailIsNull() {
-        RegisterDto registerDto = new RegisterDto(USER_NAME, null, PASSWORD);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, null, USER_PASSWORD);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
@@ -75,7 +75,7 @@ public class RegisterDtoTest {
 
     @Test
     void shouldFail_whenEmailIsEmpty() {
-        RegisterDto registerDto = new RegisterDto(USER_NAME, "", PASSWORD);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, "", USER_PASSWORD);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);

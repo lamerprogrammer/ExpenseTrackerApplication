@@ -2,7 +2,9 @@ package test.model;
 
 import com.example.expensetracker.model.AuditAction;
 import com.example.expensetracker.model.AuditLog;
+import com.example.expensetracker.model.User;
 import org.junit.jupiter.api.Test;
+import test.util.TestData;
 
 import java.time.Instant;
 
@@ -12,10 +14,10 @@ public class AuditLogTest {
 
     @Test
     void shouldSetFieldsUsingConstructor() {
-        AuditLog auditLog = new AuditLog(AuditAction.BAN, 42L, "admin");
+        AuditLog auditLog = new AuditLog(AuditAction.BAN, TestData.user(), TestData.admin());
 
         assertThat(auditLog.getAction()).isEqualTo(AuditAction.BAN);
-        assertThat(auditLog.getTargetUserId()).isEqualTo(42L);
+        assertThat(auditLog.getTargetUser()).isEqualTo(42L);
         assertThat(auditLog.getPerformedBy()).isEqualTo("admin");
     }
 
@@ -23,17 +25,21 @@ public class AuditLogTest {
     void setters_shouldSetAllFieldsCorrectly() {
         AuditLog auditLog = new AuditLog();
         Instant now = Instant.now();
+        User targetUser = TestData.user();
+        User performedBy = TestData.admin();
 
         auditLog.setId(1L);
         auditLog.setAction(AuditAction.UNBAN);
-        auditLog.setTargetUserId(42L);
-        auditLog.setPerformedBy("admin");
+        auditLog.setTargetUser(targetUser);
+        auditLog.setPerformedBy(performedBy);
         auditLog.setTimeStamp(now);
 
         assertThat(auditLog.getId()).isEqualTo(1L);
         assertThat(auditLog.getAction()).isEqualTo(AuditAction.UNBAN);
-        assertThat(auditLog.getTargetUserId()).isEqualTo(42L);
-        assertThat(auditLog.getPerformedBy()).isEqualTo("admin");
+        assertThat(auditLog.getTargetUser()).extracting(User::getId, User::getEmail)
+                .containsExactly(targetUser.getId(), targetUser.getEmail());
+        assertThat(auditLog.getTargetUser()).extracting(User::getId, User::getEmail)
+                .containsExactly(performedBy.getId(), performedBy.getEmail());
         assertThat(auditLog.getTimeStamp()).isEqualTo(now);
     }
 

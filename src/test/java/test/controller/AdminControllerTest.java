@@ -141,25 +141,26 @@ public class AdminControllerTest {
     @Test
     public void createAdmin_shouldNewAdmin_whenDataValid() {
         RegisterDto newAdmin = TestData.registerDto();
-        User admin = TestData.admin();
-        when(adminService.createAdmin(newAdmin)).thenReturn(admin);
+        User curentUser = TestData.admin();
+        when(adminService.createAdmin(newAdmin, curentUser)).thenReturn(curentUser);
 
-        var response = adminController.createAdmin(newAdmin);
+        var response = adminController.createAdmin(newAdmin, curentUser);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(adminService).createAdmin(any(RegisterDto.class));
+        verify(adminService).createAdmin(any(RegisterDto.class), any(User.class));
     }
 
     @Test
     public void createAdmin_shouldThrowException_whenAdminAlreadyExists() {
         RegisterDto existAdmin = TestData.registerDto();
-        when(adminService.createAdmin(existAdmin)).thenThrow(new IllegalArgumentException());
+        User curentUser = TestData.admin();
+        when(adminService.createAdmin(existAdmin, curentUser)).thenThrow(new IllegalArgumentException());
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> adminController.createAdmin(existAdmin));
+                () -> adminController.createAdmin(existAdmin, curentUser));
 
 
-        verify(adminService).createAdmin(any(RegisterDto.class));
+        verify(adminService).createAdmin(any(RegisterDto.class), any(User.class));
         verifyNoMoreInteractions(adminService);
     }
 }

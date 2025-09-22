@@ -15,19 +15,22 @@ public class AuditLog {
     @Enumerated(EnumType.STRING)
     private AuditAction action;
 
-    @Column(name = "target_user_id")
-    private Long targetUserId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_user_id", nullable = false)
+    private User targetUser;
 
-    @Column(name = "performed_by")
-    private String performedBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performed_by_id", nullable = false)
+    private User performedBy;
 
     private Instant timeStamp = Instant.now();
 
-    public AuditLog() {}
+    public AuditLog() {
+    }
 
-    public AuditLog(AuditAction action, Long targetUserId, String performedBy) {
+    public AuditLog(AuditAction action, User targetUser, User performedBy) {
         this.action = action;
-        this.targetUserId = targetUserId;
+        this.targetUser = targetUser;
         this.performedBy = performedBy;
     }
 
@@ -47,19 +50,19 @@ public class AuditLog {
         this.action = action;
     }
 
-    public Long getTargetUserId() {
-        return targetUserId;
+    public User getTargetUser() {
+        return targetUser;
     }
 
-    public void setTargetUserId(Long targetUserId) {
-        this.targetUserId = targetUserId;
+    public void setTargetUser(User targetUser) {
+        this.targetUser = targetUser;
     }
 
-    public String getPerformedBy() {
+    public User getPerformedBy() {
         return performedBy;
     }
 
-    public void setPerformedBy(String performedBy) {
+    public void setPerformedBy(User performedBy) {
         this.performedBy = performedBy;
     }
 
@@ -69,5 +72,10 @@ public class AuditLog {
 
     public void setTimeStamp(Instant timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.timeStamp = Instant.now();
     }
 }

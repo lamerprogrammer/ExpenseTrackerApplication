@@ -39,7 +39,7 @@ public class AdminServiceImpl implements AdminService {
                 .map(user -> {
                     user.setBanned(true);
                     userRepository.save(user);
-                    auditLogRepository.save(new AuditLog(BAN, user.getId(), currentUser.getEmail()));
+                    auditLogRepository.save(new AuditLog(BAN, user, currentUser));
                     return user;
                 }).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
                 .map(user -> {
                     user.setBanned(false);
                     userRepository.save(user);
-                    auditLogRepository.save(new AuditLog(UNBAN, user.getId(), currentUser.getEmail()));
+                    auditLogRepository.save(new AuditLog(UNBAN, user, currentUser));
                     return user;
                 }).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
@@ -60,19 +60,21 @@ public class AdminServiceImpl implements AdminService {
         return userRepository.findById(id)
                 .map(user -> {
                     userRepository.delete(user);
-                    auditLogRepository.save(new AuditLog(DELETE, user.getId(), currentUser.getEmail()));
+                    auditLogRepository.save(new AuditLog(DELETE, user, currentUser));
                     return user;
                 }).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
     @Override
-    public User createAdmin(RegisterDto dto) {
+    public User createAdmin(RegisterDto dto, User currentUser) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Эта почта уже используется.");
         }
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.ADMIN);
-        return userRepository.save(user);
+        User newAdmin = userRepository.save(user);
+        auditLogRepository.save(new AuditLog(CREATE, newAdmin, currentUser));
+        return newAdmin;
     }
 }

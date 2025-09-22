@@ -3,7 +3,9 @@ package test.util;
 import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.dto.UserResponseDto;
 import com.example.expensetracker.logging.AppLog;
+import com.example.expensetracker.logging.AuditLevel;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.Instant;
 import java.util.Set;
 
+import static com.example.expensetracker.logging.AuditLevel.INFO;
 import static test.util.Constants.*;
 
 public class TestData {
@@ -27,19 +30,19 @@ public class TestData {
     }
 
     public static User user() {
-        return user(USER_EMAIL, PASSWORD, Set.of(Role.USER), false);
+        return user(USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), false);
     }
 
     public static User userBanned() {
-        return user(USER_EMAIL, PASSWORD, Set.of(Role.USER), true);
+        return user(USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), true);
     }
 
     public static User moderator() {
-        return user(MODERATOR_EMAIL, PASSWORD, Set.of(Role.MODERATOR), false);
+        return user(MODERATOR_EMAIL, USER_PASSWORD, Set.of(Role.MODERATOR), false);
     }
 
     public static User admin() {
-        return user(ADMIN_EMAIL, PASSWORD, Set.of(Role.ADMIN), false);
+        return user(ADMIN_EMAIL, USER_PASSWORD, Set.of(Role.ADMIN), false);
     }
 
     public static LoginRequest loginRequest(String mail, String password) {
@@ -47,7 +50,7 @@ public class TestData {
     }
 
     public static LoginRequest loginRequest() {
-        return loginRequest(USER_EMAIL, PASSWORD);
+        return loginRequest(USER_EMAIL, USER_PASSWORD);
     }
 
     public static RegisterDto registerDto(String user, String mail, String password) {
@@ -55,7 +58,7 @@ public class TestData {
     }
 
     public static RegisterDto registerDto() {
-        return registerDto(USER_NAME, USER_EMAIL, PASSWORD);
+        return registerDto(USER_NAME, USER_EMAIL, USER_PASSWORD);
     }
 
     public static LoginDto loginDto(String mail, String password) {
@@ -63,12 +66,12 @@ public class TestData {
     }
 
     public static LoginDto loginDto() {
-        return loginDto(USER_EMAIL, PASSWORD);
+        return loginDto(USER_EMAIL, USER_PASSWORD);
     }
 
     public static AppLog appLog(String id,
                                 Instant timestamp,
-                                String level,
+                                AuditLevel level,
                                 String logger,
                                 String message,
                                 String userEmail,
@@ -80,14 +83,13 @@ public class TestData {
                 logger,
                 message,
                 userEmail,
-                endPoint,
-                stackTrace);
+                endPoint);
     }
 
     public static AppLog appLog() {
         return appLog("42",
                 Instant.now(),
-                "INFO",
+                INFO,
                 "TestData",
                 "Test message",
                 USER_EMAIL,
@@ -100,8 +102,16 @@ public class TestData {
         user.setId(42L);
         user.setEmail(USER_EMAIL);
         user.setRoles(Set.of(Role.USER));
-        user.setPassword(encoder.encode(PASSWORD));
+        user.setPassword(encoder.encode(USER_PASSWORD));
         userRepository.save(user);
         return user;
+    }
+    
+    public static UserResponseDto userResponseDto() {
+        return userResponseDto(42L, USER_EMAIL);
+    }
+
+    public static UserResponseDto userResponseDto(Long id, String email) {
+        return new UserResponseDto(id, email);
     }
 }

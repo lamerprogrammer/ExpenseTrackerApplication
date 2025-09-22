@@ -2,6 +2,7 @@ package test.service;
 
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.model.AuditAction;
+import com.example.expensetracker.model.AuditLog;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.AuditLogRepository;
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import test.util.TestData;
 
@@ -21,6 +22,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -35,7 +38,7 @@ public class AdminServiceImplTest {
 
     @Mock
     private AuditLogRepository auditLogRepository;
-    
+
     @InjectMocks
     private AdminServiceImpl adminService;
 
@@ -47,7 +50,8 @@ public class AdminServiceImplTest {
         List<User> result = adminService.getAllUsers();
 
         assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(users);
+        assertThat(result).extracting(User::getId, User::getEmail)
+                .containsExactlyInAnyOrder(tuple(users.get(0).getId(), users.get(0).getEmail()));
         verify(userRepository).findAll();
     }
 
@@ -67,17 +71,11 @@ public class AdminServiceImplTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.of(currentUser));
 
-        var response = adminService.banUser(id, currentUser);
+        User result = adminService.banUser(id, currentUser);
 
-        assertThat(response).isEqualTo(HttpStatus.OK);
-        assertThat(response).isNotNull();
-        assertThat(response).asString().startsWith("Пользователь").contains("заблокирован");
+        assertThat(result).isNotNull();
         verify(userRepository).save(argThat(User::isBanned));
-        verify(userRepository).save(any());
-        verify(auditLogRepository).save(argThat(log ->
-                log.getAction() == AuditAction.BAN &&
-                        log.getTargetUserId().equals(id) &&
-                        log.getPerformedBy().equals(currentUser.getEmail())));
+        checkLoggerData(AuditAction.BAN, result, currentUser);
     }
 
     @Test
@@ -86,11 +84,13 @@ public class AdminServiceImplTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        var response = adminService.banUser(id, currentUser);
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminService.banUser(id, currentUser));
 
-        assertThat(response).isEqualTo(HttpStatus.NOT_FOUND);
-        verify(userRepository, never()).save(any());
-        verify(auditLogRepository, never()).save(any());
+        assertThat(ex.getMessage()).contains("не найден");
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditLogRepository, never()).save(any(AuditLog.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -99,17 +99,11 @@ public class AdminServiceImplTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.of(currentUser));
 
-        var response = adminService.unbanUser(id, currentUser);
+        User result = adminService.unbanUser(id, currentUser);
 
-        assertThat(response).isEqualTo(HttpStatus.OK);
-        assertThat(response).isNotNull();
-        assertThat(response).asString().startsWith("Пользователь").contains("разблокирован");
+        assertThat(result).isNotNull();
         verify(userRepository).save(argThat(user -> !user.isBanned()));
-        verify(userRepository).save(any());
-        verify(auditLogRepository).save(argThat(log ->
-                log.getAction() == AuditAction.UNBAN &&
-                        log.getTargetUserId().equals(id) &&
-                        log.getPerformedBy().equals(currentUser.getEmail())));
+        checkLoggerData(AuditAction.UNBAN, result, currentUser);
     }
 
     @Test
@@ -118,68 +112,79 @@ public class AdminServiceImplTest {
         Long id = currentUser.getId();
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        var response = adminService.unbanUser(id, currentUser);
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminService.unbanUser(id, currentUser));
 
-        assertThat(response).isEqualTo(HttpStatus.NOT_FOUND);
-        verify(userRepository, never()).save(any());
-        verify(auditLogRepository, never()).save(any());
+        assertThat(ex.getMessage()).contains("не найден");
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditLogRepository, never()).save(any(AuditLog.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
     public void deleteUser_shouldReturn204_whenUserExist() {
         User currentUser = TestData.user();
         Long id = currentUser.getId();
-        when(userRepository.existsById(id)).thenReturn(true);
+        when(userRepository.findById(id)).thenReturn(Optional.of(currentUser));
 
-        var response = adminService.deleteUser(id, currentUser);
+        User response = adminService.deleteUser(id, currentUser);
 
-        assertThat(response).isEqualTo(HttpStatus.NO_CONTENT);
-        verify(userRepository).deleteById(id);
-        verify(auditLogRepository).save(argThat(log ->
-                log.getAction() == AuditAction.DELETE &&
-                        log.getTargetUserId().equals(id) &&
-                        log.getPerformedBy().equals(currentUser.getEmail())));
+        assertThat(response).isNotNull();
+        verify(userRepository).delete(any(User.class));
+        checkLoggerData(AuditAction.DELETE, response, currentUser);
     }
 
     @Test
     public void deleteUser_shouldReturn404_whenUserNotFound() {
         User currentUser = TestData.user();
         Long id = currentUser.getId();
-        when(userRepository.existsById(id)).thenReturn(false);
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        var response = adminService.deleteUser(id, currentUser);
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminService.deleteUser(id, currentUser));
 
-        assertThat(response).isEqualTo(HttpStatus.NOT_FOUND);
-        verify(userRepository, never()).deleteById(any());
+        assertThat(ex.getMessage()).contains("не найден");
+        verify(userRepository, never()).delete(any());
         verify(auditLogRepository, never()).save(any());
     }
 
     @Test
     public void createAdmin_shouldAssignAdminRole() {
-        RegisterDto dto = new RegisterDto("John", "john@example.com", "password");
+        RegisterDto dto = TestData.registerDto();
+        User currentUser = TestData.admin();
 
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
-        when(passwordEncoder.encode("password")).thenReturn("encoded");
+        when(passwordEncoder.encode(dto.getPassword())).thenReturn("encoded");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        User result = adminService.createAdmin(dto);
+        User result = adminService.createAdmin(dto, currentUser);
 
-        verify(userRepository).save(any(User.class));
-        assertThat(result.getEmail()).isEqualTo("john@example.com");
+        assertThat(result.getEmail()).isEqualTo(dto.getEmail());
         assertThat(result.getPassword()).isEqualTo("encoded");
         assertThat(result.getRoles()).contains(Role.ADMIN);
+        verify(userRepository).save(any(User.class));
+        checkLoggerData(AuditAction.CREATE, result, currentUser);
     }
 
     @Test
     public void createAdmin_shouldThrowException_whenEmailExists() {
-        RegisterDto dto = new RegisterDto("John", "john@example.com", "password");
+        RegisterDto dto = TestData.registerDto();
+        User currentUser = TestData.admin();
 
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
 
-        assertThatThrownBy(() -> adminService.createAdmin(dto))
-                .isInstanceOf(RuntimeException.class)
+        assertThatThrownBy(() -> adminService.createAdmin(dto, currentUser))
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Эта почта уже используется.");
 
         verify(userRepository, never()).save(any());
+        verify(auditLogRepository, never()).save(any());
+    }
+
+    private void checkLoggerData(AuditAction action, User targetUser, User performedBy) {
+        verify(auditLogRepository).save(argThat(log ->
+                log.getAction() == action &&
+                        log.getTargetUser().equals(targetUser) &&
+                        log.getPerformedBy().equals(performedBy)));
     }
 }

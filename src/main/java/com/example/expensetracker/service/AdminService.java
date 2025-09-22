@@ -14,5 +14,5 @@ public interface AdminService {
 
     User deleteUser(Long id, User currentUser);
 
-    User createAdmin(RegisterDto dto);
+    User createAdmin(RegisterDto dto, User currentUser);
 }

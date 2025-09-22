@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static test.util.Constants.API_TEST_ENDPOINT;
 
 @ExtendWith(MockitoExtension.class)
 public class ApiResponseFactoryTest {
@@ -16,7 +17,7 @@ public class ApiResponseFactoryTest {
     @InjectMocks
     ApiResponseFactory apiResponseFactory;
 
-    private final String path = "/api/test";
+    private final String path = API_TEST_ENDPOINT;
 
     @Test
     void unauthorized_shouldReturnResponse401() {
