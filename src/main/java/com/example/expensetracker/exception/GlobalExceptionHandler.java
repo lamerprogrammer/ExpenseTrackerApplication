@@ -1,6 +1,7 @@
 package com.example.expensetracker.exception;
 
 import com.example.expensetracker.dto.ApiResponse;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -66,6 +67,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ApiResponse> handleUsernameNotFound(UsernameNotFoundException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, msg("handle.username.not.found"), request, ex);
+    }
+    
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<ApiResponse> handleEntityExists(EntityExistsException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.FORBIDDEN, msg("handle.entity.exists"), request, ex);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -1,14 +1,18 @@
 package com.example.expensetracker.service;
 
+import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.model.AuditLog;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,47 +38,68 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User banUser(Long id, User currentUser) {
+    @Transactional
+    public User banUser(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     user.setBanned(true);
                     userRepository.save(user);
-                    auditLogRepository.save(new AuditLog(BAN, user, currentUser));
+                    auditLogRepository.save(new AuditLog(BAN, user, userEntity));
                     return user;
-                }).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
 
     @Override
-    public User unbanUser(Long id, User currentUser) {
+    @Transactional
+    public User unbanUser(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     user.setBanned(false);
                     userRepository.save(user);
-                    auditLogRepository.save(new AuditLog(UNBAN, user, currentUser));
+                    auditLogRepository.save(new AuditLog(UNBAN, user, userEntity));
                     return user;
-                }).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
 
     @Override
-    public User deleteUser(Long id, User currentUser) {
+    @Transactional
+    public User deleteUser(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
-                    userRepository.delete(user);
-                    auditLogRepository.save(new AuditLog(DELETE, user, currentUser));
-                    return user;
-                }).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                    user.setDeleted(true);
+                    auditLogRepository.save(new AuditLog(DELETE, user, userEntity));
+                    return userRepository.save(user);
+                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
 
     @Override
-    public User createAdmin(RegisterDto dto, User currentUser) {
+    @Transactional
+    public User createAdmin(RegisterDto dto, UserDetailsImpl currentUser) {
         if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new IllegalArgumentException("Эта почта уже используется.");
+            throw new EntityExistsException("Эта почта уже используется.");
         }
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.ADMIN);
         User newAdmin = userRepository.save(user);
-        auditLogRepository.save(new AuditLog(CREATE, newAdmin, currentUser));
+        auditLogRepository.save(new AuditLog(CREATE, newAdmin, userEntity(currentUser)));
         return newAdmin;
+    }
+
+    private User userEntity(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userRepository.findByEmail(currentUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Не найден " + currentUser.getUsername()));
+        if (id.equals(userEntity.getId())) {
+            throw new IllegalArgumentException("Нельзя выполнить действие над самим собой");
+        }
+        return userEntity;
+    }
+
+    private User userEntity(UserDetailsImpl currentUser) {
+        return userRepository.findByEmail(currentUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Не найден " + currentUser.getUsername()));
     }
 }

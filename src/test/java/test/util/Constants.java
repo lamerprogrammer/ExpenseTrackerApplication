@@ -7,7 +7,6 @@ public final class Constants {
     public static final String USER_EMAIL = "user@example.com";
     public static final String USER_PASSWORD = "123";
     public static final String API_TEST_ENDPOINT = "/api/test";
-    public static final Long ID_VALID = 42L;
     public static final Long ID_INVALID = 99L;
 
     private Constants() {}

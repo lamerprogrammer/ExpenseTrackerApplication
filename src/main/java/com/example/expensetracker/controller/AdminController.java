@@ -1,5 +1,6 @@
 package com.example.expensetracker.controller;
 
+import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.UserResponseDto;
 import com.example.expensetracker.model.User;
@@ -32,7 +33,7 @@ public class AdminController {
     @PutMapping("/{id}/ban")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> banUser(@PathVariable Long id,
-                                          @AuthenticationPrincipal User currentUser) {
+                                          @AuthenticationPrincipal UserDetailsImpl currentUser) {
         User user = adminService.banUser(id, currentUser);
         return ResponseEntity.ok("Пользователь " + user.getEmail() + " заблокирован");
     }
@@ -40,7 +41,7 @@ public class AdminController {
     @PutMapping("/{id}/unban")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> unbanUser(@PathVariable Long id,
-                                            @AuthenticationPrincipal User currentUser) {
+                                            @AuthenticationPrincipal UserDetailsImpl currentUser) {
         User user = adminService.unbanUser(id, currentUser);
         return ResponseEntity.ok("Пользователь " + user.getEmail() + " разблокирован");
     }
@@ -48,7 +49,7 @@ public class AdminController {
     @DeleteMapping("/{id}/delete")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable Long id,
-                                             @AuthenticationPrincipal User currentUser) {
+                                             @AuthenticationPrincipal UserDetailsImpl currentUser) {
         User user = adminService.deleteUser(id, currentUser);
         return ResponseEntity.ok("Пользователь " + user.getEmail() + " удалён");
     }
@@ -56,7 +57,7 @@ public class AdminController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponseDto> createAdmin(@Valid @RequestBody RegisterDto dto,
-                                                       @AuthenticationPrincipal User currentUser) {
+                                                       @AuthenticationPrincipal UserDetailsImpl currentUser) {
         return ResponseEntity.ok(UserResponseDto.fromEntity(adminService.createAdmin(dto, currentUser)));
     }
 }

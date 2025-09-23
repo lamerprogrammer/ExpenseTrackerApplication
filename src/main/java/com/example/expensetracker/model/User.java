@@ -3,12 +3,14 @@ package com.example.expensetracker.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Where(clause = "deleted = false")
 public class User {
 
     @Id
@@ -31,6 +33,9 @@ public class User {
 
     @Column(nullable = false)
     private boolean banned = false;
+    
+    @Column(nullable = false)
+    private boolean deleted = false; 
 
     public User() {}
 
@@ -80,6 +85,14 @@ public class User {
 
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public static class UserBuilder {
