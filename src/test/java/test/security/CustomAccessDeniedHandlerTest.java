@@ -1,6 +1,5 @@
 package test.security;
 
-import com.example.expensetracker.security.ApiResponseFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.security.CustomAccessDeniedHandler;
@@ -26,15 +25,13 @@ public class CustomAccessDeniedHandlerTest {
 
     private ObjectMapper objectMapper;
     private CustomAccessDeniedHandler handler;
-    private ApiResponseFactory factory;
     private Instant now = Instant.now();
 
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        factory = mock(ApiResponseFactory.class);
-        handler = new CustomAccessDeniedHandler(objectMapper, factory);
+        handler = new CustomAccessDeniedHandler(objectMapper);
     }
 
     @Test
@@ -45,18 +42,11 @@ public class CustomAccessDeniedHandlerTest {
 
         when(request.getRequestURI()).thenReturn("/api/admin/users");
         when(response.getOutputStream()).thenReturn(writeByteToStream(baos));
-        when(factory.forbidden(any())).thenReturn(new ApiResponse(
-                now,
-                HttpStatus.FORBIDDEN.value(),
-                HttpStatus.FORBIDDEN.getReasonPhrase(),
-                "Mocked message.",
-                "/api/admin/users"));
 
         handler.handle(request, response, new AccessDeniedException("Forbidden"));
 
         verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
         verify(response).setContentType("application/json");
-        verify(factory).forbidden("/api/admin/users");
 
         String json = baos.toString();
         ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
@@ -76,18 +66,11 @@ public class CustomAccessDeniedHandlerTest {
 
         when(request.getRequestURI()).thenReturn(null);
         when(response.getOutputStream()).thenReturn(writeByteToStream(baos));
-        when(factory.forbidden(any())).thenReturn(new ApiResponse(
-                now,
-                HttpStatus.FORBIDDEN.value(),
-                HttpStatus.FORBIDDEN.getReasonPhrase(),
-                "Mocked message.",
-                null));
 
         handler.handle(request, response, new AccessDeniedException("Forbidden"));
 
         verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
         verify(response).setContentType("application/json");
-        verify(factory).forbidden(isNull());
 
         String json = baos.toString();
         ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);

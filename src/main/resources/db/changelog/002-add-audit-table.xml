@@ -11,12 +11,30 @@
             <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="action" type="varchar(20)">
+            <column name="action" type="varchar(50)">
                     <constraints nullable="false"/>
             </column>
-            <column name="target_user_id" type="bigint"/>
-            <column name="performed_by" type="varchar(255)"/>
-            <column name="time_stamp" type="timestamp"/>
+            <column name="target_user_id" type="bigint">
+                    <constraints nullable="false"/>
+            </column>
+            <column name="performed_by" type="bigint">
+            <constraints nullable="false"/>
+        </column>
+            <column name="time_stamp" type="timestamp">
+            <constraints nullable="false"/>
+        </column>
         </createTable>
+        
+        <addForeignKeyConstraint baseTableName="admin_audit" 
+                                 baseColumnNames="target_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_admin_audit_target_user"/>
+        
+        <addForeignKeyConstraint baseTableName="admin_audit" 
+                                 baseColumnNames="performed_by" 
+                                 constraintName="fk_admin_audit_performed_by" 
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

@@ -3,7 +3,7 @@ package test.util;
 import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RegisterDto;
-import com.example.expensetracker.dto.UserResponseDto;
+import com.example.expensetracker.dto.UserDto;
 import com.example.expensetracker.logging.AppLog;
 import com.example.expensetracker.logging.AuditLevel;
 import com.example.expensetracker.model.Role;
@@ -107,11 +107,11 @@ public class TestData {
         return user;
     }
     
-    public static UserResponseDto userResponseDto() {
+    public static UserDto userResponseDto() {
         return userResponseDto(42L, USER_EMAIL);
     }
 
-    public static UserResponseDto userResponseDto(Long id, String email) {
-        return new UserResponseDto(id, email);
+    public static UserDto userResponseDto(Long id, String email) {
+        return new UserDto(id, email);
     }
 }

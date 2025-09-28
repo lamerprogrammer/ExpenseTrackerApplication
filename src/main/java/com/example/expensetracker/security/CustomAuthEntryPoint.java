@@ -12,21 +12,21 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Instant;
 
+import static com.example.expensetracker.dto.ApiResponseFactory.unauthorized;
+
 @Component
 public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
-    private final ApiResponseFactory apiResponseFactory;
 
-    public CustomAuthEntryPoint(ObjectMapper objectMapper, ApiResponseFactory apiResponseFactory) {
+    public CustomAuthEntryPoint(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.apiResponseFactory = apiResponseFactory;
     }
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        ApiResponse apiResponse = apiResponseFactory.unauthorized(request.getRequestURI());
+        ApiResponse apiResponse = unauthorized(request);
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

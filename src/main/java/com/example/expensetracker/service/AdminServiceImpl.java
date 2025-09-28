@@ -2,6 +2,7 @@ package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.model.AuditLog;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
@@ -9,6 +10,8 @@ import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> getAllUsersPaged(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> 
+                new UserNotFoundByIdException("Пользователь с ID " + id + " не найден"));
     }
 
     @Override
@@ -78,15 +92,31 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public User createAdmin(RegisterDto dto, UserDetailsImpl currentUser) {
-        if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new EntityExistsException("Эта почта уже используется.");
-        }
+        existenceCheck(dto);
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.ADMIN);
         User newAdmin = userRepository.save(user);
         auditLogRepository.save(new AuditLog(CREATE, newAdmin, userEntity(currentUser)));
         return newAdmin;
+    }
+
+    @Override
+    @Transactional
+    public User createModerator(RegisterDto dto, UserDetailsImpl currentUser) {
+        existenceCheck(dto);
+        User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(Role.MODERATOR);
+        User newModerator = userRepository.save(user);
+        auditLogRepository.save(new AuditLog(CREATE, newModerator, userEntity(currentUser)));
+        return newModerator;
+    }
+
+    private void existenceCheck(RegisterDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new EntityExistsException("Эта почта уже используется.");
+        }
     }
 
     private User userEntity(Long id, UserDetailsImpl currentUser) {

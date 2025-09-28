@@ -1,9 +1,13 @@
 package com.example.expensetracker.exception;
 
 import com.example.expensetracker.dto.ApiResponse;
+import com.example.expensetracker.dto.ApiResponseFactory;
+import com.example.expensetracker.dto.UserDto;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,62 +38,86 @@ public class GlobalExceptionHandler {
         this.messageSource = messageSource;
     }
 
-    private String msg(String code) {
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
-    }
-
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiResponse> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleBadCredentials(BadCredentialsException ex, 
+                                                                     HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, msg("handle.bad.credentials"), request, ex);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiResponse> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleAccessDenied(AccessDeniedException ex, 
+                                                                   HttpServletRequest request) {
         return buildResponse(HttpStatus.FORBIDDEN, msg("handle.access.denied"), request, ex);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleEntityNotFound(EntityNotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleEntityNotFound(EntityNotFoundException ex, 
+                                                                     HttpServletRequest request) {
         return buildResponse(HttpStatus.NOT_FOUND, msg("handle.entity.not.found"), request, ex);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleDataIntegrityViolation(DataIntegrityViolationException ex, 
+                                                                             HttpServletRequest request) {
         return buildResponse(HttpStatus.CONFLICT, msg("handle.data.integrity.violation"), request, ex);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleIllegalArgument(IllegalArgumentException ex, 
+                                                                      HttpServletRequest request) {
         return buildResponse(HttpStatus.BAD_REQUEST, msg("handle.illegal.argument"), request, ex);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleUsernameNotFound(UsernameNotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleUsernameNotFound(UsernameNotFoundException ex, 
+                                                                       HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, msg("handle.username.not.found"), request, ex);
+    }
+
+    @ExceptionHandler(UserNotFoundByIdException.class)
+    public ResponseEntity<ApiResponse<UserDto>> handleUserNotFoundById(UserNotFoundByIdException ex, 
+                                                                       HttpServletRequest request) {
+        return buildResponse(HttpStatus.NOT_FOUND, msg("handle.user.not.found.by.id"), request, ex);
     }
     
     @ExceptionHandler(EntityExistsException.class)
-    public ResponseEntity<ApiResponse> handleEntityExists(EntityExistsException ex, HttpServletRequest request) {
-        return buildResponse(HttpStatus.FORBIDDEN, msg("handle.entity.exists"), request, ex);
+    public ResponseEntity<ApiResponse<UserDto>> handleEntityExists(EntityExistsException ex,
+                                                                   HttpServletRequest request) {
+        return buildResponse(HttpStatus.CONFLICT, msg("handle.entity.exists"), request, ex);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+    public ResponseEntity<ApiResponse<UserDto>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                     HttpServletRequest request) {
-        List<String> errorMessage = ex.getBindingResult().getFieldErrors().stream()
+        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> Objects.requireNonNullElse(error.getDefaultMessage(), msg("validation.error")))
                 .toList();
-        String message = errorMessage.isEmpty() ? msg("validation.error") : String.join(". ", errorMessage);
+        String message = errors.isEmpty() ? msg("validation.error") : String.join(". ", errors);
+        
+        log.warn("Validation error: user={} path={} errors={}",
+                request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous",
+                request.getRequestURI(),
+                errors);
+        return ApiResponseFactory.validationError(HttpStatus.BAD_REQUEST, message, request, errors);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<UserDto>> handleMethodArgumentNotValid(ConstraintViolationException ex,
+                                                                             HttpServletRequest request) {
+        List<String> errors = ex.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage)
+                .toList();
+        String message = errors.isEmpty() ? msg("validation.error") : String.join(". ", errors);
         return buildResponse(HttpStatus.BAD_REQUEST, message, request, ex);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleGeneric(Exception ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UserDto>> handleGeneric(Exception ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, msg("handle.generic"),
                 request, ex);
     }
 
-    private ResponseEntity<ApiResponse> buildResponse(
+    private <T> ResponseEntity<ApiResponse<T>> buildResponse(
             HttpStatus status, String message, HttpServletRequest request, Exception ex) {
 
         String user = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
@@ -101,16 +128,13 @@ public class GlobalExceptionHandler {
             log.error("GlobalExceptionHandler | user={} path={} status={} message={}\n{}",
                     user, request.getRequestURI(), status.value(), message, writer);
         } else {
-            log.warn("GlobalExceptionHandler: пользователь: {} путь: {} сообщение: {}",
+            log.warn("GlobalExceptionHandler: user: {} path: {} message: {}",
                     user, request.getRequestURI(), message);
         }
+        return ApiResponseFactory.error(status, ex.getClass().getSimpleName(), message, request);
+    }
 
-        ApiResponse response = new ApiResponse(
-                Instant.now(),
-                status.value(),
-                status.getReasonPhrase(),
-                message,
-                request.getRequestURI());
-        return ResponseEntity.status(status).body(response);
+    private String msg(String code) {
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
-public class LoginDto {
+public final class LoginDto {
 
     @Email(message = "{user.email.invalid}")
     @NotBlank(message = "{user.email.not-blank}")

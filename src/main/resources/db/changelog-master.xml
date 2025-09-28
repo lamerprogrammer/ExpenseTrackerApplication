@@ -8,5 +8,4 @@
 
     <include file="db/changelog/001-create-users.xml"/>
     <include file="db/changelog/002-add-audit-table.xml"/>
-    <include file="db/changelog/003-insert-test-audit-data.xml"/>
 </databaseChangeLog>

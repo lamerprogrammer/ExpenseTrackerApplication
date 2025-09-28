@@ -1,6 +1,7 @@
 package com.example.expensetracker.security;
 
 import com.example.expensetracker.dto.ApiResponse;
+import com.example.expensetracker.dto.ApiResponseFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,21 +13,21 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Instant;
 
+import static com.example.expensetracker.dto.ApiResponseFactory.forbidden;
+
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
-    private final ApiResponseFactory apiResponseFactory;
 
-    public CustomAccessDeniedHandler(ObjectMapper objectMapper, ApiResponseFactory apiResponseFactory) {
+    public CustomAccessDeniedHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.apiResponseFactory = apiResponseFactory;
     }
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
-        ApiResponse apiResponse = apiResponseFactory.forbidden(request.getRequestURI());
+        ApiResponse apiResponse = forbidden(request);
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

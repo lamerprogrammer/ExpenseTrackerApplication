@@ -34,18 +34,15 @@ public class AuthServiceImpl implements AuthService {
     private final LogService logService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MessageSource messageSource;
 
     public AuthServiceImpl(JwtUtil jwtUtil, 
                            LogService logService, 
                            UserRepository userRepository, 
-                           PasswordEncoder passwordEncoder, 
-                           MessageSource messageSource) {
+                           PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
         this.logService = logService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.messageSource = messageSource;
     }
 
     @Override
@@ -53,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         log.debug("Попытка регистрации: {}", dto.getEmail());
         if (userRepository.existsByEmail(dto.getEmail())) {
             log.warn("Регистрации провалилась: почта {} уже используется", dto.getEmail());
-            throw new DataIntegrityViolationException(msg("user.email.already-exists"));
+            throw new DataIntegrityViolationException("Эта почта уже используется");
         }
         User user = User.builder()
                     .email(dto.getEmail())
@@ -80,11 +77,11 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> {
                     log.warn("Авторизация провалилась: почта {} не найдена", dto.getEmail());
-                    return new BadCredentialsException(msg("user.email.incorrect"));
+                    return new BadCredentialsException("Неверная почта");
                 });
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             log.warn("Авторизация провалилась: не верный пароль для почты {}", dto.getEmail());
-            throw new BadCredentialsException(msg("user.password.incorrect"));
+            throw new BadCredentialsException("Неверный пароль");
         }
         log.info("Успешная авторизация: {}", dto.getEmail());
         logService.log(LogEntry.builder()
@@ -107,11 +104,11 @@ public class AuthServiceImpl implements AuthService {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> {
                         log.warn("Неудачная попытка обновления токена, пользователь {} не найден", email);
-                        return new UsernameNotFoundException(msg("user.not-found"));
+                        return new UsernameNotFoundException("Пользователь не найден");
                     });
             if (user.isBanned()) {
                 log.warn("Неудачная попытка обновления токена, пользователь {} заблокирован", email);
-                throw new AccessDeniedException(msg("account.banned"));
+                throw new AccessDeniedException("Ваш аккаунт заблокирован");
             }
             log.info("Успешное обновление токена, пользователя {}", email);
             logService.log(LogEntry.builder()
@@ -127,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
             throw e;
         } catch (Exception e) {
             log.error("Ошибка обновление токена, пользователя {}", e.getMessage(), e);
-            throw new BadCredentialsException(msg("token.invalid"));
+            throw new BadCredentialsException("Невалидный токен");
         }
     }
 
@@ -135,9 +132,5 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next());
         String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
         return new TokenResponse(accessToken, refreshToken);
-    }
-
-    private String msg(String code) {
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 }

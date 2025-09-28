@@ -20,7 +20,7 @@ public class AuditLog {
     private User targetUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "performed_by_id", nullable = false)
+    @JoinColumn(name = "performed_by", nullable = false)
     private User performedBy;
 
     private Instant timeStamp = Instant.now();
