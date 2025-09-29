@@ -2,15 +2,11 @@ package test.controller;
 
 import com.example.expensetracker.ExpenseTrackerApplication;
 import com.example.expensetracker.config.TestBeansConfig;
-import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +17,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import test.security.WithMockCustomUser;
-import test.util.TestData;
 
 import java.util.Locale;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,6 +54,12 @@ public class ModeratorControllerIntegrationTest {
     private String name = "newModer";
     private String email = UUID.randomUUID() + "@example.com";
     private String password = "pass";
+
+    @BeforeEach
+    void setUp() {
+        cleanDB();
+    }
+
 
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
@@ -118,8 +119,9 @@ public class ModeratorControllerIntegrationTest {
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldUserBanned_whenUserExists() throws Exception {
         User user = createUser(email, Role.USER);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
-                .andExpect(status().isOk())//java.lang.AssertionError: Status expected:<200> but was:<401> 
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/ban"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
@@ -130,9 +132,10 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenUserIsModer() throws Exception {
-        User user = createUser(email, Role.USER);
+        User user = createUser(email, Role.MODERATOR);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
-                .andExpect(status().isForbidden())//java.lang.AssertionError: Status expected:<200> but was:<401> 
+                .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/ban"));
     }
@@ -140,9 +143,10 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenUserIsAdmin() throws Exception {
-        User user = createUser(email, Role.USER);
+        User user = createUser(email, Role.ADMIN);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
-                .andExpect(status().isForbidden())//java.lang.AssertionError: Status expected:<200> but was:<401> 
+                .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/ban"));
     }
@@ -150,10 +154,9 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenIdMatches() throws Exception {
-        cleanDB();
-        User user = createUser(ADMIN_EMAIL, Role.ADMIN);
+        User user = createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
-                .andExpect(status().isBadRequest())//java.lang.AssertionError: Status expected:<400> but was:<401> 
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("IllegalArgumentException"))
                 .andExpect(jsonPath("$.message").value(msg("handle.illegal.argument")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/ban"));
@@ -162,8 +165,9 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenUserNotExists() throws Exception {
+        createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", ID_INVALID))
-                .andExpect(status().isNotFound())//java.lang.AssertionError: Status expected:<404> but was:<401> 
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
     }
 
@@ -171,8 +175,9 @@ public class ModeratorControllerIntegrationTest {
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void unbanUser_shouldUserUnbanned_whenUserExists() throws Exception {
         User user = createUser(email, Role.USER);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", user.getId()))
-                .andExpect(status().isOk())//java.lang.AssertionError: Status expected:<200> but was:<401> 
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("unban.user")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/unban"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
@@ -183,8 +188,9 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
+        createUser(MODERATOR_EMAIL, Role.MODERATOR);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", ID_INVALID))
-                .andExpect(status().isNotFound())//java.lang.AssertionError: Status expected:<404> but was:<401> 
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
     }
 
@@ -201,7 +207,7 @@ public class ModeratorControllerIntegrationTest {
     }
 
     private void cleanDB() {
-        jdbcTemplate.execute("TRUNCATE TABLE admin_audit CASCADE");//SQL dialect is not configured.  - что это значит? IDE жёлтым закрашивает
+        jdbcTemplate.execute("TRUNCATE TABLE admin_audit CASCADE");
         jdbcTemplate.execute("TRUNCATE TABLE users CASCADE");
     }
 }
