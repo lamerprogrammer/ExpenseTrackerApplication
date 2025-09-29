@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import test.security.WithMockCustomUser;
@@ -26,7 +25,6 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -165,10 +163,70 @@ public class AdminControllerIntegrationTest {
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
         mockMvc.perform(put("/api/admin/users/{id}/unban", ID_INVALID))
-                .andExpect(status().isNotFound())//java.lang.AssertionError: Status expected:<404> but was:<401> 
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
     }
 
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    void promoteUser_shouldAddRoleModerator_whenUserExists() throws Exception {
+        User user = createUser(email, Role.USER);
+        mockMvc.perform(put("/api/admin/users/{id}/promote", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("increase.user")))
+                .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/promote"))
+                .andExpect(jsonPath("$.data").isNotEmpty());
+    }
+    
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    void promoteUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
+        mockMvc.perform(put("/api/admin/users/{id}/promote", ID_INVALID))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    void promoteUser_shouldReturnUser_whenUserRoleAlreadyExists() throws Exception {
+        User user = createUser(email, Role.MODERATOR);
+        mockMvc.perform(put("/api/admin/users/{id}/promote", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("increase.user")))
+                .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/promote"))
+                .andExpect(jsonPath("$.data.email").value(user.getEmail()));
+    }
+
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    void demoteUser_shouldAddRoleModerator_whenUserExists() throws Exception {
+        User user = createUser(email, Role.USER);
+        mockMvc.perform(put("/api/admin/users/{id}/demote", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("decrease.user")))
+                .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/demote"))
+                .andExpect(jsonPath("$.data").isNotEmpty());
+    }
+
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    void demoteUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
+        mockMvc.perform(put("/api/admin/users/{id}/demote", ID_INVALID))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
+    void demoteUser_shouldReturnUser_whenUserRoleAlreadyRemoved() throws Exception {
+        User user = createUser(email, Role.USER);
+        mockMvc.perform(put("/api/admin/users/{id}/demote", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("decrease.user")))
+                .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/demote"))
+                .andExpect(jsonPath("$.data.email").value(user.getEmail()));
+    }
+    
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void deleteUser_shouldUserDelete_whenUserExists() throws Exception {

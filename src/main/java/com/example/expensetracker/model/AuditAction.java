@@ -4,5 +4,7 @@ public enum AuditAction {
     BAN,
     UNBAN,
     DELETE,
-    CREATE
+    CREATE,
+    PROMOTE,
+    DEMOTE
 }

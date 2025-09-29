@@ -1,37 +1,37 @@
-09:53:13.851 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
-09:53:13.880 [main] INFO  t.c.AdminControllerIntegrationTest - Starting AdminControllerIntegrationTest using Java 17.0.16 with PID 5060 (started by lamer in C:\Users\lamer\IdeaProjects\expense-tracker)
-09:53:13.880 [main] INFO  t.c.AdminControllerIntegrationTest - The following 1 profile is active: "test"
-09:53:14.361 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-09:53:14.361 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-09:53:14.386 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.expensetracker.logging.AppLogRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
-09:53:14.401 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 32 ms. Found 2 JPA repository interfaces.
-09:53:14.819 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
-09:53:14.831 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
-09:53:14.831 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-09:53:14.831 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.44]
-09:53:14.885 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-09:53:14.885 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1001 ms
-09:53:14.966 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-09:53:15.108 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@92fd091
-09:53:15.108 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-09:53:15.185 [main] INFO  liquibase.database - Set default schema name to public
-09:53:15.465 [main] INFO  liquibase.changelog - Reading from public.databasechangelog
-09:53:15.505 [main] INFO  liquibase.ui - Database is up to date, no changesets to execute
-09:53:15.505 [main] INFO  liquibase.changelog - Reading from public.databasechangelog
-09:53:15.513 [main] INFO  liquibase.util - UPDATE SUMMARY
-09:53:15.513 [main] INFO  liquibase.util - Run:                          0
-09:53:15.513 [main] INFO  liquibase.util - Previously run:               2
-09:53:15.513 [main] INFO  liquibase.util - Filtered out:                 0
-09:53:15.513 [main] INFO  liquibase.util - -------------------------------
-09:53:15.513 [main] INFO  liquibase.util - Total change sets:            2
-09:53:15.513 [main] INFO  liquibase.util - Update summary generated
-09:53:15.513 [main] INFO  liquibase.command - Command execution complete
-09:53:16.237 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-09:53:16.272 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.26.Final
-09:53:16.303 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-09:53:16.449 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-09:53:16.470 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-09:53:16.483 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+10:37:41.012 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+10:37:41.038 [main] INFO  t.c.AdminControllerIntegrationTest - Starting AdminControllerIntegrationTest using Java 17.0.16 with PID 11940 (started by lamer in C:\Users\lamer\IdeaProjects\expense-tracker)
+10:37:41.038 [main] INFO  t.c.AdminControllerIntegrationTest - The following 1 profile is active: "test"
+10:37:41.508 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+10:37:41.508 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+10:37:41.533 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.expensetracker.logging.AppLogRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
+10:37:41.550 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 2 JPA repository interfaces.
+10:37:41.946 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
+10:37:41.959 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
+10:37:41.960 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:37:41.960 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.44]
+10:37:42.004 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:37:42.004 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 958 ms
+10:37:42.080 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:37:42.192 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7fb44737
+10:37:42.192 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:37:42.300 [main] INFO  liquibase.database - Set default schema name to public
+10:37:42.596 [main] INFO  liquibase.changelog - Reading from public.databasechangelog
+10:37:42.641 [main] INFO  liquibase.ui - Database is up to date, no changesets to execute
+10:37:42.642 [main] INFO  liquibase.changelog - Reading from public.databasechangelog
+10:37:42.649 [main] INFO  liquibase.util - UPDATE SUMMARY
+10:37:42.649 [main] INFO  liquibase.util - Run:                          0
+10:37:42.649 [main] INFO  liquibase.util - Previously run:               2
+10:37:42.649 [main] INFO  liquibase.util - Filtered out:                 0
+10:37:42.649 [main] INFO  liquibase.util - -------------------------------
+10:37:42.649 [main] INFO  liquibase.util - Total change sets:            2
+10:37:42.650 [main] INFO  liquibase.util - Update summary generated
+10:37:42.650 [main] INFO  liquibase.command - Command execution complete
+10:37:43.256 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+10:37:43.289 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.26.Final
+10:37:43.324 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+10:37:43.482 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+10:37:43.505 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+10:37:43.515 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 15.14
@@ -39,406 +39,502 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-09:53:16.922 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-09:53:16.926 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-09:53:17.063 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
-09:53:17.514 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-09:53:17.537 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
-09:53:17.639 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 24 mappings in 'requestMappingHandlerMapping'
-09:53:17.707 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
-09:53:17.736 [main] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, JwtAuthFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
-09:53:17.777 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-09:53:17.811 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
-09:53:18.106 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
-09:53:18.106 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring TestDispatcherServlet ''
-09:53:18.106 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
-09:53:18.106 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
-09:53:18.133 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
-09:53:18.137 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 51984 (http) with context path '/'
-09:53:18.141 [main] INFO  t.c.AdminControllerIntegrationTest - Started AdminControllerIntegrationTest in 4.437 seconds (process running for 5.026)
-09:53:18.213 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.229 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.288 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.288 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.288 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.292 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.292 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.319 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='not-email', password=****}]
-09:53:18.342 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.342 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Некорректная почта]
-09:53:18.346 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.346 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@39088acb]
-09:53:18.354 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value [not-email]; codes [Email.registerDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@72842269,.*]; default message [Некорректная почта]] ]
-09:53:18.387 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.387 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.387 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.387 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.387 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.387 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='', password=****}]
-09:53:18.387 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.387 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Почта обязательна]
-09:53:18.387 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.387 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@aebd00f]
-09:53:18.387 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value []; codes [NotBlank.registerDto.email,NotBlank.email,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email]]; default message [Почта обязательна]] ]
-09:53:18.394 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.394 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.394 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.394 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.394 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.395 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='not-email', password=****}]
-09:53:18.395 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.395 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Некорректная почта]
-09:53:18.395 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.395 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@2119bb3d]
-09:53:18.396 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value [not-email]; codes [Email.registerDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@72842269,.*]; default message [Некорректная почта]] ]
-09:53:18.400 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.400 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.400 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.400 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.400 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.400 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='', password=****}]
-09:53:18.401 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.401 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Почта обязательна]
-09:53:18.401 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.401 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@b0bb7f1]
-09:53:18.402 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value []; codes [NotBlank.registerDto.email,NotBlank.email,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email]]; default message [Почта обязательна]] ]
-09:53:18.405 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.405 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.405 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.405 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.405 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.405 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='6736a095-7e3e-4704-a006-6b1cea4cfe63@example.com', password=**** (truncated)...]
-09:53:18.408 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.416 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.424 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
-09:53:18.499 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.514 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.526 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.527 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.529 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.534 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.534 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@66f18fa]
-09:53:18.536 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.536 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.536 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.536 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.536 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.537 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='6736a095-7e3e-4704-a006-6b1cea4cfe63@example.com', password=**** (truncated)...]
-09:53:18.537 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.537 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.537 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
-09:53:18.539 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityExists(EntityExistsException, HttpServletRequest)
-09:53:18.539 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/create/moderator message: Сущность уже есть
-09:53:18.539 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.540 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@31423ae6]
-09:53:18.540 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityExistsException: Эта почта уже используется.]
-09:53:18.560 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.562 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.565 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/72/ban
-09:53:18.565 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/72/ban
-09:53:18.565 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.565 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/72/ban
-09:53:18.565 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#banUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.566 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.566 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.567 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.569 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.571 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleIllegalArgument(IllegalArgumentException, HttpServletRequest)
-09:53:18.571 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/72/ban message: Некорректный запрос
-09:53:18.571 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.571 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@5db94eaf]
-09:53:18.571 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Нельзя выполнить действие над самим собой]
-09:53:18.574 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/99/ban
-09:53:18.574 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/ban
-09:53:18.574 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.574 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/99/ban
-09:53:18.574 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#banUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.574 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.574 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.574 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.577 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.583 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.585 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
-09:53:18.585 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/ban message: Запрошенный ресурс не найден
-09:53:18.586 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.586 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@42caaae4]
-09:53:18.586 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
-09:53:18.589 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.589 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.590 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.590 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.590 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.590 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='', email='29ac00c2-ec3e-42c1-a0ee-fdd5845e9fde@example.com', password=****}]
-09:53:18.590 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.590 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Имя пользователя не может быть пустым]
-09:53:18.591 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.591 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@513e0c9a]
-09:53:18.591 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'name': rejected value []; codes [NotBlank.registerDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.name,name]; arguments []; default message [name]]; default message [Имя пользователя не может быть пустым]] ]
-09:53:18.594 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/99
-09:53:18.594 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99
-09:53:18.594 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.594 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/99
-09:53:18.595 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getUserById(long, HttpServletRequest)
-09:53:18.595 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.595 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.596 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.600 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleUserNotFoundById(UserNotFoundByIdException, HttpServletRequest)
-09:53:18.600 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99 message: Пользователь не найден
-09:53:18.600 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.600 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@5fa842b5]
-09:53:18.600 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.example.expensetracker.exception.UserNotFoundByIdException: Пользователь с ID 99 не найден]
-09:53:18.605 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.605 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.605 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.605 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.605 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.605 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='571423e3-a7e7-45b8-8c0d-f44474ed059c@example.com', password=**** (truncated)...]
-09:53:18.605 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.605 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.606 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
-09:53:18.653 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.657 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.657 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.657 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.657 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.661 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.661 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@6a65daed]
-09:53:18.661 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.661 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.661 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.661 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.661 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.661 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='571423e3-a7e7-45b8-8c0d-f44474ed059c@example.com', password=**** (truncated)...]
-09:53:18.661 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.661 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.661 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
-09:53:18.665 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityExists(EntityExistsException, HttpServletRequest)
-09:53:18.665 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/create/administrator message: Сущность уже есть
-09:53:18.665 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.665 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@413d15d5]
-09:53:18.665 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityExistsException: Эта почта уже используется.]
-09:53:18.670 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.670 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.670 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.671 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.671 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.671 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='ea7ce255-02dd-49b8-abd5-7237fa3a26b4@example.com', password=**** (truncated)...]
-09:53:18.672 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.672 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Пароль обязателен]
-09:53:18.672 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.672 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@17abb298]
-09:53:18.672 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'password': rejected value []; codes [NotBlank.registerDto.password,NotBlank.password,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.password,password]; arguments []; default message [password]]; default message [Пароль обязателен]] ]
-09:53:18.675 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.675 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.675 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.675 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.675 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.675 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='715125c3-226e-4bef-b52d-ae2b4ebdfd2a@example.com', password=**** (truncated)...]
-09:53:18.676 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.676 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Пароль обязателен]
-09:53:18.676 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.676 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@4fd1458d]
-09:53:18.676 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'password': rejected value []; codes [NotBlank.registerDto.password,NotBlank.password,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.password,password]; arguments []; default message [password]]; default message [Пароль обязателен]] ]
-09:53:18.678 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/-1
-09:53:18.678 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/-1
-09:53:18.678 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.678 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/-1
-09:53:18.678 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getUserById(long, HttpServletRequest)
-09:53:18.678 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.678 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.682 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(ConstraintViolationException, HttpServletRequest)
-09:53:18.682 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/-1 message: должно быть больше 0
-09:53:18.682 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.682 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@2653b95f]
-09:53:18.682 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.validation.ConstraintViolationException: getUserById.id: должно быть больше 0]
-09:53:18.686 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.686 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.686 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.686 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.686 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.686 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='', email='6044619b-8337-4df7-9498-5e9dc2081670@example.com', password=****}]
-09:53:18.686 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
-09:53:18.686 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Имя пользователя не может быть пустым]
-09:53:18.686 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.686 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@47338b8b]
-09:53:18.686 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'name': rejected value []; codes [NotBlank.registerDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.name,name]; arguments []; default message [name]]; default message [Имя пользователя не может быть пустым]] ]
-09:53:18.690 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.692 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.694 [main] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/admin/users/74/delete
-09:53:18.694 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/74/delete
-09:53:18.694 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.694 [main] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/admin/users/74/delete
-09:53:18.694 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#deleteUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.694 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.694 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.695 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.696 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.697 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.698 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.703 [main] DEBUG org.hibernate.SQL - update users set banned=?,deleted=?,email=?,password=? where id=?
-09:53:18.705 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.706 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@12882698]
-09:53:18.707 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
-09:53:18.740 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
-09:53:18.740 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
-09:53:18.740 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.740 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
-09:53:18.740 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.740 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='abc86e61-7fe9-4254-b96b-37990f868887@example.com', password=**** (truncated)...]
-09:53:18.740 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.740 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.741 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
-09:53:18.789 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.791 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.792 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.793 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.794 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.796 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.796 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@7008055]
-09:53:18.797 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
-09:53:18.813 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.814 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.817 [main] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/admin/users/76/delete
-09:53:18.817 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/76/delete
-09:53:18.817 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.817 [main] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/admin/users/76/delete
-09:53:18.818 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#deleteUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.818 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.818 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.818 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.819 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.821 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleIllegalArgument(IllegalArgumentException, HttpServletRequest)
-09:53:18.821 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/76/delete message: Некорректный запрос
-09:53:18.821 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.821 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@30b3d9ef]
-09:53:18.821 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Нельзя выполнить действие над самим собой]
-09:53:18.823 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
-09:53:18.823 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
-09:53:18.824 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.824 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
-09:53:18.824 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
-09:53:18.824 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='e6da0212-0c96-4f0d-ab85-5e3c27897c8d@example.com', password=**** (truncated)...]
-09:53:18.824 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.824 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.825 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
-09:53:18.870 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.873 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.876 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.877 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.878 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.881 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.881 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@7647d789]
-09:53:18.882 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
-09:53:18.886 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users
-09:53:18.886 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users
-09:53:18.886 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.886 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users
-09:53:18.886 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getAllUsers(HttpServletRequest)
-09:53:18.887 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getAllUsers(jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.887 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getAllUsers(jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.887 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false)
-09:53:18.888 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.889 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.890 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.890 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3ae2721b]
-09:53:18.895 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/99/unban
-09:53:18.895 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/unban
-09:53:18.895 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.895 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/99/unban
-09:53:18.895 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#unbanUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.895 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.895 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.895 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.898 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.899 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.901 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
-09:53:18.901 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/unban message: Запрошенный ресурс не найден
-09:53:18.901 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.901 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@1711b63f]
-09:53:18.901 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
-09:53:18.903 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.904 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.906 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/78/ban
-09:53:18.906 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/78/ban
-09:53:18.906 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.906 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/78/ban
-09:53:18.906 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#banUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.906 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.906 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.907 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.908 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.909 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.910 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.911 [main] DEBUG org.hibernate.SQL - update users set banned=?,deleted=?,email=?,password=? where id=?
-09:53:18.913 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.913 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@4457e347]
-09:53:18.914 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
-09:53:18.916 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.920 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.921 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.923 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/79
-09:53:18.923 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/79
-09:53:18.923 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.923 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/79
-09:53:18.923 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getUserById(long, HttpServletRequest)
-09:53:18.923 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.923 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.923 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.925 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.925 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@23b824b3]
-09:53:18.929 [main] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/admin/users/99/delete
-09:53:18.929 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/delete
-09:53:18.929 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.930 [main] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/admin/users/99/delete
-09:53:18.930 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#deleteUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.930 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.930 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.931 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.932 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.933 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.934 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
-09:53:18.934 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/delete message: Запрошенный ресурс не найден
-09:53:18.934 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.934 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@46c2ed8d]
-09:53:18.935 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
-09:53:18.936 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.938 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.940 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/paged
-09:53:18.940 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/paged
-09:53:18.940 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.940 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/paged
-09:53:18.940 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getAllUsersInPage(Pageable, HttpServletRequest)
-09:53:18.942 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) offset ? rows fetch first ? rows only
-09:53:18.944 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.945 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.945 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.946 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.946 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.949 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.949 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@5c4b230c]
-09:53:18.951 [main] WARN  o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+10:37:43.944 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+10:37:43.945 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+10:37:44.080 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+10:37:44.514 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+10:37:44.544 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+10:37:44.652 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 28 mappings in 'requestMappingHandlerMapping'
+10:37:44.715 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+10:37:44.751 [main] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, JwtAuthFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+10:37:44.790 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+10:37:44.822 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+10:37:45.097 [main] DEBUG c.e.e.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+10:37:45.097 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring TestDispatcherServlet ''
+10:37:45.097 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+10:37:45.097 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
+10:37:45.121 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
+10:37:45.129 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 52037 (http) with context path '/'
+10:37:45.133 [main] INFO  t.c.AdminControllerIntegrationTest - Started AdminControllerIntegrationTest in 4.27 seconds (process running for 4.846)
+10:37:45.191 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.209 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.253 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.253 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.253 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.257 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.257 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.279 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='not-email', password=****}]
+10:37:45.301 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.301 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Некорректная почта]
+10:37:45.305 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.305 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@58fb9020]
+10:37:45.309 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value [not-email]; codes [Email.registerDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@76d448e6,.*]; default message [Некорректная почта]] ]
+10:37:45.338 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.338 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.338 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.338 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.338 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.338 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='', password=****}]
+10:37:45.338 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.338 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Почта обязательна]
+10:37:45.338 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.338 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@a10d314]
+10:37:45.338 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value []; codes [NotBlank.registerDto.email,NotBlank.email,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email]]; default message [Почта обязательна]] ]
+10:37:45.344 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.344 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.344 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.344 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.344 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.344 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='not-email', password=****}]
+10:37:45.344 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.344 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Некорректная почта]
+10:37:45.344 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.344 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@78571fe6]
+10:37:45.344 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value [not-email]; codes [Email.registerDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@76d448e6,.*]; default message [Некорректная почта]] ]
+10:37:45.350 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.350 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.350 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.350 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.350 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.350 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='', password=****}]
+10:37:45.350 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.350 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Почта обязательна]
+10:37:45.350 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.350 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3ef77de8]
+10:37:45.350 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'email': rejected value []; codes [NotBlank.registerDto.email,NotBlank.email,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.email,email]; arguments []; default message [email]]; default message [Почта обязательна]] ]
+10:37:45.354 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.354 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.354 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.354 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.354 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.354 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='c8d87993-2828-474f-924a-c8369ce4e3f3@example.com', password=**** (truncated)...]
+10:37:45.354 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.363 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.381 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
+10:37:45.461 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.474 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.475 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.476 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.479 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.480 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.492 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.492 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3f51fcf5]
+10:37:45.494 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.494 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.494 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.494 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.494 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.495 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='c8d87993-2828-474f-924a-c8369ce4e3f3@example.com', password=**** (truncated)...]
+10:37:45.495 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.495 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.496 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
+10:37:45.498 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityExists(EntityExistsException, HttpServletRequest)
+10:37:45.499 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/create/moderator message: Сущность уже есть
+10:37:45.499 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.499 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@621508de]
+10:37:45.499 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityExistsException: Эта почта уже используется.]
+10:37:45.518 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.522 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.525 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/33/ban
+10:37:45.525 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/33/ban
+10:37:45.525 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.526 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/33/ban
+10:37:45.526 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#banUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.526 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.527 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.527 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.528 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.530 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleIllegalArgument(IllegalArgumentException, HttpServletRequest)
+10:37:45.530 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/33/ban message: Некорректный запрос
+10:37:45.530 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.530 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@41cf885f]
+10:37:45.530 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Нельзя выполнить действие над самим собой]
+10:37:45.533 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/99/ban
+10:37:45.534 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/ban
+10:37:45.534 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.534 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/99/ban
+10:37:45.534 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#banUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.534 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.534 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.535 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.536 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.540 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.542 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
+10:37:45.542 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/ban message: Запрошенный ресурс не найден
+10:37:45.542 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.542 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@25a0c208]
+10:37:45.543 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
+10:37:45.545 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.545 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.545 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.546 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.546 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.546 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='', email='28b39357-1f84-40d9-873f-83c42a4a0d60@example.com', password=****}]
+10:37:45.546 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.546 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Имя пользователя не может быть пустым]
+10:37:45.546 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.547 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@9a72eee]
+10:37:45.547 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'name': rejected value []; codes [NotBlank.registerDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.name,name]; arguments []; default message [name]]; default message [Имя пользователя не может быть пустым]] ]
+10:37:45.550 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/99
+10:37:45.550 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99
+10:37:45.550 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.550 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/99
+10:37:45.550 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getUserById(long, HttpServletRequest)
+10:37:45.551 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.551 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.552 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.553 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleUserNotFoundById(UserNotFoundByIdException, HttpServletRequest)
+10:37:45.553 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99 message: Пользователь не найден
+10:37:45.553 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.553 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@79eade07]
+10:37:45.553 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.example.expensetracker.exception.UserNotFoundByIdException: Пользователь с ID 99 не найден]
+10:37:45.557 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.557 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.557 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.557 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.557 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.557 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='905013cc-e547-4fc6-ac4e-929052667318@example.com', password=**** (truncated)...]
+10:37:45.557 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.557 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.559 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
+10:37:45.606 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.606 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.606 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.606 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.611 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.612 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.614 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.614 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3b8bbfab]
+10:37:45.616 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
+10:37:45.649 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.649 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.649 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.649 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.649 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.650 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='a65f9355-dad5-46c6-9cdb-a3ef7747518e@example.com', password=**** (truncated)...]
+10:37:45.650 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.650 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.651 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
+10:37:45.696 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.701 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.702 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.703 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.704 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.705 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.707 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.707 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3402004f]
+10:37:45.708 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.708 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.708 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.708 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.709 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.709 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='a65f9355-dad5-46c6-9cdb-a3ef7747518e@example.com', password=**** (truncated)...]
+10:37:45.709 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.709 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.710 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
+10:37:45.711 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityExists(EntityExistsException, HttpServletRequest)
+10:37:45.711 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/create/administrator message: Сущность уже есть
+10:37:45.711 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.711 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@11cf7dd]
+10:37:45.711 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityExistsException: Эта почта уже используется.]
+10:37:45.714 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.715 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.717 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/36/demote
+10:37:45.717 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/36/demote
+10:37:45.717 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.717 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/36/demote
+10:37:45.717 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#demoteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.717 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.demoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.718 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.demoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.718 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.719 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.720 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.722 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.722 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@8968fe8]
+10:37:45.725 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.725 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.725 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.725 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.725 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.725 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='7e1a291d-cb2f-40b7-b93e-5c165b209713@example.com', password=**** (truncated)...]
+10:37:45.725 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.725 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Пароль обязателен]
+10:37:45.726 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.726 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@4765e57]
+10:37:45.726 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'password': rejected value []; codes [NotBlank.registerDto.password,NotBlank.password,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.password,password]; arguments []; default message [password]]; default message [Пароль обязателен]] ]
+10:37:45.728 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.728 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.728 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.728 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.728 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.728 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='db0e46e7-4053-4030-a4a9-e28828c0e238@example.com', password=**** (truncated)...]
+10:37:45.729 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.729 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/moderator errors=[Пароль обязателен]
+10:37:45.729 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.729 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@1f5359a8]
+10:37:45.730 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'password': rejected value []; codes [NotBlank.registerDto.password,NotBlank.password,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.password,password]; arguments []; default message [password]]; default message [Пароль обязателен]] ]
+10:37:45.733 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/-1
+10:37:45.733 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/-1
+10:37:45.733 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.733 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/-1
+10:37:45.733 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getUserById(long, HttpServletRequest)
+10:37:45.733 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.733 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.737 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(ConstraintViolationException, HttpServletRequest)
+10:37:45.737 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/-1 message: должно быть больше 0
+10:37:45.737 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.737 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@1b506c3b]
+10:37:45.738 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.validation.ConstraintViolationException: getUserById.id: должно быть больше 0]
+10:37:45.740 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/99/promote
+10:37:45.740 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/promote
+10:37:45.740 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.740 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/99/promote
+10:37:45.740 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#promoteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.741 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.promoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.741 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.promoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.741 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.742 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.742 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.744 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
+10:37:45.744 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/promote message: Запрошенный ресурс не найден
+10:37:45.744 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.744 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@2a53d576]
+10:37:45.745 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
+10:37:45.747 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/administrator
+10:37:45.747 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/administrator
+10:37:45.747 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.747 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/administrator
+10:37:45.747 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createAdmin(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.747 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='', email='fc2db778-397b-4114-bd5c-85b0e994dd18@example.com', password=****}]
+10:37:45.748 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleMethodArgumentNotValid(MethodArgumentNotValidException, HttpServletRequest)
+10:37:45.748 [main] WARN  c.e.e.e.GlobalExceptionHandler - Validation error: user=admin@example.com path=/api/admin/users/create/administrator errors=[Имя пользователя не может быть пустым]
+10:37:45.748 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.748 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3b24595e]
+10:37:45.748 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.expensetracker.dto.ApiResponse<com.example.expensetracker.dto.UserDto>> com.example.expensetracker.controller.AdminController.createAdmin(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest): [Field error in object 'registerDto' on field 'name': rejected value []; codes [NotBlank.registerDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [registerDto.name,name]; arguments []; default message [name]]; default message [Имя пользователя не может быть пустым]] ]
+10:37:45.750 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/99/demote
+10:37:45.750 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/demote
+10:37:45.750 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.750 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/99/demote
+10:37:45.750 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#demoteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.751 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.demoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.751 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.demoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.751 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.752 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.753 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.754 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
+10:37:45.754 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/demote message: Запрошенный ресурс не найден
+10:37:45.754 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.754 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@755a3ffb]
+10:37:45.754 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
+10:37:45.756 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.757 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.760 [main] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/admin/users/37/delete
+10:37:45.760 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/37/delete
+10:37:45.760 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.760 [main] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/admin/users/37/delete
+10:37:45.760 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#deleteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.760 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.760 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.761 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.762 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.762 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.763 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.768 [main] DEBUG org.hibernate.SQL - update users set banned=?,deleted=?,email=?,password=? where id=?
+10:37:45.770 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.770 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@58d103a4]
+10:37:45.771 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
+10:37:45.787 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.788 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.790 [main] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/admin/users/38/delete
+10:37:45.790 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/38/delete
+10:37:45.790 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.790 [main] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/admin/users/38/delete
+10:37:45.790 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#deleteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.790 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.790 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.791 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.792 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.793 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleIllegalArgument(IllegalArgumentException, HttpServletRequest)
+10:37:45.793 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/38/delete message: Некорректный запрос
+10:37:45.794 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.794 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@bb6bf68]
+10:37:45.794 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Нельзя выполнить действие над самим собой]
+10:37:45.796 [main] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/admin/users/create/moderator
+10:37:45.796 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/create/moderator
+10:37:45.796 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.796 [main] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/admin/users/create/moderator
+10:37:45.796 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#createModer(RegisterDto, UserDetailsImpl, HttpServletRequest)
+10:37:45.796 [main] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [RegisterDto{name='newAdmin', email='f8511140-1e2b-4771-ad9a-a44f74c1d0e8@example.com', password=**** (truncated)...]
+10:37:45.796 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.796 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.createModer(com.example.expensetracker.dto.RegisterDto,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.797 [main] DEBUG org.hibernate.SQL - select u1_0.id from users u1_0 where (u1_0.deleted = false) and u1_0.email=? fetch first ? rows only
+10:37:45.842 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.846 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.846 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.847 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.848 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.849 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.851 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.851 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@ab70bf2]
+10:37:45.851 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
+10:37:45.855 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.856 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.857 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/40/promote
+10:37:45.858 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/40/promote
+10:37:45.858 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.858 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/40/promote
+10:37:45.858 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#promoteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.858 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.promoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.858 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.promoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.859 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.860 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.860 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.862 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.862 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@646599c6]
+10:37:45.864 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users
+10:37:45.865 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users
+10:37:45.865 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.865 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users
+10:37:45.865 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getAllUsers(HttpServletRequest)
+10:37:45.865 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getAllUsers(jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.865 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getAllUsers(jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.865 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false)
+10:37:45.866 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.867 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.867 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.869 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.869 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@3117fd8]
+10:37:45.873 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/99/unban
+10:37:45.873 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/unban
+10:37:45.873 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.873 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/99/unban
+10:37:45.874 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#unbanUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.874 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.874 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.874 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.875 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.876 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.878 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
+10:37:45.878 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/unban message: Запрошенный ресурс не найден
+10:37:45.878 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.878 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@2908fc20]
+10:37:45.878 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
+10:37:45.880 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.881 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.882 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/41/demote
+10:37:45.882 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/41/demote
+10:37:45.883 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.883 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/41/demote
+10:37:45.883 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#demoteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.883 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.demoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.883 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.demoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.883 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.884 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.885 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.886 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.887 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@6304ff53]
+10:37:45.889 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.890 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.891 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/42/ban
+10:37:45.891 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/42/ban
+10:37:45.892 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.892 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/42/ban
+10:37:45.892 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#banUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.892 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.892 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.banUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.892 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.893 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.894 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.894 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.896 [main] DEBUG org.hibernate.SQL - update users set banned=?,deleted=?,email=?,password=? where id=?
+10:37:45.898 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.898 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@682f9202]
+10:37:45.898 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
+10:37:45.901 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.904 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.905 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.906 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/43
+10:37:45.906 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/43
+10:37:45.906 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.906 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/43
+10:37:45.907 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getUserById(long, HttpServletRequest)
+10:37:45.907 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.907 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getUserById(long,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.907 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.908 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.908 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@4415cc21]
+10:37:45.912 [main] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/admin/users/99/delete
+10:37:45.912 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/99/delete
+10:37:45.912 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.912 [main] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/admin/users/99/delete
+10:37:45.912 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#deleteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.913 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.913 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.deleteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.913 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.914 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.914 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.915 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.example.expensetracker.exception.GlobalExceptionHandler#handleEntityNotFound(EntityNotFoundException, HttpServletRequest)
+10:37:45.915 [main] WARN  c.e.e.e.GlobalExceptionHandler - GlobalExceptionHandler: user: admin@example.com path: /api/admin/users/99/delete message: Запрошенный ресурс не найден
+10:37:45.915 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.915 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@6903e134]
+10:37:45.916 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [jakarta.persistence.EntityNotFoundException: Пользователь не найден]
+10:37:45.918 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.919 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.921 [main] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/admin/users/paged
+10:37:45.921 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/paged
+10:37:45.921 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.921 [main] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/admin/users/paged
+10:37:45.921 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#getAllUsersInPage(Pageable, HttpServletRequest)
+10:37:45.922 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getAllUsersInPage(org.springframework.data.domain.Pageable,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.922 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.getAllUsersInPage(org.springframework.data.domain.Pageable,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.923 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) offset ? rows fetch first ? rows only
+10:37:45.925 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.925 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.926 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.926 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.928 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.928 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.928 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.931 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.931 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@222456bc]
+10:37:45.931 [main] WARN  o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
 	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
 	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
 
-09:53:18.958 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
-09:53:18.959 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
-09:53:18.961 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/81/unban
-09:53:18.961 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/81/unban
-09:53:18.961 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
-09:53:18.961 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/81/unban
-09:53:18.961 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#unbanUser(Long, UserDetailsImpl, HttpServletRequest)
-09:53:18.961 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.961 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
-09:53:18.962 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
-09:53:18.963 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
-09:53:18.964 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.965 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
-09:53:18.968 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
-09:53:18.968 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@1eb16e4b]
-09:53:18.969 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
-09:53:18.971 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
-09:53:18.976 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-09:53:19.070 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-09:53:19.074 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-09:53:19.074 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-09:53:19.079 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:37:45.942 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.944 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.946 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/45/unban
+10:37:45.946 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/45/unban
+10:37:45.946 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.946 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/45/unban
+10:37:45.946 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#unbanUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.946 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.946 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.unbanUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.948 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.948 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.949 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.951 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.951 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@2bd9722]
+10:37:45.952 [main] DEBUG org.hibernate.SQL - select al1_0.id,al1_0.action,al1_0.performed_by,al1_0.target_user_id,al1_0.time_stamp from admin_audit al1_0
+10:37:45.954 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.957 [main] DEBUG org.hibernate.SQL - insert into users (banned,deleted,email,password) values (?,?,?,?)
+10:37:45.959 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.961 [main] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/admin/users/46/promote
+10:37:45.961 [main] INFO  c.e.e.security.JwtAuthFilter - Мы внутри фильтра! URI: /api/admin/users/46/promote
+10:37:45.961 [main] INFO  c.e.e.security.JwtAuthFilter - Заголовок входящей авторизации: null
+10:37:45.961 [main] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/admin/users/46/promote
+10:37:45.961 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.example.expensetracker.controller.AdminController#promoteUser(Long, UserDetailsImpl, HttpServletRequest)
+10:37:45.961 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.promoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.961 [main] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.example.expensetracker.controller.AdminController.promoteUser(java.lang.Long,com.example.expensetracker.details.UserDetailsImpl,jakarta.servlet.http.HttpServletRequest); target is of class [com.example.expensetracker.controller.AdminController]
+10:37:45.962 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password from users u1_0 where (u1_0.deleted = false) and u1_0.email=?
+10:37:45.963 [main] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_0.role from user_roles r1_0 where r1_0.user_id=?
+10:37:45.964 [main] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.banned,u1_0.deleted,u1_0.email,u1_0.password,r1_0.user_id,r1_0.role from users u1_0 left join user_roles r1_0 on u1_0.id=r1_0.user_id where u1_0.id=? and (u1_0.deleted = false)
+10:37:45.965 [main] DEBUG org.hibernate.SQL - insert into admin_audit (action,performed_by,target_user_id,time_stamp) values (?,?,?,?)
+10:37:45.968 [main] DEBUG org.hibernate.SQL - insert into user_roles (user_id,role) values (?,?)
+10:37:45.970 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/yaml]
+10:37:45.970 [main] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.example.expensetracker.dto.ApiResponse@2656db92]
+10:37:45.975 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+10:37:46.126 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+10:37:46.128 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+10:37:46.128 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:37:46.132 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

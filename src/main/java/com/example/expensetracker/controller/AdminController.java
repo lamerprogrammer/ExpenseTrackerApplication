@@ -14,7 +14,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -69,6 +68,26 @@ public class AdminController {
         User user = adminService.banUser(id, currentUser);
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
                 msg("ban.user"), request));
+    }
+
+    @PutMapping("/{id}/promote")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<UserDto>> promoteUser(@PathVariable Long id,
+                                                            @AuthenticationPrincipal UserDetailsImpl currentUser,
+                                                            HttpServletRequest request) {
+        User user = adminService.promoteUser(id, currentUser);
+        return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
+                msg("increase.user"), request));
+    }
+
+    @PutMapping("/{id}/demote")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<UserDto>> demoteUser(@PathVariable Long id,
+                                                           @AuthenticationPrincipal UserDetailsImpl currentUser,
+                                                           HttpServletRequest request) {
+        User user = adminService.demoteUser(id, currentUser);
+        return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
+                msg("decrease.user"), request));
     }
 
     @PutMapping("/{id}/unban")

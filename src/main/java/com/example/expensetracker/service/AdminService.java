@@ -24,4 +24,8 @@ public interface AdminService {
     User createModerator(RegisterDto dto, UserDetailsImpl currentUser);
 
     User getUserById(Long id);
+
+    User promoteUser(Long id, UserDetailsImpl currentUser);
+
+    User demoteUser(Long id, UserDetailsImpl currentUser);
 }

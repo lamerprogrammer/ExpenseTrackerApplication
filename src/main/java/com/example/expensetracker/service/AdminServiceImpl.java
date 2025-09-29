@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.example.expensetracker.model.AuditAction.*;
 
@@ -29,7 +30,9 @@ public class AdminServiceImpl implements AdminService {
     private final PasswordEncoder passwordEncoder;
     private final AuditLogRepository auditLogRepository;
 
-    public AdminServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuditLogRepository auditLogRepository) {
+    public AdminServiceImpl(UserRepository userRepository, 
+                            PasswordEncoder passwordEncoder, 
+                            AuditLogRepository auditLogRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.auditLogRepository = auditLogRepository;
@@ -53,10 +56,40 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
+    public User promoteUser(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(id, currentUser);
+        return userRepository.findById(id)
+                .map(user -> {
+                    if (user.getRoles().contains(Role.MODERATOR)) return user;
+                    user.getRoles().add(Role.MODERATOR);
+                    userRepository.save(user);
+                    auditLogRepository.save(new AuditLog(PROMOTE, user, userEntity));
+                    return user;
+                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+    }
+
+    @Override
+    @Transactional
+    public User demoteUser(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(id, currentUser);
+        return userRepository.findById(id)
+                .map(user -> {
+                    if (!(user.getRoles().contains(Role.MODERATOR))) return user;
+                    user.getRoles().remove(Role.MODERATOR);
+                    user.getRoles().add(Role.USER);
+                    userRepository.save(user);
+                    auditLogRepository.save(new AuditLog(DEMOTE, user, userEntity));
+                    return user;
+                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+    }
+
+    @Override
+    @Transactional
     public User banUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
+                    if (user.isBanned()) return user;
                     user.setBanned(true);
                     userRepository.save(user);
                     auditLogRepository.save(new AuditLog(BAN, user, userEntity));
@@ -70,6 +103,7 @@ public class AdminServiceImpl implements AdminService {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
+                    if (!(user.isBanned())) return user;
                     user.setBanned(false);
                     userRepository.save(user);
                     auditLogRepository.save(new AuditLog(UNBAN, user, userEntity));
@@ -96,6 +130,7 @@ public class AdminServiceImpl implements AdminService {
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.ADMIN);
+        user.getRoles().add(Role.USER);
         User newAdmin = userRepository.save(user);
         auditLogRepository.save(new AuditLog(CREATE, newAdmin, userEntity(currentUser)));
         return newAdmin;
@@ -108,6 +143,7 @@ public class AdminServiceImpl implements AdminService {
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.MODERATOR);
+        user.getRoles().add(Role.USER);
         User newModerator = userRepository.save(user);
         auditLogRepository.save(new AuditLog(CREATE, newModerator, userEntity(currentUser)));
         return newModerator;
