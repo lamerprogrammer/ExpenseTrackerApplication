@@ -1,20 +1,17 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
-import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.model.AuditLog;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +26,7 @@ public class ModeratorServiceImpl implements ModeratorService {
     private final UserRepository userRepository;
     private final AuditLogRepository auditLogRepository;
 
-    public ModeratorServiceImpl(UserRepository userRepository, 
+    public ModeratorServiceImpl(UserRepository userRepository,
                                 AuditLogRepository auditLogRepository) {
         this.userRepository = userRepository;
         this.auditLogRepository = auditLogRepository;

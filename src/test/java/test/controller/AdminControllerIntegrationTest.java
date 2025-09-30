@@ -31,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
+import static test.util.TestUtils.cleanDB;
+import static test.util.TestUtils.createUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -62,7 +64,7 @@ public class AdminControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        cleanDB();
+        cleanDB(jdbcTemplate);
     }
 
     @Test
@@ -78,7 +80,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void getAllUsersInPage_shouldReturnListUsers_whenUsersExist() throws Exception {
-        createUser(email, Role.USER);
+        createUser(email, Role.USER, userRepository);
         mockMvc.perform(get("/api/admin/users/paged")
                         .param("page", "0")
                         .param("size", "10"))
@@ -91,7 +93,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void getUserById_shouldReturnUser_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(get("/api/admin/users/{id}", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("get.user.by.id")))
@@ -122,8 +124,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void banUser_shouldUserBanned_whenUserExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.USER);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/ban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
@@ -136,8 +138,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void banUser_shouldThrowException_whenIdMatches() throws Exception {
-        cleanDB();
-        User user = createUser(ADMIN_EMAIL, Role.ADMIN);
+        User user = createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/ban", user.getId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("IllegalArgumentException"))
@@ -148,7 +149,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void banUser_shouldThrowException_whenUserNotExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/ban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -157,8 +158,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void unbanUser_shouldUserUnbanned_whenUserExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.USER);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.USER, userRepository);
         user.setBanned(true);
         userRepository.save(user);
         mockMvc.perform(put("/api/admin/users/{id}/unban", user.getId()))
@@ -173,7 +174,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/unban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -182,8 +183,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void promoteUser_shouldAddRoleModerator_whenUserExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.USER);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/promote", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("increase.user")))
@@ -194,7 +195,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void promoteUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/promote", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -203,8 +204,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void promoteUser_shouldReturnUser_whenUserRoleAlreadyExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.MODERATOR);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/promote", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("increase.user")))
@@ -215,8 +216,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void demoteUser_shouldAddRoleModerator_whenUserExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.USER);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/demote", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("decrease.user")))
@@ -227,7 +228,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void demoteUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/demote", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -236,8 +237,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void demoteUser_shouldReturnUser_whenUserRoleAlreadyRemoved() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.USER);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/demote", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("decrease.user")))
@@ -248,8 +249,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void deleteUser_shouldUserDelete_whenUserExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
-        User user = createUser(email, Role.USER);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(delete("/api/admin/users/{id}/delete", user.getId()))
                 .andExpect(status().isOk());
         assertThat(auditLogRepository.findAll()).isNotEmpty();
@@ -258,8 +259,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void deleteUser_shouldThrowException_whenIdMatches() throws Exception {
-        cleanDB();
-        User user = createUser(ADMIN_EMAIL, Role.ADMIN);
+        User user = createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(delete("/api/admin/users/{id}/delete", user.getId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("IllegalArgumentException"))
@@ -270,7 +270,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void deleteUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         mockMvc.perform(delete("/api/admin/users/{id}/delete", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -279,7 +279,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void createAdmin_shouldCreateAdmin_whenEmailNotBusy() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         String jsonBody = getJsonBody();
         mockMvc.perform(post(API_ADMIN_USERS_CREATE_ADMINISTRATOR)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -293,7 +293,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void createAdmin_shouldThrowException_whenAdminAlreadyExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         String jsonBody = getJsonBody();
         mockMvc.perform(post(API_ADMIN_USERS_CREATE_ADMINISTRATOR)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -353,7 +353,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void createModer_shouldCreateModer_whenEmailNotBusy() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         String jsonBody = getJsonBody();
         mockMvc.perform(post(API_ADMIN_USERS_CREATE_MODERATOR)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -367,7 +367,7 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void createModer_shouldThrowException_whenAdminAlreadyExists() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN);
+        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         String jsonBody = getJsonBody();
         mockMvc.perform(post(API_ADMIN_USERS_CREATE_MODERATOR)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -434,18 +434,5 @@ public class AdminControllerIntegrationTest {
 
     private String msg(String key) {
         return messageSource.getMessage(key, null, Locale.getDefault());
-    }
-
-    private User createUser(String mail, Role role) {
-        User user = new User();
-        user.setEmail(mail);
-        user.setPassword(USER_PASSWORD);
-        user.getRoles().add(role);
-        return userRepository.save(user);
-    }
-
-    private void cleanDB() {
-        jdbcTemplate.execute("TRUNCATE TABLE admin_audit CASCADE");
-        jdbcTemplate.execute("TRUNCATE TABLE users CASCADE");
     }
 }

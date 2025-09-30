@@ -1,8 +1,12 @@
 package test.util;
 
+import com.example.expensetracker.model.Role;
+import com.example.expensetracker.model.User;
+import com.example.expensetracker.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.DelegatingServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -11,6 +15,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static test.util.Constants.USER_PASSWORD;
 
 public final class TestUtils {
 
@@ -36,5 +41,18 @@ public final class TestUtils {
         assertTrue(found, () -> String.format(
                 "Ожидалась ошика на поле '%s', содержащая '%s'. Но имеем: '%s'",
                 field, expectedMessageFragment, violations));
+    }
+
+    public static User createUser(String mail, Role role, UserRepository userRepository) {
+        User user = new User();
+        user.setEmail(mail);
+        user.setPassword(USER_PASSWORD);
+        user.getRoles().add(role);
+        return userRepository.save(user);
+    }
+
+    public static void cleanDB(JdbcTemplate jdbcTemplate) {
+        jdbcTemplate.execute("TRUNCATE TABLE admin_audit CASCADE");
+        jdbcTemplate.execute("TRUNCATE TABLE users CASCADE");
     }
 }

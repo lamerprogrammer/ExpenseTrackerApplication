@@ -28,7 +28,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static test.util.Constants.*;
+import static test.util.Constants.ID_INVALID;
+import static test.util.Constants.MODERATOR_EMAIL;
+import static test.util.TestUtils.cleanDB;
+import static test.util.TestUtils.createUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -57,9 +60,8 @@ public class ModeratorControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        cleanDB();
+        cleanDB(jdbcTemplate);
     }
-
 
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
@@ -74,7 +76,7 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void getAllUsersInPage_shouldReturnListUsers_whenUsersExist() throws Exception {
-        createUser(email, Role.USER);
+        createUser(email, Role.USER, userRepository);
         mockMvc.perform(get("/api/moderator/users/paged")
                         .param("page", "0")
                         .param("size", "10"))
@@ -87,7 +89,7 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void getUserById_shouldReturnUser_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER);
+        User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(get("/api/moderator/users/{id}", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("get.user.by.id")))
@@ -118,8 +120,8 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldUserBanned_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER);
-        createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        User user = createUser(email, Role.USER, userRepository);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
@@ -132,8 +134,8 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenUserIsModer() throws Exception {
-        User user = createUser(email, Role.MODERATOR);
-        createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        User user = createUser(email, Role.MODERATOR, userRepository);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
@@ -143,8 +145,8 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenUserIsAdmin() throws Exception {
-        User user = createUser(email, Role.ADMIN);
-        createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        User user = createUser(email, Role.ADMIN, userRepository);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
@@ -154,7 +156,7 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenIdMatches() throws Exception {
-        User user = createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        User user = createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("IllegalArgumentException"))
@@ -165,7 +167,7 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void banUser_shouldThrowException_whenUserNotExists() throws Exception {
-        createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -174,8 +176,8 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void unbanUser_shouldUserUnbanned_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER);
-        createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        User user = createUser(email, Role.USER, userRepository);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("unban.user")))
@@ -188,7 +190,7 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        createUser(MODERATOR_EMAIL, Role.MODERATOR);
+        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -196,18 +198,5 @@ public class ModeratorControllerIntegrationTest {
 
     private String msg(String key) {
         return messageSource.getMessage(key, null, Locale.getDefault());
-    }
-
-    private User createUser(String mail, Role role) {
-        User user = new User();
-        user.setEmail(mail);
-        user.setPassword(USER_PASSWORD);
-        user.getRoles().add(role);
-        return userRepository.save(user);
-    }
-
-    private void cleanDB() {
-        jdbcTemplate.execute("TRUNCATE TABLE admin_audit CASCADE");
-        jdbcTemplate.execute("TRUNCATE TABLE users CASCADE");
     }
 }
