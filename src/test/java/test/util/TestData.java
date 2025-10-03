@@ -4,8 +4,8 @@ import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.UserDto;
-import com.example.expensetracker.logging.AppLog;
-import com.example.expensetracker.logging.AuditLevel;
+import com.example.expensetracker.logging.applog.AppLogDto;
+import com.example.expensetracker.logging.applog.AppLogLevel;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.Instant;
 import java.util.Set;
 
-import static com.example.expensetracker.logging.AuditLevel.INFO;
+import static com.example.expensetracker.logging.applog.AppLogLevel.INFO;
 import static test.util.Constants.*;
 
 public class TestData {
@@ -69,32 +69,33 @@ public class TestData {
         return loginDto(USER_EMAIL, USER_PASSWORD);
     }
 
-    public static AppLog appLog(String id,
-                                Instant timestamp,
-                                AuditLevel level,
-                                String logger,
-                                String message,
-                                String userEmail,
-                                String endPoint,
-                                String stackTrace) {
-        return new AppLog(id,
+    public static AppLogDto appLogDto(String id,
+                                      Instant timestamp,
+                                      AppLogLevel level,
+                                      String logger,
+                                      String errorType,
+                                      String message,
+                                      String userEmail,
+                                      String endPoint) {
+        return new AppLogDto(id,
                 timestamp,
                 level,
                 logger,
+                errorType,
                 message,
                 userEmail,
                 endPoint);
     }
 
-    public static AppLog appLog() {
-        return appLog("42",
+    public static AppLogDto appLogDto() {
+        return appLogDto("42",
                 Instant.now(),
                 INFO,
                 "TestData",
+                "WARN",
                 "Test message",
                 USER_EMAIL,
-                API_TEST_ENDPOINT,
-                "StackTrace");
+                API_TEST_ENDPOINT);
     }
 
     public static User user(UserRepository userRepository, PasswordEncoder encoder) {

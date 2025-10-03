@@ -1,7 +1,6 @@
 package test.controller;
 
 import com.example.expensetracker.ExpenseTrackerApplication;
-import com.example.expensetracker.config.TestBeansConfig;
 import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.repository.UserRepository;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,10 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.USER_PASSWORD;
 
-@SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
+@SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 public class AuthControllerIntegrationTest {
 

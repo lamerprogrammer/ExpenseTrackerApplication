@@ -25,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/users")
 @Validated
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final AdminService adminService;
@@ -37,21 +38,18 @@ public class AdminController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers(HttpServletRequest request) {
         List<UserDto> users = UserDto.fromEntities(adminService.getAllUsers());
         return ResponseEntity.ok(ApiResponseFactory.success(users, msg("get.all.users"), request));
     }
 
     @GetMapping("/paged")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Page<UserDto>>> getAllUsersInPage(Pageable pageable,
                                                                         HttpServletRequest request) {
         Page<UserDto> users = adminService.getAllUsersPaged(pageable).map(UserDto::fromEntity);
         return ResponseEntity.ok(ApiResponseFactory.success(users, msg("get.all.users"), request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable @Positive long id,
                                                             HttpServletRequest request) {
@@ -61,7 +59,6 @@ public class AdminController {
     }
 
     @PutMapping("/{id}/ban")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> banUser(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                         HttpServletRequest request) {
@@ -71,7 +68,6 @@ public class AdminController {
     }
 
     @PutMapping("/{id}/promote")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> promoteUser(@PathVariable Long id,
                                                             @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                             HttpServletRequest request) {
@@ -81,7 +77,6 @@ public class AdminController {
     }
 
     @PutMapping("/{id}/demote")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> demoteUser(@PathVariable Long id,
                                                            @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                            HttpServletRequest request) {
@@ -91,7 +86,6 @@ public class AdminController {
     }
 
     @PutMapping("/{id}/unban")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> unbanUser(@PathVariable Long id,
                                                           @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                           HttpServletRequest request) {
@@ -101,7 +95,6 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}/delete")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> deleteUser(@PathVariable Long id,
                                                            @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                            HttpServletRequest request) {
@@ -111,7 +104,6 @@ public class AdminController {
     }
 
     @PostMapping("/create/administrator")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> createAdmin(@Valid @RequestBody RegisterDto dto,
                                                             @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                             HttpServletRequest request) {
@@ -121,7 +113,6 @@ public class AdminController {
     }
 
     @PostMapping("/create/moderator")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserDto>> createModer(@Valid @RequestBody RegisterDto dto,
                                                             @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                             HttpServletRequest request) {
@@ -129,6 +120,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
                 msg("create.moder"), request));
     }
+    
     private String msg(String code) {
         return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }

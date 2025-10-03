@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/moderator/users")
 @Validated
+@PreAuthorize("hasRole('MODERATOR')")
 public class ModeratorController {
 
     private final ModeratorService moderatorService;
@@ -34,21 +35,18 @@ public class ModeratorController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers(HttpServletRequest request) {
         List<UserDto> users = UserDto.fromEntities(moderatorService.getAllUsers());
         return ResponseEntity.ok(ApiResponseFactory.success(users, msg("get.all.users"), request));
     }
 
     @GetMapping("/paged")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<ApiResponse<Page<UserDto>>> getAllUsersInPage(Pageable pageable,
                                                                         HttpServletRequest request) {
         Page<UserDto> users = moderatorService.getAllUsersPaged(pageable).map(UserDto::fromEntity);
         return ResponseEntity.ok(ApiResponseFactory.success(users, msg("get.all.users"), request));
     }
 
-    @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable @Positive long id,
                                                             HttpServletRequest request) {
@@ -58,7 +56,6 @@ public class ModeratorController {
     }
 
     @PutMapping("/{id}/ban")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<ApiResponse<UserDto>> banUser(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                         HttpServletRequest request) {
@@ -68,7 +65,6 @@ public class ModeratorController {
     }
 
     @PutMapping("/{id}/unban")
-    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<ApiResponse<UserDto>> unbanUser(@PathVariable Long id,
                                                           @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                           HttpServletRequest request) {

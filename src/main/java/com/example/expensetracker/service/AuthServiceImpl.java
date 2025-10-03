@@ -1,8 +1,8 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.dto.*;
-import com.example.expensetracker.logging.LogEntry;
-import com.example.expensetracker.logging.LogService;
+import com.example.expensetracker.logging.audit.AuditDto;
+import com.example.expensetracker.logging.applog.AppLogService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -11,8 +11,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,24 +21,22 @@ import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
 import java.util.HashSet;
 
-import static com.example.expensetracker.logging.AuditLevel.INFO;
-
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final static Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
     
     private final JwtUtil jwtUtil;
-    private final LogService logService;
+    private final AppLogService appLogService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public AuthServiceImpl(JwtUtil jwtUtil, 
-                           LogService logService, 
+                           AppLogService appLogService, 
                            UserRepository userRepository, 
                            PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
-        this.logService = logService;
+        this.appLogService = appLogService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -60,14 +56,6 @@ public class AuthServiceImpl implements AuthService {
             user.getRoles().add(Role.USER);
             User saved = userRepository.save(user);
             log.info("Успешная регистрация: {}", saved.getEmail());
-        logService.log(LogEntry.builder()
-                .timestamp(Instant.now())
-                .level(INFO)
-                .logger("AuthServiceImpl")
-                .message("Пользователь зарегестрирован.")
-                .user(saved.getEmail())
-                .path("/api/auth/register")
-                .build());
         return saved;
     }
 
@@ -84,14 +72,6 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Неверный пароль");
         }
         log.info("Успешная авторизация: {}", dto.getEmail());
-        logService.log(LogEntry.builder()
-                .timestamp(Instant.now())
-                .level(INFO)
-                .logger("AuthServiceImpl")
-                .message("Пользователь вошёл в систему.")
-                .user(user.getEmail())
-                .path("/api/auth/login")
-                .build());
         return generateTokens(user);
     }
 
@@ -111,14 +91,6 @@ public class AuthServiceImpl implements AuthService {
                 throw new AccessDeniedException("Ваш аккаунт заблокирован");
             }
             log.info("Успешное обновление токена, пользователя {}", email);
-            logService.log(LogEntry.builder()
-                    .timestamp(Instant.now())
-                    .level(INFO)
-                    .logger("AuthServiceImpl")
-                    .message("Токены обновлены.")
-                    .user(user.getEmail())
-                    .path("/api/auth/refresh")
-                    .build());
             return generateTokens(user);
         } catch (UsernameNotFoundException | AccessDeniedException | BadCredentialsException e) {
             throw e;

@@ -1,12 +1,13 @@
-package com.example.expensetracker.model;
+package com.example.expensetracker.logging.audit;
 
+import com.example.expensetracker.model.User;
 import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "admin_audit")
-public class AuditLog {
+public class Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +26,10 @@ public class AuditLog {
 
     private Instant timeStamp = Instant.now();
 
-    public AuditLog() {
+    public Audit() {
     }
 
-    public AuditLog(AuditAction action, User targetUser, User performedBy) {
+    public Audit(AuditAction action, User targetUser, User performedBy) {
         this.action = action;
         this.targetUser = targetUser;
         this.performedBy = performedBy;
@@ -77,5 +78,9 @@ public class AuditLog {
     @PrePersist
     protected void onCreate() {
         this.timeStamp = Instant.now();
+    }
+
+    public static AuditDto from(Audit entity) {
+        return new AuditDto(entity.getId(), entity.getAction(), entity.getTargetUser(), entity.getPerformedBy());
     }
 }

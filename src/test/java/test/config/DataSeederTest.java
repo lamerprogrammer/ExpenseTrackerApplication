@@ -1,7 +1,6 @@
 package test.config;
 
 import com.example.expensetracker.config.DataSeeder;
-import com.example.expensetracker.logging.LogEntry;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;

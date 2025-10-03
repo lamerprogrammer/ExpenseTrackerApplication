@@ -1,4 +1,4 @@
-package com.example.expensetracker.model;
+package com.example.expensetracker.logging.audit;
 
 public enum AuditAction {
     BAN,

@@ -1,10 +1,9 @@
 package test.controller;
 
 import com.example.expensetracker.ExpenseTrackerApplication;
-import com.example.expensetracker.config.TestBeansConfig;
+import com.example.expensetracker.logging.audit.AuditRepository;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +32,7 @@ import static test.util.Constants.MODERATOR_EMAIL;
 import static test.util.TestUtils.cleanDB;
 import static test.util.TestUtils.createUser;
 
-@SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
+@SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -43,7 +42,7 @@ public class ModeratorControllerIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private AuditLogRepository auditLogRepository;
+    private AuditRepository auditRepository;
 
     @Autowired
     private MessageSource messageSource;
@@ -127,7 +126,7 @@ public class ModeratorControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/ban"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
         AssertionsForClassTypes.assertThat(userRepository.findById(user.getId()).get().isBanned()).isTrue();
     }
 
@@ -183,7 +182,7 @@ public class ModeratorControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value(msg("unban.user")))
                 .andExpect(jsonPath("$.path").value("/api/moderator/users/" + user.getId() + "/unban"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
         AssertionsForClassTypes.assertThat(userRepository.findById(user.getId()).get().isBanned()).isFalse();
     }
 

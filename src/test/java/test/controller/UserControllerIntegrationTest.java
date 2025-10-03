@@ -1,7 +1,6 @@
 package test.controller;
 
 import com.example.expensetracker.ExpenseTrackerApplication;
-import com.example.expensetracker.config.TestBeansConfig;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ import static test.util.Constants.*;
 import static test.util.TestUtils.cleanDB;
 import static test.util.TestUtils.createUser;
 
-@SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
+@SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc

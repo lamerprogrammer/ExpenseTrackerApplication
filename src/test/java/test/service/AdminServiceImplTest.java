@@ -1,11 +1,11 @@
 //package test.service;
 //
 //import com.example.expensetracker.dto.RegisterDto;
-//import com.example.expensetracker.model.AuditAction;
-//import com.example.expensetracker.model.AuditLog;
+//import com.example.expensetracker.logging.audit.AuditAction;
+//import com.example.expensetracker.logging.audit.Audit;
 //import com.example.expensetracker.model.Role;
 //import com.example.expensetracker.model.User;
-//import com.example.expensetracker.repository.AuditLogRepository;
+//import com.example.expensetracker.repository.auditRepository;
 //import com.example.expensetracker.repository.UserRepository;
 //import com.example.expensetracker.service.AdminServiceImpl;
 //import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@
 //    private PasswordEncoder passwordEncoder;
 //
 //    @Mock
-//    private AuditLogRepository auditLogRepository;
+//    private auditRepository auditRepository;
 //
 //    @InjectMocks
 //    private AdminServiceImpl adminService;
@@ -89,7 +89,7 @@
 //
 //        assertThat(ex.getMessage()).contains("не найден");
 //        verify(userRepository, never()).save(any(User.class));
-//        verify(auditLogRepository, never()).save(any(AuditLog.class));
+//        verify(auditRepository, never()).save(any(Audit.class));
 //        verifyNoMoreInteractions(userRepository);
 //    }
 //
@@ -117,7 +117,7 @@
 //
 //        assertThat(ex.getMessage()).contains("не найден");
 //        verify(userRepository, never()).save(any(User.class));
-//        verify(auditLogRepository, never()).save(any(AuditLog.class));
+//        verify(auditRepository, never()).save(any(Audit.class));
 //        verifyNoMoreInteractions(userRepository);
 //    }
 //
@@ -145,7 +145,7 @@
 //
 //        assertThat(ex.getMessage()).contains("не найден");
 //        verify(userRepository, never()).delete(any());
-//        verify(auditLogRepository, never()).save(any());
+//        verify(auditRepository, never()).save(any());
 //    }
 //
 //    @Test
@@ -178,11 +178,11 @@
 //                .hasMessage("Эта почта уже используется.");
 //
 //        verify(userRepository, never()).save(any());
-//        verify(auditLogRepository, never()).save(any());
+//        verify(auditRepository, never()).save(any());
 //    }
 //
 //    private void checkLoggerData(AuditAction action, User targetUser, User performedBy) {
-//        verify(auditLogRepository).save(argThat(log ->
+//        verify(auditRepository).save(argThat(log ->
 //                log.getAction() == action &&
 //                        log.getTargetUser().getEmail().equals(targetUser.getEmail()) &&
 //                        log.getPerformedBy().getEmail().equals(performedBy.getEmail())));

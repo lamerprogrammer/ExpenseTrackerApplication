@@ -1,11 +1,10 @@
 package test.controller;
 
 import com.example.expensetracker.ExpenseTrackerApplication;
-import com.example.expensetracker.config.TestBeansConfig;
 import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.logging.audit.AuditRepository;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +33,7 @@ import static test.util.Constants.*;
 import static test.util.TestUtils.cleanDB;
 import static test.util.TestUtils.createUser;
 
-@SpringBootTest(classes = {ExpenseTrackerApplication.class, TestBeansConfig.class},
+@SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -47,7 +46,7 @@ public class AdminControllerIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private AuditLogRepository auditLogRepository;
+    private AuditRepository auditRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -131,7 +130,7 @@ public class AdminControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
                 .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/ban"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
         assertThat(userRepository.findById(user.getId()).get().isBanned()).isTrue();
     }
 
@@ -167,7 +166,7 @@ public class AdminControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value(msg("unban.user")))
                 .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/unban"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
         assertThat(userRepository.findById(user.getId()).get().isBanned()).isFalse();
     }
 
@@ -253,7 +252,7 @@ public class AdminControllerIntegrationTest {
         User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(delete("/api/admin/users/{id}/delete", user.getId()))
                 .andExpect(status().isOk());
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
     }
 
     @Test
@@ -287,7 +286,7 @@ public class AdminControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("create.admin")))
                 .andExpect(jsonPath("$.path").value(API_ADMIN_USERS_CREATE_ADMINISTRATOR));
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
     }
 
     @Test
@@ -361,7 +360,7 @@ public class AdminControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("create.moder")))
                 .andExpect(jsonPath("$.path").value(API_ADMIN_USERS_CREATE_MODERATOR));
-        assertThat(auditLogRepository.findAll()).isNotEmpty();
+        assertThat(auditRepository.findAll()).isNotEmpty();
     }
 
     @Test

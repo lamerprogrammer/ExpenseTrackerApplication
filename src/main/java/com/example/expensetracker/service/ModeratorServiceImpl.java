@@ -2,10 +2,10 @@ package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
-import com.example.expensetracker.model.AuditLog;
+import com.example.expensetracker.logging.audit.Audit;
+import com.example.expensetracker.logging.audit.AuditRepository;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.repository.AuditLogRepository;
 import com.example.expensetracker.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
@@ -17,19 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.example.expensetracker.model.AuditAction.BAN;
-import static com.example.expensetracker.model.AuditAction.UNBAN;
+import static com.example.expensetracker.logging.audit.AuditAction.BAN;
+import static com.example.expensetracker.logging.audit.AuditAction.UNBAN;
 
 @Service
 public class ModeratorServiceImpl implements ModeratorService {
 
     private final UserRepository userRepository;
-    private final AuditLogRepository auditLogRepository;
+    private final AuditRepository auditRepository;
 
-    public ModeratorServiceImpl(UserRepository userRepository,
-                                AuditLogRepository auditLogRepository) {
+    public ModeratorServiceImpl(UserRepository userRepository, AuditRepository auditRepository) {
         this.userRepository = userRepository;
-        this.auditLogRepository = auditLogRepository;
+        this.auditRepository = auditRepository;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class ModeratorServiceImpl implements ModeratorService {
                     checkRole(user);
                     user.setBanned(true);
                     userRepository.save(user);
-                    auditLogRepository.save(new AuditLog(BAN, user, userEntity));
+                    auditRepository.save(new Audit(BAN, user, userEntity));
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -71,7 +70,7 @@ public class ModeratorServiceImpl implements ModeratorService {
                     checkRole(user);
                     user.setBanned(false);
                     userRepository.save(user);
-                    auditLogRepository.save(new AuditLog(UNBAN, user, userEntity));
+                    auditRepository.save(new Audit(UNBAN, user, userEntity));
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }

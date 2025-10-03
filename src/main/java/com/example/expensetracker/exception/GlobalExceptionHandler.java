@@ -3,6 +3,9 @@ package com.example.expensetracker.exception;
 import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.dto.ApiResponseFactory;
 import com.example.expensetracker.dto.UserDto;
+import com.example.expensetracker.logging.applog.AppLogDto;
+import com.example.expensetracker.logging.applog.AppLogLevel;
+import com.example.expensetracker.logging.applog.AppLogService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,9 +38,11 @@ public class GlobalExceptionHandler {
     private final static Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     private final MessageSource messageSource;
+    private final AppLogService appLogService;
 
-    public GlobalExceptionHandler(MessageSource messageSource) {
+    public GlobalExceptionHandler(MessageSource messageSource, AppLogService appLogService) {
         this.messageSource = messageSource;
+        this.appLogService = appLogService;
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -121,6 +128,24 @@ public class GlobalExceptionHandler {
             HttpStatus status, String message, HttpServletRequest request, Exception ex) {
 
         String user = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
+
+        AppLogLevel level = (ex instanceof IllegalArgumentException || ex instanceof ConstraintViolationException) ?
+                AppLogLevel.WARN : AppLogLevel.ERROR;
+        String logger = ex.getStackTrace().length > 0 ? ex.getStackTrace()[0].getClassName() : 
+                ex.getClass().getSimpleName();
+
+        AppLogDto dto = new AppLogDto(
+                null,
+                Instant.now(),
+        level,
+        logger,
+        ex.getClass().getSimpleName(),
+        ex.getMessage(),
+        user,
+        request.getRequestURI()
+        );
+        
+        appLogService.log(dto);
 
         if (status.is5xxServerError()) {
             StringWriter writer = new StringWriter();
