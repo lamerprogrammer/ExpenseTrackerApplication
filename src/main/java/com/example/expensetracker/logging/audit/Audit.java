@@ -81,6 +81,7 @@ public class Audit {
     }
 
     public static AuditDto from(Audit entity) {
-        return new AuditDto(entity.getId(), entity.getAction(), entity.getTargetUser(), entity.getPerformedBy());
+        return new AuditDto(entity.getId(), entity.getAction(), entity.getTargetUser().getEmail(),
+                entity.getPerformedBy().getEmail());
     }
 }

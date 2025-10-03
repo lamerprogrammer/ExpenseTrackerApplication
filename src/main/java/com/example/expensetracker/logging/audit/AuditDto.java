@@ -1,28 +1,22 @@
 package com.example.expensetracker.logging.audit;
 
-import com.example.expensetracker.logging.applog.AppLog;
-import com.example.expensetracker.logging.applog.AppLogDto;
-import com.example.expensetracker.logging.applog.AppLogLevel;
-import com.example.expensetracker.model.User;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.Instant;
 import java.util.Objects;
 
 public class AuditDto {
-    
-    private Long id;    
+
+    private Long id;
     private AuditAction action;
-    private User targetUser;
-    private User performedBy;
+    private String targetUserEmail;
+    private String performedByEmail;
     private Instant timeStamp;
 
 
-    public AuditDto(Long id, AuditAction action, User targetUser, User performedBy) {
+    public AuditDto(Long id, AuditAction action, String targetUserEmail, String performedByEmail) {
         this.id = id;
         this.action = action;
-        this.targetUser = targetUser;
-        this.performedBy = performedBy;
+        this.targetUserEmail = targetUserEmail;
+        this.performedByEmail = performedByEmail;
     }
 
     public Long getId() {
@@ -41,20 +35,20 @@ public class AuditDto {
         this.action = action;
     }
 
-    public User getTargetUser() {
-        return targetUser;
+    public String getTargetUser() {
+        return targetUserEmail;
     }
 
-    public void setTargetUser(User targetUser) {
-        this.targetUser = targetUser;
+    public void setTargetUser(String targetUser) {
+        this.targetUserEmail = targetUser;
     }
 
-    public User getPerformedBy() {
-        return performedBy;
+    public String getPerformedBy() {
+        return performedByEmail;
     }
 
-    public void setPerformedBy(User performedBy) {
-        this.performedBy = performedBy;
+    public void setPerformedBy(String performedBy) {
+        this.performedByEmail = performedBy;
     }
 
     public Instant getTimeStamp() {
@@ -66,7 +60,12 @@ public class AuditDto {
     }
 
     public static AuditDto from(Audit entity) {
-        return new AuditDto(entity.getId(), entity.getAction(), entity.getTargetUser(), entity.getPerformedBy());
+        AuditDto dto = new AuditDto(entity.getId(),
+                entity.getAction(),
+                entity.getTargetUser().getEmail(),
+                entity.getPerformedBy().getEmail());
+        dto.setTimeStamp(entity.getTimeStamp());
+        return dto;
     }
 
     @Override
@@ -74,14 +73,14 @@ public class AuditDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuditDto auditDto = (AuditDto) o;
-        return Objects.equals(id, auditDto.id) && 
-                action == auditDto.action && 
-                Objects.equals(targetUser, auditDto.targetUser) &&
-                Objects.equals(performedBy, auditDto.performedBy);
+        return action == auditDto.action &&
+                Objects.equals(targetUserEmail, auditDto.targetUserEmail) &&
+                Objects.equals(performedByEmail, auditDto.performedByEmail) &&
+                Objects.equals(timeStamp, auditDto.timeStamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, action, targetUser, performedBy);
+        return Objects.hash(action, targetUserEmail, performedByEmail, timeStamp);
     }
 }

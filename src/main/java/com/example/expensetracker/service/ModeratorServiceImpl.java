@@ -4,6 +4,7 @@ import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.audit.Audit;
 import com.example.expensetracker.logging.audit.AuditRepository;
+import com.example.expensetracker.logging.audit.AuditService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -24,11 +25,11 @@ import static com.example.expensetracker.logging.audit.AuditAction.UNBAN;
 public class ModeratorServiceImpl implements ModeratorService {
 
     private final UserRepository userRepository;
-    private final AuditRepository auditRepository;
+    private final AuditService auditService;
 
-    public ModeratorServiceImpl(UserRepository userRepository, AuditRepository auditRepository) {
+    public ModeratorServiceImpl(UserRepository userRepository, AuditService auditService) {
         this.userRepository = userRepository;
-        this.auditRepository = auditRepository;
+        this.auditService = auditService;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ModeratorServiceImpl implements ModeratorService {
                     checkRole(user);
                     user.setBanned(true);
                     userRepository.save(user);
-                    auditRepository.save(new Audit(BAN, user, userEntity));
+                    auditService.logAction(BAN, user, userEntity);
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -70,7 +71,7 @@ public class ModeratorServiceImpl implements ModeratorService {
                     checkRole(user);
                     user.setBanned(false);
                     userRepository.save(user);
-                    auditRepository.save(new Audit(UNBAN, user, userEntity));
+                    auditService.logAction(UNBAN, user, userEntity);
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }

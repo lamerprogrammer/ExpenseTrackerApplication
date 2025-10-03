@@ -5,6 +5,7 @@ import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.audit.Audit;
 import com.example.expensetracker.logging.audit.AuditRepository;
+import com.example.expensetracker.logging.audit.AuditService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -27,14 +28,14 @@ public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuditRepository auditRepository;
+    private final AuditService auditService;
 
     public AdminServiceImpl(UserRepository userRepository, 
                             PasswordEncoder passwordEncoder,
-                            AuditRepository auditRepository) {
+                            AuditService auditService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.auditRepository = auditRepository;
+        this.auditService = auditService;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
                     if (user.getRoles().contains(Role.MODERATOR)) return user;
                     user.getRoles().add(Role.MODERATOR);
                     userRepository.save(user);
-                    auditRepository.save(new Audit(PROMOTE, user, userEntity));
+                    auditService.logAction(PROMOTE, user, userEntity);
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -77,7 +78,7 @@ public class AdminServiceImpl implements AdminService {
                     user.getRoles().remove(Role.MODERATOR);
                     user.getRoles().add(Role.USER);
                     userRepository.save(user);
-                    auditRepository.save(new Audit(DEMOTE, user, userEntity));
+                    auditService.logAction(DEMOTE, user, userEntity);
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -91,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
                     if (user.isBanned()) return user;
                     user.setBanned(true);
                     userRepository.save(user);
-                    auditRepository.save(new Audit(BAN, user, userEntity));
+                    auditService.logAction(BAN, user, userEntity);
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -105,7 +106,7 @@ public class AdminServiceImpl implements AdminService {
                     if (!(user.isBanned())) return user;
                     user.setBanned(false);
                     userRepository.save(user);
-                    auditRepository.save(new Audit(UNBAN, user, userEntity));
+                    auditService.logAction(UNBAN, user, userEntity);
                     return user;
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -117,7 +118,7 @@ public class AdminServiceImpl implements AdminService {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setDeleted(true);
-                    auditRepository.save(new Audit(DELETE, user, userEntity));
+                    auditService.logAction(DELETE, user, userEntity);
                     return userRepository.save(user);
                 }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
     }
@@ -131,7 +132,7 @@ public class AdminServiceImpl implements AdminService {
         user.getRoles().add(Role.ADMIN);
         user.getRoles().add(Role.USER);
         User newAdmin = userRepository.save(user);
-        auditRepository.save(new Audit(CREATE, newAdmin, userEntity(currentUser)));
+        auditService.logAction(CREATE, newAdmin, userEntity(currentUser));
         return newAdmin;
     }
 
@@ -144,7 +145,7 @@ public class AdminServiceImpl implements AdminService {
         user.getRoles().add(Role.MODERATOR);
         user.getRoles().add(Role.USER);
         User newModerator = userRepository.save(user);
-        auditRepository.save(new Audit(CREATE, newModerator, userEntity(currentUser)));
+        auditService.logAction(CREATE, newModerator, userEntity(currentUser));
         return newModerator;
     }
 

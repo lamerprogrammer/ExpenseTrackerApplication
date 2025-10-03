@@ -19,9 +19,9 @@ import static test.util.Constants.*;
 
 public class TestData {
 
-    public static User user(String email, String password, Set<Role> roles, boolean banned) {
+    public static User user(Long id, String email, String password, Set<Role> roles, boolean banned) {
         return User.builder()
-                .id(42L)
+                .id(id)
                 .email(email)
                 .password(password)
                 .roles(roles)
@@ -30,19 +30,19 @@ public class TestData {
     }
 
     public static User user() {
-        return user(USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), false);
+        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), false);
     }
 
     public static User userBanned() {
-        return user(USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), true);
+        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), true);
     }
 
     public static User moderator() {
-        return user(MODERATOR_EMAIL, USER_PASSWORD, Set.of(Role.MODERATOR), false);
+        return user(ID_VALID, MODERATOR_EMAIL, USER_PASSWORD, Set.of(Role.MODERATOR), false);
     }
 
     public static User admin() {
-        return user(ADMIN_EMAIL, USER_PASSWORD, Set.of(Role.ADMIN), false);
+        return user(ID_VALID, ADMIN_EMAIL, USER_PASSWORD, Set.of(Role.ADMIN), false);
     }
 
     public static LoginRequest loginRequest(String mail, String password) {
