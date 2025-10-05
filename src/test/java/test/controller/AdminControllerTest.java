@@ -4,15 +4,22 @@ import com.example.expensetracker.controller.AdminController;
 import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.UserDto;
+import com.example.expensetracker.exception.UserNotFoundByIdException;
+import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.AdminService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import test.util.TestData;
@@ -33,25 +40,64 @@ public class AdminControllerTest {
     @Mock
     private HttpServletRequest request;
 
+    @Mock
+    private MessageSource messageSource;
+    
+    @Mock
+    private Pageable pageable;
+
     @InjectMocks
     private AdminController adminController;
+    
+    @AfterEach
+    void tearDown() {
+        verifyNoMoreInteractions(adminService);
+    }
 
     @Test
     public void getAllUsers_shouldReturnListOfUsers() {
-        List<User> users = List.of(TestData.user());
-        when(adminService.getAllUsers()).thenReturn(users);
+        User user = TestData.user();
+        Page<User> users = new PageImpl<>(List.of(user));
+        when(adminService.getAllUsers(pageable)).thenReturn(users);
 
-        var result = adminController.getAllUsers(request);
-
+        var result = adminController.getAllUsers(pageable, request);
+        
         assertThat(result).isNotNull();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         var body = result.getBody();
         assertThat(body).isNotNull();
-        assertThat(body.getData())
+        assertThat(body.getData().getContent())
                 .extracting(UserDto::getId, UserDto::getEmail)
-                .containsExactly(tuple(users.get(0).getId(), users.get(0).getEmail()));
-        verify(adminService).getAllUsers();
-        verifyNoMoreInteractions(adminService);
+                .containsExactly(tuple(user.getId(), user.getEmail()));
+        verify(adminService).getAllUsers(pageable);
+    }
+    
+    @Test
+    void getUserById_shouldReturn200_whenUserExists() {
+        User user = TestData.user();
+        Long id = user.getId();
+        when(adminService.getUserById(id)).thenReturn(user);
+        
+        var result = adminController.getUserById(id, request);
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().getData().getId()).isEqualTo(user.getId());
+        assertThat(result.getBody().getData().getEmail()).isEqualTo(user.getEmail());
+    }
+
+    @Test
+    void getUserById_shouldReturn404_whenUserNotFound() {
+        User user = TestData.user();
+        Long id = user.getId();
+        when(adminService.getUserById(id)).thenThrow(new UserNotFoundByIdException("Test message"));
+
+        UserNotFoundByIdException ex = assertThrows(UserNotFoundByIdException.class,
+                () -> adminController.getUserById(id, request));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(adminService).getUserById(id);
     }
 
     @Test
@@ -65,7 +111,6 @@ public class AdminControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).banUser(eq(id), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 
     @Test
@@ -79,7 +124,6 @@ public class AdminControllerTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(adminService).banUser(eq(id), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 
     @Test
@@ -93,7 +137,6 @@ public class AdminControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).unbanUser(eq(id), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 
     @Test
@@ -107,7 +150,58 @@ public class AdminControllerTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(adminService).unbanUser(eq(id), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
+    }
+
+    @Test
+    public void promoteUser_shouldReturn200_whenUserExist() {
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
+        User user = TestData.user();
+        Long id = currentUser.getDomainUser().getId();
+        when(adminService.promoteUser(id, currentUser)).thenReturn(user);
+
+        var response = adminController.promoteUser(id, currentUser, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(adminService).promoteUser(eq(id), eq(currentUser));
+    }
+
+    @Test
+    public void promoteUser_shouldReturn404_whenUserNotFound() {
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
+        Long id = currentUser.getDomainUser().getId();
+        when(adminService.promoteUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminController.promoteUser(id, currentUser, request));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(adminService).promoteUser(eq(id), eq(currentUser));
+    }
+
+    @Test
+    public void demoteUser_shouldReturn200_whenUserExist() {
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
+        User bannedUser = TestData.userBanned();
+        Long id = currentUser.getDomainUser().getId();
+        when(adminService.demoteUser(id, currentUser)).thenReturn(bannedUser);
+
+        var response = adminController.demoteUser(id, currentUser, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(adminService).demoteUser(eq(id), eq(currentUser));
+    }
+
+    @Test
+    public void demoteUser_shouldReturn404_whenUserNotFound() {
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
+        Long id = currentUser.getDomainUser().getId();
+        when(adminService.demoteUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminController.demoteUser(id, currentUser, request));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(adminService).demoteUser(eq(id), eq(currentUser));
     }
 
     @Test
@@ -121,7 +215,6 @@ public class AdminControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).deleteUser(eq(id), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 
     @Test
@@ -135,7 +228,6 @@ public class AdminControllerTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(adminService).deleteUser(eq(id), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 
     @Test
@@ -149,7 +241,6 @@ public class AdminControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).createAdmin(eq(newAdmin), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 
     @Test
@@ -163,6 +254,5 @@ public class AdminControllerTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(adminService).createAdmin(eq(existAdmin), eq(currentUser));
-        verifyNoMoreInteractions(adminService);
     }
 }

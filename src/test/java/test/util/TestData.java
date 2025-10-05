@@ -6,12 +6,17 @@ import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.UserDto;
 import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogLevel;
+import com.example.expensetracker.logging.audit.AuditAction;
+import com.example.expensetracker.logging.audit.AuditDto;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 import static com.example.expensetracker.logging.applog.AppLogLevel.INFO;
@@ -97,6 +102,10 @@ public class TestData {
                 USER_EMAIL,
                 API_TEST_ENDPOINT);
     }
+    
+    public static Page<AppLogDto> appLogDtoPage() {
+        return new PageImpl<>(List.of(appLogDto()));
+    }
 
     public static User user(UserRepository userRepository, PasswordEncoder encoder) {
         User user = new User();
@@ -114,5 +123,20 @@ public class TestData {
 
     public static UserDto userResponseDto(Long id, String email) {
         return new UserDto(id, email);
+    }
+
+    public static AuditDto auditDto(Long id, AuditAction action, String targetUserEmail, String performedByEmail) {
+        return new AuditDto(id, action, targetUserEmail, performedByEmail);
+    }
+
+    public static AuditDto auditDto() {
+        return auditDto(ID_VALID,
+                AuditAction.BAN,
+                USER_EMAIL,
+                ADMIN_EMAIL);
+    }
+
+    public static Page<AuditDto> auditDtoPage() {
+        return new PageImpl<>(List.of(auditDto()));
     }
 }

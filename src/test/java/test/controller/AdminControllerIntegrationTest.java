@@ -69,18 +69,8 @@ public class AdminControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void getAllUsers_shouldReturnListUsers_whenUsersExist() throws Exception {
-        mockMvc.perform(get("/api/admin/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("get.all.users")))
-                .andExpect(jsonPath("$.path").value("/api/admin/users"))
-                .andExpect(jsonPath("$.data").isArray());
-    }
-
-    @Test
-    @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
-    void getAllUsersInPage_shouldReturnListUsers_whenUsersExist() throws Exception {
         createUser(email, Role.USER, userRepository);
-        mockMvc.perform(get("/api/admin/users/paged")
+        mockMvc.perform(get("/api/admin/users")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())

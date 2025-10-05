@@ -1,4 +1,4 @@
-package test.model;
+package test.logging.audit;
 
 import com.example.expensetracker.logging.audit.AuditAction;
 import com.example.expensetracker.logging.audit.Audit;
@@ -7,8 +7,11 @@ import org.junit.jupiter.api.Test;
 import test.util.TestData;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
+import static test.util.Constants.ADMIN_EMAIL;
 
 public class AuditTest {
 
@@ -17,8 +20,8 @@ public class AuditTest {
         Audit audit = new Audit(AuditAction.BAN, TestData.user(), TestData.admin());
 
         assertThat(audit.getAction()).isEqualTo(AuditAction.BAN);
-        assertThat(audit.getTargetUser()).isEqualTo(42L);
-        assertThat(audit.getPerformedBy()).isEqualTo("admin");
+        assertThat(audit.getTargetUser().getId()).isEqualTo(42L);
+        assertThat(audit.getPerformedBy().getEmail()).isEqualTo(ADMIN_EMAIL);
     }
 
     @Test
@@ -38,7 +41,7 @@ public class AuditTest {
         assertThat(audit.getAction()).isEqualTo(AuditAction.UNBAN);
         assertThat(audit.getTargetUser()).extracting(User::getId, User::getEmail)
                 .containsExactly(targetUser.getId(), targetUser.getEmail());
-        assertThat(audit.getTargetUser()).extracting(User::getId, User::getEmail)
+        assertThat(audit.getPerformedBy()).extracting(User::getId, User::getEmail)
                 .containsExactly(performedBy.getId(), performedBy.getEmail());
         assertThat(audit.getTimeStamp()).isEqualTo(now);
     }
@@ -49,5 +52,6 @@ public class AuditTest {
 
         assertThat(audit.getId()).isNull();
         assertThat(audit.getTimeStamp()).isNotNull();
+        assertThat(audit.getTimeStamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
     }
 }

@@ -62,7 +62,7 @@ public class ApiResponseFactory {
                 Instant.now(),
                 HttpStatus.FORBIDDEN.value(),
                 HttpStatus.FORBIDDEN.getReasonPhrase(),
-                "У вас недостаточно прав для доступа к этому ресурсу.",
+                "У вас недостаточно прав для доступа к этому ресурсу",
                 request.getRequestURI(),
                 null,
                 null

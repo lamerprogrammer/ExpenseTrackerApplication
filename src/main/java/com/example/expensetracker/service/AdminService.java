@@ -9,9 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface AdminService {
-    List<User> getAllUsers();
-
-    Page<User> getAllUsersPaged(Pageable pageable);
+    Page<User> getAllUsers(Pageable pageable);
     
     User banUser(Long id, UserDetailsImpl currentUser);
 

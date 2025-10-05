@@ -15,8 +15,10 @@ import org.springframework.security.access.AccessDeniedException;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.*;
 import static test.util.TestUtils.writeByteToStream;
 
@@ -51,10 +53,10 @@ public class CustomAccessDeniedHandlerTest {
         String json = baos.toString();
         ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
-        assertThat(apiResponse.getTimestamp()).isEqualTo(now);
+        assertThat(apiResponse.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
         assertThat(apiResponse.getError()).isEqualTo(HttpStatus.FORBIDDEN.getReasonPhrase());
-        assertThat(apiResponse.getMessage()).isEqualTo("Mocked message.");
+        assertThat(apiResponse.getMessage()).isEqualTo("У вас недостаточно прав для доступа к этому ресурсу");
         assertThat(apiResponse.getPath()).isEqualTo("/api/admin/users");
     }
 
@@ -75,10 +77,10 @@ public class CustomAccessDeniedHandlerTest {
         String json = baos.toString();
         ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
-        assertThat(apiResponse.getTimestamp()).isEqualTo(now);
+        assertThat(apiResponse.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
         assertThat(apiResponse.getError()).isEqualTo(HttpStatus.FORBIDDEN.getReasonPhrase());
-        assertThat(apiResponse.getMessage()).isEqualTo("Mocked message.");
+        assertThat(apiResponse.getMessage()).isEqualTo("У вас недостаточно прав для доступа к этому ресурсу");
         assertThat(apiResponse.getPath()).isEqualTo(null);
     }
 }

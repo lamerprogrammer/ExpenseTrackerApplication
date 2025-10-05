@@ -1,12 +1,10 @@
-package test.logging;
+package test.logging.applog;
 
 import com.example.expensetracker.logging.applog.AppLogDto;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 import test.util.TestData;
-
-import java.time.Instant;
 
 import static com.example.expensetracker.logging.applog.AppLogLevel.INFO;
 import static org.assertj.core.api.Assertions.assertThat;
