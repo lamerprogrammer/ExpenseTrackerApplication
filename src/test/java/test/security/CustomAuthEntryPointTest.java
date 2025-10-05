@@ -16,13 +16,11 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 
-import static com.example.expensetracker.dto.ApiResponseFactory.unauthorized;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 import static test.util.TestUtils.writeByteToStream;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,21 +38,13 @@ public class CustomAuthEntryPointTest {
     }
 
     @Test
-    public void shouldReturnUnauthorizedResponse_whenAuthenticationFails() throws Exception {
+    public void commence_shouldReturnUnauthorizedResponse_whenAuthenticationFails() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         when(request.getRequestURI()).thenReturn("/api/auth/login");
         when(response.getOutputStream()).thenReturn(writeByteToStream(baos));
-        when(unauthorized(any())).thenReturn(new ApiResponse(
-                now,
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                "Mocked message.",
-                "/api/auth/login",
-                null,
-                List.of("Exception")));
 
         customAuthEntryPoint.commence(request, response,
                 new AuthenticationCredentialsNotFoundException("No auth"));
@@ -63,31 +53,23 @@ public class CustomAuthEntryPointTest {
         verify(response).setContentType("application/json");
 
         String json = baos.toString();
-        ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
+        var apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
-        assertThat(apiResponse.getTimestamp()).isEqualTo(now);
+        assertThat(apiResponse.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         assertThat(apiResponse.getError()).isEqualTo(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        assertThat(apiResponse.getMessage()).isEqualTo("Mocked message.");
+        assertThat(apiResponse.getMessage()).isEqualTo("Доступ запрещён: требуется авторизация");
         assertThat(apiResponse.getPath()).isEqualTo("/api/auth/login");
     }
 
     @Test
-    public void shouldReturnUnauthorizedResponse_whenRequestUriIsNull() throws Exception {
+    public void commence_shouldReturnUnauthorizedResponse_whenRequestUriIsNull() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         when(request.getRequestURI()).thenReturn(null);
         when(response.getOutputStream()).thenReturn(writeByteToStream(baos));
-        when(unauthorized(any())).thenReturn(new ApiResponse(
-                now,
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                "Mocked message.",
-                null,
-                null,
-                List.of("Exception")));
 
         customAuthEntryPoint.commence(request, response,
                 new AuthenticationCredentialsNotFoundException("No auth"));
@@ -96,12 +78,12 @@ public class CustomAuthEntryPointTest {
         verify(response).setContentType("application/json");
 
         String json = baos.toString();
-        ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
+        var apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
-        assertThat(apiResponse.getTimestamp()).isEqualTo(now);
+        assertThat(apiResponse.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         assertThat(apiResponse.getError()).isEqualTo(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        assertThat(apiResponse.getMessage()).isEqualTo("Mocked message.");
+        assertThat(apiResponse.getMessage()).isEqualTo("Доступ запрещён: требуется авторизация");
         assertThat(apiResponse.getPath()).isEqualTo(null);
     }
 }

@@ -10,9 +10,7 @@ import java.util.List;
 
 public interface ModeratorService {
 
-    List<User> getAllUsers();
-
-    Page<User> getAllUsersPaged(Pageable pageable);
+    Page<User> getAllUsers(Pageable pageable);
 
     User banUser(Long id, UserDetailsImpl currentUser);
 

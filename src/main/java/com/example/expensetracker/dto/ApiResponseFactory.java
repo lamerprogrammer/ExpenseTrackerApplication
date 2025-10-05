@@ -1,6 +1,7 @@
 package com.example.expensetracker.dto;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -50,7 +51,7 @@ public class ApiResponseFactory {
                 Instant.now(),
                 HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                "Доступ запрещён: требуется авторизация.",
+                "Доступ запрещён: требуется авторизация",
                 request.getRequestURI(),
                 null,
                 null

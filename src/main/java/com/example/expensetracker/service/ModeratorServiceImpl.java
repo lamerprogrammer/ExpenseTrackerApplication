@@ -33,12 +33,7 @@ public class ModeratorServiceImpl implements ModeratorService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public Page<User> getAllUsersPaged(Pageable pageable) {
+    public Page<User> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 

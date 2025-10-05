@@ -51,7 +51,7 @@ public class CustomAccessDeniedHandlerTest {
         verify(response).setContentType("application/json");
 
         String json = baos.toString();
-        ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
+        var apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
         assertThat(apiResponse.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
@@ -75,7 +75,7 @@ public class CustomAccessDeniedHandlerTest {
         verify(response).setContentType("application/json");
 
         String json = baos.toString();
-        ApiResponse apiResponse = objectMapper.readValue(json, ApiResponse.class);
+        var apiResponse = objectMapper.readValue(json, ApiResponse.class);
 
         assertThat(apiResponse.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(apiResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());

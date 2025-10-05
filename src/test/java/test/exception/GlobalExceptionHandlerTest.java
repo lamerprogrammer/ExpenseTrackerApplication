@@ -2,6 +2,7 @@ package test.exception;
 
 import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.exception.GlobalExceptionHandler;
+import com.example.expensetracker.logging.applog.AppLogService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,6 +29,9 @@ public class GlobalExceptionHandlerTest {
 
     @Mock
     private MessageSource messageSource;
+    
+    @Mock
+    private AppLogService appLogService;
 
     @InjectMocks
     private GlobalExceptionHandler handler;

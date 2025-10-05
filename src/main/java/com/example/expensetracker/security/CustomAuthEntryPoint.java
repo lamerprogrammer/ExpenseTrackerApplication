@@ -26,7 +26,7 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        ApiResponse apiResponse = unauthorized(request);
+        ApiResponse<?> apiResponse = unauthorized(request);
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
