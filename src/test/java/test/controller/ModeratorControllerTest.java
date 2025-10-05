@@ -3,8 +3,6 @@ package test.controller;
 import com.example.expensetracker.controller.ModeratorController;
 import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.dto.UserDto;
-import com.example.expensetracker.logging.audit.AuditAction;
-import com.example.expensetracker.logging.audit.AuditRepository;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.ModeratorService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +21,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import test.util.TestData;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;

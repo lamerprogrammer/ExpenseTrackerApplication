@@ -65,18 +65,8 @@ public class ModeratorControllerIntegrationTest {
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void getAllUsers_shouldReturnListUsers_whenUsersExist() throws Exception {
-        mockMvc.perform(get("/api/moderator/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("get.all.users")))
-                .andExpect(jsonPath("$.path").value("/api/moderator/users"))
-                .andExpect(jsonPath("$.data").isArray());
-    }
-
-    @Test
-    @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
-    void getAllUsersInPage_shouldReturnListUsers_whenUsersExist() throws Exception {
         createUser(email, Role.USER, userRepository);
-        mockMvc.perform(get("/api/moderator/users/paged")
+        mockMvc.perform(get("/api/moderator/users")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())

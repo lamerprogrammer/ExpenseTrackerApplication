@@ -35,7 +35,7 @@ public class ModeratorController {
         this.messageSource = messageSource;
     }
 
-    @GetMapping("/paged")
+    @GetMapping
     public ResponseEntity<ApiResponse<Page<UserDto>>> getAllUsers(
             @PageableDefault(size = 20, sort = "id") Pageable pageable, HttpServletRequest request) {
         Page<UserDto> users = moderatorService.getAllUsers(pageable).map(UserDto::fromEntity);
@@ -43,7 +43,7 @@ public class ModeratorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable @Positive long id,
+    public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable @Positive Long id,
                                                             HttpServletRequest request) {
         User user = moderatorService.getUserById(id);
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
