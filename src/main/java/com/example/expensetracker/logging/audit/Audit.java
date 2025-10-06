@@ -79,9 +79,4 @@ public class Audit {
     protected void onCreate() {
         this.timeStamp = Instant.now();
     }
-
-    public static AuditDto from(Audit entity) {
-        return new AuditDto(entity.getId(), entity.getAction(), entity.getTargetUser().getEmail(),
-                entity.getPerformedBy().getEmail());
-    }
 }

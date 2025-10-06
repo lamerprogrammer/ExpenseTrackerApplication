@@ -47,7 +47,7 @@ public class TestData {
     }
 
     public static User admin() {
-        return user(ID_VALID, ADMIN_EMAIL, USER_PASSWORD, Set.of(Role.ADMIN), false);
+        return user(ID_ADMIN, ADMIN_EMAIL, USER_PASSWORD, Set.of(Role.ADMIN), false);
     }
 
     public static LoginRequest loginRequest(String mail, String password) {
@@ -125,15 +125,21 @@ public class TestData {
         return new UserDto(id, email);
     }
 
-    public static AuditDto auditDto(Long id, AuditAction action, String targetUserEmail, String performedByEmail) {
-        return new AuditDto(id, action, targetUserEmail, performedByEmail);
+    public static AuditDto auditDto(
+            Long id, 
+            AuditAction action, 
+            String targetUserEmail, 
+            String performedByEmail,
+            Instant timeStamp) {
+        return new AuditDto(id, action, targetUserEmail, performedByEmail, timeStamp);
     }
 
     public static AuditDto auditDto() {
         return auditDto(ID_VALID,
                 AuditAction.BAN,
                 USER_EMAIL,
-                ADMIN_EMAIL);
+                ADMIN_EMAIL,
+                Instant.now());
     }
 
     public static Page<AuditDto> auditDtoPage() {
