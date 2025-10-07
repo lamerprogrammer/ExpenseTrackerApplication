@@ -4,8 +4,6 @@
 //import com.example.expensetracker.dto.RefreshRequest;
 //import com.example.expensetracker.dto.RegisterDto;
 //import com.example.expensetracker.dto.TokenResponse;
-//import com.example.expensetracker.logging.LogEntry;
-//import com.example.expensetracker.logging.LogService;
 //import com.example.expensetracker.model.Role;
 //import com.example.expensetracker.model.User;
 //import com.example.expensetracker.repository.UserRepository;
@@ -29,7 +27,6 @@
 //
 //import java.util.Optional;
 //
-//import static com.example.expensetracker.logging.audit.AuditLevel.INFO;
 //import static org.assertj.core.api.Assertions.assertThat;
 //import static org.junit.jupiter.api.Assertions.assertThrows;
 //import static org.mockito.Mockito.*;
@@ -40,9 +37,6 @@
 //
 //    @Mock
 //    private JwtUtil jwtUtil;
-//
-//    @Mock
-//    private LogService logService;
 //
 //    @Mock
 //    private UserRepository userRepository;
@@ -65,12 +59,7 @@
 //        when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
 //
 //        User result = authService.register(dto);
-//
-//        ArgumentCaptor<LogEntry> logCaptor = ArgumentCaptor.forClass(LogEntry.class);
-//        verify(logService).log(logCaptor.capture());
-//        LogEntry capturedLog = logCaptor.getValue();
-//
-//        assertLogEntry(capturedLog, "Пользователь зарегестрирован.", "/api/auth/register");
+//        
 //        assertThat(result.getEmail()).isEqualTo(dto.getEmail());
 //        assertThat(result.getPassword()).isEqualTo("encoded");
 //        assertThat(result.getRoles()).containsExactly(Role.USER);
@@ -88,7 +77,6 @@
 //
 //        assertThrows(DataIntegrityViolationException.class, () -> authService.register(dto));
 //        verify(passwordEncoder, never()).encode(any());
-//        verify(logService, never()).log(any());
 //        verify(userRepository, never()).save(any(User.class));
 //    }
 //
@@ -103,11 +91,6 @@
 //
 //        TokenResponse result = authService.login(dto);
 //
-//        ArgumentCaptor<LogEntry> logCaptor = ArgumentCaptor.forClass(LogEntry.class);
-//        verify(logService).log(logCaptor.capture());
-//        LogEntry capturedLog = logCaptor.getValue();
-//
-//        assertLogEntry(user, capturedLog, "Пользователь вошёл в систему.", "/api/auth/login");
 //        assertThat(result.accessToken()).isEqualTo("access");
 //        assertThat(result.refreshToken()).isEqualTo("refresh");
 //        verify(jwtUtil).generateAccessToken(eq(user.getEmail()), eq(Role.USER));
@@ -123,7 +106,6 @@
 //        assertThrows(BadCredentialsException.class, () -> authService.login(dto));
 //
 //        verify(passwordEncoder, never()).encode(any());
-//        verify(logService, never()).log(any());
 //        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
 //        verify(jwtUtil, never()).generateRefreshToken(anyString());
 //    }
@@ -139,7 +121,6 @@
 //        assertThrows(BadCredentialsException.class, () -> authService.login(dto));
 //
 //        verify(passwordEncoder, never()).encode(any());
-//        verify(logService, never()).log(any());
 //        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
 //        verify(jwtUtil, never()).generateRefreshToken(anyString());
 //    }
@@ -159,11 +140,6 @@
 //
 //        TokenResponse result = authService.refresh(request);
 //
-//        ArgumentCaptor<LogEntry> logCaptor = ArgumentCaptor.forClass(LogEntry.class);
-//        verify(logService).log(logCaptor.capture());
-//        LogEntry capturedLog = logCaptor.getValue();
-//
-//        assertLogEntry(capturedLog, "Токены обновлены.", "/api/auth/refresh");
 //        assertThat(result.accessToken()).isEqualTo("access");
 //        assertThat(result.refreshToken()).isEqualTo("refresh");
 //        verify(jwtUtil).parse(request.refreshToken());
@@ -181,7 +157,6 @@
 //        assertThrows(BadCredentialsException.class, () -> authService.refresh(request));
 //
 //        verify(jwtUtil).parse(request.refreshToken());
-//        verify(logService, never()).log(any());
 //        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
 //        verify(jwtUtil, never()).generateRefreshToken(anyString());
 //    }
@@ -200,7 +175,6 @@
 //        assertThrows(UsernameNotFoundException.class, () -> authService.refresh(request));
 //
 //        verify(jwtUtil).parse(request.refreshToken());
-//        verify(logService, never()).log(any());
 //        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
 //        verify(jwtUtil, never()).generateRefreshToken(anyString());
 //    }
@@ -221,23 +195,7 @@
 //
 //        verify(jwtUtil).parse(request.refreshToken());
 //        verify(userRepository).findByEmail(userBanned.getEmail());
-//        verify(logService, never()).log(any());
 //        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
 //        verify(jwtUtil, never()).generateRefreshToken(anyString());
-//    }
-//
-//    private void assertLogEntry(LogEntry capturedLog, String message, String path) {
-//        assertThat(capturedLog.getLevel()).isEqualTo(INFO);
-//        assertThat(capturedLog.getLogger()).isEqualTo("AuthServiceImpl");
-//        assertThat(capturedLog.getMessage()).contains(message);
-//        assertThat(capturedLog.getPath()).isEqualTo(path);
-//    }
-//
-//    private void assertLogEntry(User user, LogEntry capturedLog, String message, String path) {
-//        assertThat(capturedLog.getLevel()).isEqualTo(INFO);
-//        assertThat(capturedLog.getLogger()).isEqualTo("AuthServiceImpl");
-//        assertThat(capturedLog.getMessage()).contains(message);
-//        assertThat(capturedLog.getUser()).isEqualTo(user.getEmail());
-//        assertThat(capturedLog.getPath()).isEqualTo(path);
 //    }
 //}

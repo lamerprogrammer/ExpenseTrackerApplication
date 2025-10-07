@@ -1,7 +1,9 @@
 package com.example.expensetracker.service;
 
-import com.example.expensetracker.dto.*;
-import com.example.expensetracker.logging.audit.AuditDto;
+import com.example.expensetracker.dto.LoginDto;
+import com.example.expensetracker.dto.RefreshRequest;
+import com.example.expensetracker.dto.RegisterDto;
+import com.example.expensetracker.dto.TokenResponse;
 import com.example.expensetracker.logging.applog.AppLogService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
@@ -9,16 +11,15 @@ import com.example.expensetracker.repository.UserRepository;
 import com.example.expensetracker.security.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import org.springframework.security.access.AccessDeniedException;
-import java.time.Instant;
 import java.util.HashSet;
 
 @Service
