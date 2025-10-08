@@ -32,7 +32,7 @@ import static test.util.Constants.USER_PASSWORD;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AuditControllerIntegrationTest {
+public class AuditControllerIT {
 
     @Autowired
     private MessageSource messageSource;

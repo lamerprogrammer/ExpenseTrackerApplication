@@ -28,7 +28,7 @@ import static test.util.Constants.USER_PASSWORD;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AuthControllerIntegrationTest {
+public class AuthControllerIT {
 
     @Autowired
     private ObjectMapper objectMapper;

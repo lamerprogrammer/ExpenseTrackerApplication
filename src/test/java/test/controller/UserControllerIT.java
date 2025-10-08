@@ -26,7 +26,7 @@ import static test.util.TestUtils.createUser;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class UserControllerIntegrationTest {
+public class UserControllerIT {
 
     @Autowired
     private UserRepository userRepository;

@@ -37,7 +37,7 @@ import static test.util.TestUtils.createUser;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AdminControllerIntegrationTest {
+public class AdminControllerIT {
 
     @Autowired
     private MockMvc mockMvc;

@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class TestData {
     }
 
     public static User user() {
-        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), false);
+        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, new HashSet<Role>(Set.of(Role.USER)), false);
     }
 
     public static User userBanned() {

@@ -22,7 +22,7 @@ import static test.util.Constants.ADMIN_EMAIL;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AppLogControllerIntegrationTest {
+public class AppLogControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
