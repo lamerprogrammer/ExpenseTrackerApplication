@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.example.expensetracker.logging.applog.AppLogLevel.INFO;
+import static com.example.expensetracker.model.Role.*;
 import static test.util.Constants.*;
 
 public class TestData {
@@ -36,19 +37,19 @@ public class TestData {
     }
 
     public static User user() {
-        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, new HashSet<Role>(Set.of(Role.USER)), false);
+        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, new HashSet<Role>(Set.of(USER)), false);
     }
 
     public static User userBanned() {
-        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), true);
+        return user(ID_VALID, USER_EMAIL, USER_PASSWORD, Set.of(USER), true);
     }
 
     public static User moderator() {
-        return user(ID_VALID, MODERATOR_EMAIL, USER_PASSWORD, Set.of(Role.MODERATOR), false);
+        return user(ID_VALID, MODERATOR_EMAIL, USER_PASSWORD, new HashSet<Role>(Set.of(USER, MODERATOR)), false);
     }
 
     public static User admin() {
-        return user(ID_ADMIN, ADMIN_EMAIL, USER_PASSWORD, Set.of(Role.ADMIN), false);
+        return user(ID_ADMIN, ADMIN_EMAIL, USER_PASSWORD, Set.of(ADMIN), false);
     }
 
     public static LoginRequest loginRequest(String mail, String password) {
@@ -112,7 +113,7 @@ public class TestData {
         User user = new User();
         user.setId(42L);
         user.setEmail(USER_EMAIL);
-        user.setRoles(Set.of(Role.USER));
+        user.setRoles(Set.of(USER));
         user.setPassword(encoder.encode(USER_PASSWORD));
         userRepository.save(user);
         return user;

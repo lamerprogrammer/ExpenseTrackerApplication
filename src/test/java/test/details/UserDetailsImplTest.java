@@ -21,9 +21,8 @@ public class UserDetailsImplTest {
 
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         
-        assertThat(authorities).isNotNull();
-        assertThat(authorities).hasSize(1);
-        assertThat(authorities.iterator().next().getAuthority()).isEqualTo("ROLE_" + Role.MODERATOR.name());
+        assertThat(authorities).extracting(GrantedAuthority::getAuthority).containsExactlyInAnyOrder(
+                "ROLE_USER", "ROLE_MODERATOR");
     }
 
     @Test

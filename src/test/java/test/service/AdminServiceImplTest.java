@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.expensetracker.logging.audit.AuditAction.*;
+import static com.example.expensetracker.model.Role.MODERATOR;
+import static com.example.expensetracker.model.Role.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,7 +57,7 @@ public class AdminServiceImplTest {
     private AdminServiceImpl adminService;
 
     @Test
-    public void getAllUsers_shouldReturnListOfUsers() {
+    void getAllUsers_shouldReturnListOfUsers() {
         User user = TestData.user();
         Page<User> users = new PageImpl<>(List.of(user));
         when(userRepository.findAll(any(Pageable.class))).thenReturn(users);
@@ -69,7 +71,7 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    public void getAllUsers_shouldReturnEmptyList_whenNoUsers() {
+    void getAllUsers_shouldReturnEmptyList_whenNoUsers() {
         when(userRepository.findAll(any(Pageable.class))).thenReturn(Page.empty());
 
         var result = adminService.getAllUsers(pageable);
@@ -111,24 +113,29 @@ public class AdminServiceImplTest {
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = adminService.promoteUser(ID_VALID, currentUser);//java.lang.UnsupportedOperationException 
-        /*
-        java.lang.UnsupportedOperationException
-	at java.base/java.util.ImmutableCollections.uoe(ImmutableCollections.java:142)
-	at java.base/java.util.ImmutableCollections$AbstractImmutableCollection.add(ImmutableCollections.java:147)
-	at com.example.expensetracker.service.AdminServiceImpl.lambda$promoteUser$1(AdminServiceImpl.java:59)
-	at java.base/java.util.Optional.map(Optional.java:260)
-	at com.example.expensetracker.service.AdminServiceImpl.promoteUser(AdminServiceImpl.java:57)
-	at test.service.AdminServiceImplTest.promoteUser_shouldReturnUser_whenUserExists(AdminServiceImplTest.java:115)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-
-         */
+        User result = adminService.promoteUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
-        verify(userRepository).save(argThat(u -> u.getRoles().contains(Role.MODERATOR)));
+        verify(userRepository).save(argThat(u -> u.getRoles().contains(MODERATOR)));
         checkLoggerData(PROMOTE, result, admin);
+    }
+
+    @Test
+    void promoteUser_shouldReturnUser_whenAlreadyModerator() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        User moderator = TestData.moderator();
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(moderator));
+
+        User result = adminService.promoteUser(ID_VALID, currentUser);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(moderator.getId());
+        assertThat(result.getEmail()).isEqualTo(moderator.getEmail());
+        assertThat(result.getRoles()).containsExactlyInAnyOrder(USER, MODERATOR);
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
@@ -136,25 +143,88 @@ public class AdminServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_INVALID))).thenThrow(new EntityNotFoundException("message"));
+        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
                 () -> adminService.promoteUser(ID_INVALID, currentUser));
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).save(any(User.class));
-        verify(auditRepository, never()).save(any(Audit.class));
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
-    public void banUser_shouldReturnUser_whenUserExist() {
+    void promoteUser_shouldThrowException_whenIdsMatched() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> adminService.promoteUser(admin.getId(), currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void demoteUser_shouldReturnUser_whenUserExists() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        User user = TestData.moderator();
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        User result = adminService.demoteUser(ID_VALID, currentUser);
+
+        assertThat(result).isNotNull();
+        verify(userRepository).save(argThat(u -> !u.getRoles().contains(MODERATOR)));
+        checkLoggerData(DEMOTE, result, admin);
+    }
+
+    @Test
+    void demoteUser_shouldReturnUser_whenAlreadyNotModerator() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        User user = TestData.user();
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+
+        User result = adminService.demoteUser(ID_VALID, currentUser);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(user.getId());
+        assertThat(result.getEmail()).isEqualTo(user.getEmail());
+        assertThat(result.getRoles()).containsExactly(USER);
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void demoteUser_shouldThrowException_whenUserNotExists() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
+                () -> adminService.demoteUser(ID_INVALID, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void banUser_shouldReturnUser_whenUserExist() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
         AuditDto auditDto = AuditDto.from(new Audit(BAN, user, admin));
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
-        when(userRepository.save(eq(user))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(auditService.logAction(eq(BAN), eq(user), eq(admin))).thenReturn(auditDto);
 
         User result = adminService.banUser(ID_VALID, currentUser);
@@ -165,7 +235,20 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    public void banUser_shouldThrowException_whenUserNotFound() {
+    void banUser_shouldReturnUser_whenAlreadyBanned() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        User user = TestData.userBanned();
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+
+        User result = adminService.banUser(ID_VALID, currentUser);
+
+        cacheCheck(result, user, true);
+    }
+
+    @Test
+    void banUser_shouldThrowException_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
 
@@ -174,15 +257,42 @@ public class AdminServiceImplTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).save(any(User.class));
-        verify(auditRepository, never()).save(any(Audit.class));
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
-    public void unbanUser_shouldReturn200_whenUserExist() {
+    void banUser_shouldThrowException_whenAdminNotFound() {
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenThrow(new UsernameNotFoundException("message"));
+
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminService.banUser(ID_INVALID, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void banUser_shouldThrowException_whenUserNotExists() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
+                () -> adminService.banUser(ID_INVALID, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void unbanUser_shouldReturn200_whenUserExist() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.userBanned();
-        Long id = user.getId();
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -196,7 +306,20 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    public void unbanUser_shouldReturn404_whenUserNotFound() {
+    void unbanUser_shouldReturnUser_whenAlreadyNotUnbanned() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        User user = TestData.user();
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+
+        User result = adminService.unbanUser(ID_VALID, currentUser);
+
+        cacheCheck(result, user, false);
+    }
+
+    @Test
+    void unbanUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
 
@@ -205,15 +328,29 @@ public class AdminServiceImplTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).save(any(User.class));
-        verify(auditRepository, never()).save(any(Audit.class));
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
-    public void deleteUser_shouldDeleteUser_whenUserExist() {
+    void unbanUser_shouldThrowException_whenUserNotExists() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
+                () -> adminService.unbanUser(ID_INVALID, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void deleteUser_shouldDeleteUser_whenUserExist() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
-        Long id = user.getId();
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -226,7 +363,7 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    public void deleteUser_shouldReturn404_whenUserNotFound() {
+    void deleteUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
 
@@ -239,14 +376,29 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    public void createAdmin_shouldAssignAdminRole() {
+    void deleteUser_shouldThrowException_whenUserNotExists() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
+                () -> adminService.deleteUser(ID_INVALID, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void createAdmin_shouldAssignAdminRole() {
         RegisterDto dto = TestData.registerDto();
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(dto.getPassword())).thenReturn("encoded");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
 
         User result = adminService.createAdmin(dto, currentUser);
 
@@ -258,14 +410,82 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    public void createAdmin_shouldThrowException_whenEmailExists() {
+    void createAdmin_shouldThrowException_whenAdminNotFound() {
+        RegisterDto dto = TestData.registerDto();
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
+
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminService.createAdmin(dto, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+    void createAdmin_shouldThrowException_whenEmailExists() {
         RegisterDto dto = TestData.registerDto();
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
+        User admin = currentUser.getDomainUser();
 
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
 
         EntityExistsException ex = assertThrows(EntityExistsException.class,
                 () -> adminService.createAdmin(dto, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any());
+        verify(auditRepository, never()).save(any());
+    }
+
+    @Test
+    void createModerator_shouldAssignModeratorRole() {
+        RegisterDto dto = TestData.registerDto();
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(dto.getPassword())).thenReturn("encoded");
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+
+        User result = adminService.createModerator(dto, currentUser);
+
+        assertThat(result.getEmail()).isEqualTo(dto.getEmail());
+        assertThat(result.getPassword()).isEqualTo("encoded");
+        assertThat(result.getRoles()).contains(MODERATOR);
+        verify(userRepository).save(any(User.class));
+        checkLoggerData(AuditAction.CREATE, result, admin);
+    }
+
+    @Test
+    void createModerator_shouldThrowException_whenAdminNotFound() {
+        RegisterDto dto = TestData.registerDto();
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
+
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> adminService.createModerator(dto, currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
+     void createModerator_shouldThrowException_whenEmailExists() {
+        RegisterDto dto = TestData.registerDto();
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
+        User admin = currentUser.getDomainUser();
+
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
+
+        EntityExistsException ex = assertThrows(EntityExistsException.class,
+                () -> adminService.createModerator(dto, currentUser));
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).save(any());
@@ -287,5 +507,14 @@ public class AdminServiceImplTest {
         assertThat(savedAdmin.getId()).isEqualTo(performedBy.getId());
         assertThat(savedUser.getEmail()).isEqualTo(targetUser.getEmail());
         assertThat(savedAdmin.getEmail()).isEqualTo(performedBy.getEmail());
+    }
+
+    private void cacheCheck(User result, User user, boolean isBanned) {
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(user.getId());
+        assertThat(result.getEmail()).isEqualTo(user.getEmail());
+        assertThat(result.isBanned()).isEqualTo(isBanned);
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 }

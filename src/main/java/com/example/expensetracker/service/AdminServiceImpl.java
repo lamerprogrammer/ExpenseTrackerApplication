@@ -121,26 +121,28 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public User createAdmin(RegisterDto dto, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(currentUser);
         existenceCheck(dto);
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.ADMIN);
         user.getRoles().add(Role.USER);
         User newAdmin = userRepository.save(user);
-        auditService.logAction(CREATE, newAdmin, userEntity(currentUser));
+        auditService.logAction(CREATE, newAdmin, userEntity);
         return newAdmin;
     }
 
     @Override
     @Transactional
     public User createModerator(RegisterDto dto, UserDetailsImpl currentUser) {
+        User userEntity = userEntity(currentUser);
         existenceCheck(dto);
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
         user.setRoles(new HashSet<>());
         user.getRoles().add(Role.MODERATOR);
         user.getRoles().add(Role.USER);
         User newModerator = userRepository.save(user);
-        auditService.logAction(CREATE, newModerator, userEntity(currentUser));
+        auditService.logAction(CREATE, newModerator, userEntity);
         return newModerator;
     }
 
