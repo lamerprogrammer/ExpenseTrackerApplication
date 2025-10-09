@@ -2,8 +2,6 @@ package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
-import com.example.expensetracker.logging.audit.Audit;
-import com.example.expensetracker.logging.audit.AuditRepository;
 import com.example.expensetracker.logging.audit.AuditService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
@@ -15,8 +13,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static com.example.expensetracker.logging.audit.AuditAction.BAN;
 import static com.example.expensetracker.logging.audit.AuditAction.UNBAN;
@@ -50,6 +46,7 @@ public class ModeratorServiceImpl implements ModeratorService {
         return userRepository.findById(id)
                 .map(user -> {
                     checkRole(user);
+                    if (user.isBanned()) return user;
                     user.setBanned(true);
                     userRepository.save(user);
                     auditService.logAction(BAN, user, userEntity);
@@ -64,6 +61,7 @@ public class ModeratorServiceImpl implements ModeratorService {
         return userRepository.findById(id)
                 .map(user -> {
                     checkRole(user);
+                    if (!(user.isBanned())) return user;
                     user.setBanned(false);
                     userRepository.save(user);
                     auditService.logAction(UNBAN, user, userEntity);

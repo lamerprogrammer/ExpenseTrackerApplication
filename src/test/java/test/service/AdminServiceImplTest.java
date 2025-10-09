@@ -45,9 +45,6 @@ public class AdminServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private AuditRepository auditRepository;
-
-    @Mock
     private Pageable pageable;
 
     @Mock
@@ -154,20 +151,6 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    void promoteUser_shouldThrowException_whenIdsMatched() {
-        User admin = TestData.admin();
-        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> adminService.promoteUser(admin.getId(), currentUser));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(userRepository, never()).save(any(User.class));
-        verify(auditService, never()).logAction(any(), any(), any());
-    }
-
-    @Test
     void demoteUser_shouldReturnUser_whenUserExists() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
@@ -232,6 +215,20 @@ public class AdminServiceImplTest {
         assertThat(result).isNotNull();
         verify(userRepository).save(argThat(User::isBanned));
         checkLoggerData(BAN, result, admin);
+    }
+
+    @Test
+    void banUser_shouldThrowException_whenIdsMatched() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> adminService.banUser(admin.getId(), currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
@@ -363,6 +360,20 @@ public class AdminServiceImplTest {
     }
 
     @Test
+    void deleteUser_shouldThrowException_whenIdsMatched() {
+        User admin = TestData.admin();
+        UserDetailsImpl currentUser = new UserDetailsImpl(admin);
+        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> adminService.deleteUser(admin.getId(), currentUser));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).save(any(User.class));
+        verify(auditService, never()).logAction(any(), any(), any());
+    }
+
+    @Test
     void deleteUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
@@ -372,7 +383,7 @@ public class AdminServiceImplTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).delete(any());
-        verify(auditRepository, never()).save(any());
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
@@ -438,7 +449,7 @@ public class AdminServiceImplTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).save(any());
-        verify(auditRepository, never()).save(any());
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     @Test
@@ -489,7 +500,7 @@ public class AdminServiceImplTest {
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(userRepository, never()).save(any());
-        verify(auditRepository, never()).save(any());
+        verify(auditService, never()).logAction(any(), any(), any());
     }
 
     private void checkLoggerData(AuditAction action, User targetUser, User performedBy) {
