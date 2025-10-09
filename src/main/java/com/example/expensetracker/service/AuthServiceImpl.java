@@ -28,7 +28,6 @@ public class AuthServiceImpl implements AuthService {
     private final static Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
     
     private final JwtUtil jwtUtil;
-    private final AppLogService appLogService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -37,7 +36,6 @@ public class AuthServiceImpl implements AuthService {
                            UserRepository userRepository, 
                            PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
-        this.appLogService = appLogService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

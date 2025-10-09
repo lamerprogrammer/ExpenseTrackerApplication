@@ -13,11 +13,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,6 +41,12 @@ public class AuthServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+    
+    @Mock
+    private Claims claims;
+    
+    @Mock
+    private Jws<Claims> jwsClaims;
 
     @InjectMocks
     private AuthServiceImpl authService;
@@ -62,7 +66,10 @@ public class AuthServiceImplTest {
         assertThat(result.getRoles()).containsExactly(Role.USER);
         verify(userRepository).existsByEmail(dto.getEmail());
         verify(passwordEncoder).encode(dto.getPassword());
-        verify(userRepository).save(any(User.class));
+        verify(userRepository).save(argThat(u ->
+                u.getRoles().contains(Role.USER) &&
+                u.getPassword().contains("encoded") &&
+                u.getEmail().equals(dto.getEmail())));
     }
 
     @Test
@@ -71,7 +78,10 @@ public class AuthServiceImplTest {
 
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
 
-        assertThrows(DataIntegrityViolationException.class, () -> authService.register(dto));
+        DataIntegrityViolationException ex = assertThrows(DataIntegrityViolationException.class, 
+                () -> authService.register(dto));
+        
+        assertThat(ex.getMessage()).isNotBlank();
         verify(passwordEncoder, never()).encode(any());
         verify(userRepository, never()).save(any(User.class));
     }
@@ -94,12 +104,28 @@ public class AuthServiceImplTest {
     }
 
     @Test
+    public void login_shouldThrowException_whenCredentialsInvalid() {
+        LoginDto dto = TestData.loginDto();
+        when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
+
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class,
+                () -> authService.login(dto));
+        
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(passwordEncoder, never()).encode(any());
+        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
+        verify(jwtUtil, never()).generateRefreshToken(anyString());
+    }
+
+    @Test
     public void login_shouldThrowException_whenEmailNotFound() {
         LoginDto dto = TestData.loginDto();
         when(userRepository.findByEmail(eq(USER_EMAIL))).thenThrow(new BadCredentialsException("message"));
 
-        assertThrows(BadCredentialsException.class, () -> authService.login(dto));
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class,
+                () -> authService.login(dto));
 
+        assertThat(ex.getMessage()).isNotBlank();
         verify(passwordEncoder, never()).encode(any());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
@@ -112,8 +138,10 @@ public class AuthServiceImplTest {
         when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(dto.getPassword(), user.getPassword())).thenReturn(false);
 
-        assertThrows(BadCredentialsException.class, () -> authService.login(dto));
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class,
+                () -> authService.login(dto));
 
+        assertThat(ex.getMessage()).isNotBlank();
         verify(passwordEncoder, never()).encode(any());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
@@ -121,8 +149,6 @@ public class AuthServiceImplTest {
 
     @Test
     public void refresh_shouldReturnTokens_whenRefreshTokenValid() {
-        Claims claims = mock(Claims.class);
-        Jws<Claims> jwsClaims = mock(Jws.class);
         RefreshRequest request = new RefreshRequest("validToken");
         User user = TestData.user();
         when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsClaims);
@@ -147,8 +173,10 @@ public class AuthServiceImplTest {
         RefreshRequest request = new RefreshRequest("validToken");
         when(jwtUtil.parse(request.refreshToken())).thenThrow(new RuntimeException());
 
-        assertThrows(BadCredentialsException.class, () -> authService.refresh(request));
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class, 
+                () -> authService.refresh(request));
 
+        assertThat(ex.getMessage()).isNotBlank();
         verify(jwtUtil).parse(request.refreshToken());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
@@ -156,16 +184,16 @@ public class AuthServiceImplTest {
 
     @Test
     public void refresh_shouldThrowException_whenUserNotFound() {
-        Claims claims = mock(Claims.class);
-        Jws<Claims> jwsClaims = mock(Jws.class);
         RefreshRequest request = new RefreshRequest("validToken");
         when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsClaims);
         when(jwsClaims.getPayload()).thenReturn(claims);
         when(claims.getSubject()).thenReturn(USER_EMAIL);
         when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.empty());
 
-        assertThrows(UsernameNotFoundException.class, () -> authService.refresh(request));
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class, 
+                () -> authService.refresh(request));
 
+        assertThat(ex.getMessage()).isNotBlank();
         verify(jwtUtil).parse(request.refreshToken());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
@@ -173,19 +201,19 @@ public class AuthServiceImplTest {
 
     @Test
     public void refresh_shouldThrowException_whenUserBanned() {
-        Claims claims = mock(Claims.class);
-        Jws<Claims> jwsClaims = mock(Jws.class);
         RefreshRequest request = new RefreshRequest("validToken");
         User userBanned = TestData.userBanned();
         when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsClaims);
         when(jwsClaims.getPayload()).thenReturn(claims);
         when(claims.getSubject()).thenReturn(USER_EMAIL);
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userBanned));
+        when(userRepository.findByEmail(eq(USER_EMAIL))).thenReturn(Optional.of(userBanned));
 
-        assertThrows(AccessDeniedException.class, () -> authService.refresh(request));
+        AccessDeniedException ex = assertThrows(AccessDeniedException.class, 
+                () -> authService.refresh(request));
 
+        assertThat(ex.getMessage()).isNotBlank();
         verify(jwtUtil).parse(request.refreshToken());
-        verify(userRepository).findByEmail(userBanned.getEmail());
+        verify(userRepository).findByEmail(eq(userBanned.getEmail()));
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
     }
