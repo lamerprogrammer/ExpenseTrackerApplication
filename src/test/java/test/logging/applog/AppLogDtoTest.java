@@ -27,7 +27,7 @@ public class AppLogDtoTest {
     @Test
     void shouldSetFieldsUsingConstructor() {
         AppLogDto applog = new AppLogDto();
-        applog.setId("42");
+        applog.setId(ID_STRING);
         applog.setTimestamp(Instant.now());
         applog.setLevel(INFO);
         applog.setLogger(LOGGER_TEST_DATA);
@@ -36,14 +36,11 @@ public class AppLogDtoTest {
         applog.setEndPoint(API_TEST_ENDPOINT);
         applog.setErrorType(TYPE_ERROR_WARN);
 
-        assertThat(applog.getId()).isEqualTo("42");
         assertThat(applog.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
-        assertThat(applog.getLevel()).isEqualTo(INFO);
-        assertThat(applog.getLogger()).isEqualTo(LOGGER_TEST_DATA);
-        assertThat(applog.getMessage()).isEqualTo(TEST_MESSAGE);
-        assertThat(applog.getUserEmail()).isEqualTo(USER_EMAIL);
-        assertThat(applog.getEndPoint()).isEqualTo(API_TEST_ENDPOINT);
-        assertThat(applog.getErrorType()).isEqualTo(TYPE_ERROR_WARN);
+        assertThat(applog).extracting(AppLogDto::getId, AppLogDto::getLevel, AppLogDto::getLogger,
+                        AppLogDto::getMessage, AppLogDto::getUserEmail, AppLogDto::getEndPoint, AppLogDto::getErrorType)
+                .containsExactly(ID_STRING, INFO, LOGGER_TEST_DATA, TEST_MESSAGE, USER_EMAIL, API_TEST_ENDPOINT,
+                        TYPE_ERROR_WARN);
     }
 
     @Test
@@ -54,17 +51,17 @@ public class AppLogDtoTest {
                 .usingGetClass()
                 .verify();
     }
-    
+
     @Test
     void from_shouldMapAllFieldsCorrectly() {
         AppLog appLog = TestData.appLog();
-        
+
         AppLogDto result = AppLogDto.from(appLog);
 
         assertThat(result.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
-        assertThat(result).extracting(AppLogDto::getId, AppLogDto::getLevel, AppLogDto::getLogger, 
+        assertThat(result).extracting(AppLogDto::getId, AppLogDto::getLevel, AppLogDto::getLogger,
                         AppLogDto::getMessage, AppLogDto::getUserEmail, AppLogDto::getEndPoint, AppLogDto::getErrorType)
-                        .containsExactly(ID_STRING, INFO, LOGGER_TEST_DATA, TEST_MESSAGE, USER_EMAIL, API_TEST_ENDPOINT,
-                                TYPE_ERROR_WARN);
+                .containsExactly(ID_STRING, INFO, LOGGER_TEST_DATA, TEST_MESSAGE, USER_EMAIL, API_TEST_ENDPOINT,
+                        TYPE_ERROR_WARN);
     }
 }

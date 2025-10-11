@@ -39,13 +39,13 @@ public class ModeratorControllerTest {
     private MessageSource messageSource;
 
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
     @Mock
     private Pageable pageable;
 
     @InjectMocks
-    ModeratorController moderatorController;
+    private ModeratorController moderatorController;
 
     @AfterEach
     void tearDown() {
