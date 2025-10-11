@@ -12,11 +12,17 @@ public final class Constants {
     public static final Long ID_INVALID = 99999L;
     public static final Long ID_VALID = 42L;
     public static final Long ID_ADMIN = 777L;
+    public static final String ID_STRING = "42";
 
     public static final String API_TEST_ENDPOINT = "/api/test";
     public static final String API_ADMIN_USERS_CREATE_MODERATOR = "/api/admin/users/create/moderator";
     public static final String API_ADMIN_USERS_CREATE_ADMINISTRATOR = "/api/admin/users/create/administrator";
     public static final String API_USERS_ME = "/api/users/me";
+    
+    
+    public static final String TYPE_ERROR_WARN = "WARN";
+    public static final String TEST_MESSAGE = "Test message";
+    public static final String LOGGER_TEST_DATA = "LoggerTestData";
 
     private Constants() {
     }

@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static test.util.Constants.TEST_MESSAGE;
 
 @ExtendWith(MockitoExtension.class)
 public class ModeratorControllerTest {
@@ -101,7 +102,7 @@ public class ModeratorControllerTest {
     public void banUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(moderatorService.banUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(moderatorService.banUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> moderatorController.banUser(id, currentUser, request));
@@ -127,7 +128,7 @@ public class ModeratorControllerTest {
     public void unbanUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(moderatorService.unbanUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(moderatorService.unbanUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> moderatorController.unbanUser(id, currentUser, request));

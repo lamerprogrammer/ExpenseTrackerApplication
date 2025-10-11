@@ -4,6 +4,7 @@ import com.example.expensetracker.dto.LoginDto;
 import com.example.expensetracker.dto.LoginRequest;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.UserDto;
+import com.example.expensetracker.logging.applog.AppLog;
 import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogLevel;
 import com.example.expensetracker.logging.audit.AuditAction;
@@ -76,6 +77,35 @@ public class TestData {
         return loginDto(USER_EMAIL, USER_PASSWORD);
     }
 
+    public static AppLog appLog(String id,
+                                Instant timestamp,
+                                AppLogLevel level,
+                                String logger,
+                                String errorType,
+                                String message,
+                                String userEmail,
+                                String endPoint) {
+        return new AppLog(id,
+                timestamp,
+                level,
+                logger,
+                errorType,
+                message,
+                userEmail,
+                endPoint);
+    }
+
+    public static AppLog appLog() {
+        return appLog("42",
+                Instant.now(),
+                INFO,
+                LOGGER_TEST_DATA,
+                TYPE_ERROR_WARN,
+                TEST_MESSAGE,
+                USER_EMAIL,
+                API_TEST_ENDPOINT);
+    }
+
     public static AppLogDto appLogDto(String id,
                                       Instant timestamp,
                                       AppLogLevel level,
@@ -98,9 +128,9 @@ public class TestData {
         return appLogDto("42",
                 Instant.now(),
                 INFO,
-                "TestData",
+                LOGGER_TEST_DATA,
                 "WARN",
-                "Test message",
+                TEST_MESSAGE,
                 USER_EMAIL,
                 API_TEST_ENDPOINT);
     }

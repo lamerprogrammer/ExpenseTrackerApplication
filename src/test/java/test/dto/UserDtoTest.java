@@ -27,6 +27,7 @@ public class UserDtoTest {
     @Test
     void fromEntity_shouldMapAllFieldsCorrectly() {
         User user = TestData.user();
+        
         UserDto userDto = fromEntity(user);
 
         assertThat(userDto).extracting(UserDto::getId, UserDto::getEmail).containsExactly(ID_VALID, USER_EMAIL);

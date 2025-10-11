@@ -1,15 +1,19 @@
 package test.logging.applog;
 
+import com.example.expensetracker.logging.applog.AppLog;
 import com.example.expensetracker.logging.applog.AppLogDto;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 import test.util.TestData;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import static com.example.expensetracker.logging.applog.AppLogLevel.INFO;
 import static org.assertj.core.api.Assertions.assertThat;
-import static test.util.Constants.API_TEST_ENDPOINT;
-import static test.util.Constants.USER_EMAIL;
+import static org.assertj.core.api.Assertions.within;
+import static test.util.Constants.*;
 
 public class AppLogDtoTest {
 
@@ -22,15 +26,24 @@ public class AppLogDtoTest {
 
     @Test
     void shouldSetFieldsUsingConstructor() {
-        AppLogDto applog = TestData.appLogDto();
+        AppLogDto applog = new AppLogDto();
+        applog.setId("42");
+        applog.setTimestamp(Instant.now());
+        applog.setLevel(INFO);
+        applog.setLogger(LOGGER_TEST_DATA);
+        applog.setMessage(TEST_MESSAGE);
+        applog.setUserEmail(USER_EMAIL);
+        applog.setEndPoint(API_TEST_ENDPOINT);
+        applog.setErrorType(TYPE_ERROR_WARN);
 
         assertThat(applog.getId()).isEqualTo("42");
-        assertThat(applog.getTimestamp()).isNotNull();
+        assertThat(applog.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(applog.getLevel()).isEqualTo(INFO);
-        assertThat(applog.getLogger()).isEqualTo("TestData");
-        assertThat(applog.getMessage()).isEqualTo("Test message");
+        assertThat(applog.getLogger()).isEqualTo(LOGGER_TEST_DATA);
+        assertThat(applog.getMessage()).isEqualTo(TEST_MESSAGE);
         assertThat(applog.getUserEmail()).isEqualTo(USER_EMAIL);
         assertThat(applog.getEndPoint()).isEqualTo(API_TEST_ENDPOINT);
+        assertThat(applog.getErrorType()).isEqualTo(TYPE_ERROR_WARN);
     }
 
     @Test
@@ -40,5 +53,18 @@ public class AppLogDtoTest {
                 .suppress(Warning.NONFINAL_FIELDS)
                 .usingGetClass()
                 .verify();
+    }
+    
+    @Test
+    void from_shouldMapAllFieldsCorrectly() {
+        AppLog appLog = TestData.appLog();
+        
+        AppLogDto result = AppLogDto.from(appLog);
+
+        assertThat(result.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
+        assertThat(result).extracting(AppLogDto::getId, AppLogDto::getLevel, AppLogDto::getLogger, 
+                        AppLogDto::getMessage, AppLogDto::getUserEmail, AppLogDto::getEndPoint, AppLogDto::getErrorType)
+                        .containsExactly(ID_STRING, INFO, LOGGER_TEST_DATA, TEST_MESSAGE, USER_EMAIL, API_TEST_ENDPOINT,
+                                TYPE_ERROR_WARN);
     }
 }

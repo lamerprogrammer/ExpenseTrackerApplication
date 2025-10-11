@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static test.util.Constants.TEST_MESSAGE;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminControllerTest {
@@ -91,7 +92,7 @@ public class AdminControllerTest {
     void getUserById_shouldReturn404_whenUserNotFound() {
         User user = TestData.user();
         Long id = user.getId();
-        when(adminService.getUserById(id)).thenThrow(new UserNotFoundByIdException("Test message"));
+        when(adminService.getUserById(id)).thenThrow(new UserNotFoundByIdException(TEST_MESSAGE));
 
         UserNotFoundByIdException ex = assertThrows(UserNotFoundByIdException.class,
                 () -> adminController.getUserById(id, request));
@@ -117,7 +118,7 @@ public class AdminControllerTest {
     public void banUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.banUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(adminService.banUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> adminController.banUser(id, currentUser, request));
@@ -143,7 +144,7 @@ public class AdminControllerTest {
     public void unbanUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.unbanUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(adminService.unbanUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> adminController.unbanUser(id, currentUser, request));
@@ -169,7 +170,7 @@ public class AdminControllerTest {
     public void promoteUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.promoteUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(adminService.promoteUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> adminController.promoteUser(id, currentUser, request));
@@ -195,7 +196,7 @@ public class AdminControllerTest {
     public void demoteUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.demoteUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(adminService.demoteUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> adminController.demoteUser(id, currentUser, request));
@@ -221,7 +222,7 @@ public class AdminControllerTest {
     public void deleteUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.deleteUser(id, currentUser)).thenThrow(new UsernameNotFoundException("Test message"));
+        when(adminService.deleteUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> adminController.deleteUser(id, currentUser, request));
@@ -247,7 +248,7 @@ public class AdminControllerTest {
     public void createAdmin_shouldThrowException_whenAdminAlreadyExists() {
         RegisterDto existAdmin = TestData.registerDto();
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(adminService.createAdmin(existAdmin, currentUser)).thenThrow(new EntityExistsException("Test message"));
+        when(adminService.createAdmin(existAdmin, currentUser)).thenThrow(new EntityExistsException(TEST_MESSAGE));
 
         EntityExistsException ex = assertThrows(EntityExistsException.class,
                 () -> adminController.createAdmin(existAdmin, currentUser, request));
