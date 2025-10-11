@@ -108,7 +108,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiResponse<UserDto>> handleMethodArgumentNotValid(ConstraintViolationException ex,
+    public ResponseEntity<ApiResponse<UserDto>> handleConstraintViolation(ConstraintViolationException ex,
                                                                              HttpServletRequest request) {
         List<String> errors = ex.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)

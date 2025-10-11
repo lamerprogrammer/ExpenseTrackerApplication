@@ -9,6 +9,9 @@ import java.time.Instant;
 import java.util.List;
 
 public class ApiResponseFactory {
+
+    private ApiResponseFactory() {}
+
     public static <T> ApiResponse<T> success(T data, String message, HttpServletRequest request) {
         return new ApiResponse<>(
                 Instant.now(),

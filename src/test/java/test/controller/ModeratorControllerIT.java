@@ -166,6 +166,8 @@ public class ModeratorControllerIT {
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void unbanUser_shouldUserUnbanned_whenUserExists() throws Exception {
         User user = createUser(email, Role.USER, userRepository);
+        user.setBanned(true);
+        userRepository.save(user);
         createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", user.getId()))
                 .andExpect(status().isOk())

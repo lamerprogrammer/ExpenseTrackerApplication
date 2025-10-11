@@ -33,6 +33,9 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).isEmpty();
+        assertThat(registerDto.getName()).isEqualTo(USER_NAME);
+        assertThat(registerDto.getEmail()).isEqualTo(USER_EMAIL);
+        assertThat(registerDto.getPassword()).isEqualTo(USER_PASSWORD);
     }
 
     @Test

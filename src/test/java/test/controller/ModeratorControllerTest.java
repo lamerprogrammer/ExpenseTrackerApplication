@@ -2,6 +2,7 @@ package test.controller;
 
 import com.example.expensetracker.controller.ModeratorController;
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.dto.UserDto;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.ModeratorService;
@@ -77,9 +78,10 @@ public class ModeratorControllerTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody()).isNotNull();
-        assertThat(result.getBody().getData().getId()).isEqualTo(user.getId());
-        assertThat(result.getBody().getData().getEmail()).isEqualTo(user.getEmail());
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getData().getId()).isEqualTo(user.getId());
+        assertThat(body.getData().getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.example.expensetracker.model.User;
 import org.junit.jupiter.api.Test;
 import test.util.TestData;
 
+import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -16,7 +17,7 @@ import static test.util.Constants.ADMIN_EMAIL;
 public class AuditTest {
 
     @Test
-    void shouldSetFieldsUsingConstructor() {
+    void constructor_shouldSetFieldsUsing() {
         Audit audit = new Audit(AuditAction.BAN, TestData.user(), TestData.admin());
 
         assertThat(audit.getAction()).isEqualTo(AuditAction.BAN);
@@ -52,6 +53,16 @@ public class AuditTest {
 
         assertThat(audit.getId()).isNull();
         assertThat(audit.getTimeStamp()).isNotNull();
+        assertThat(audit.getTimeStamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
+    }
+
+    @Test
+    void shouldSetIdAndTimeStamp() throws Exception {
+        Audit audit = new Audit();
+        Method method = Audit.class.getDeclaredMethod("onCreate");
+        method.setAccessible(true);
+        method.invoke(audit);
+
         assertThat(audit.getTimeStamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
     }
 }
