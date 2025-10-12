@@ -514,10 +514,10 @@ public class AdminServiceImplTest {
         User savedAdmin = adminCaptor.getValue();
 
         assertThat(actionCaptor.getValue()).isEqualTo(action);
-        assertThat(savedUser.getId()).isEqualTo(targetUser.getId());
-        assertThat(savedAdmin.getId()).isEqualTo(performedBy.getId());
-        assertThat(savedUser.getEmail()).isEqualTo(targetUser.getEmail());
-        assertThat(savedAdmin.getEmail()).isEqualTo(performedBy.getEmail());
+        assertThat(savedUser).extracting(User::getId, User::getEmail)
+                .containsExactly(targetUser.getId(), targetUser.getEmail());
+        assertThat(savedAdmin).extracting(User::getId, User::getEmail)
+                .containsExactly(performedBy.getId(), performedBy.getEmail());
     }
 
     private void cacheCheck(User result, User user, boolean isBanned) {

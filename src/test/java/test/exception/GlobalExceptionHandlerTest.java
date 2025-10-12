@@ -3,7 +3,10 @@ package test.exception;
 import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.exception.GlobalExceptionHandler;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
+import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogService;
+import com.example.expensetracker.logging.audit.AuditAction;
+import com.example.expensetracker.model.User;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -11,6 +14,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -210,6 +214,24 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
+    void handleMethodArgumentNotValid_shouldLogPrincipalNameWhenPresent() {
+        request.setUserPrincipal(() -> "user");
+        MethodParameter parameter = mock(MethodParameter.class);
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(List.of());
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(parameter, bindingResult);
+
+        var response = handler.handleMethodArgumentNotValid(ex, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        ApiResponse<?> body = response.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getMessage()).contains("validation.error").doesNotContain("null");
+    }
+
+    @Test
     void handleConstraintViolation_shouldReturnBadRequestResponseWithValidationMessage() {
         ConstraintViolation<?> v1 = mock(ConstraintViolation.class);
         ConstraintViolation<?> v2 = mock(ConstraintViolation.class);
@@ -269,6 +291,24 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getStatus()).isEqualTo(500);
         verify(appLogService).log(any());
+    }
+
+    @Test
+    void handleGeneric_shouldUseClassSimpleName_whenNoStackTrace() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+        
+        Exception ex = new Exception("No stack trace");
+        ex.setStackTrace(new StackTraceElement[0]);
+
+        var response = handler.handleGeneric(ex, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        assertThat(response.getBody()).isNotNull();
+        ArgumentCaptor<AppLogDto> appLogDtoCaptor = ArgumentCaptor.forClass(AppLogDto.class);
+        verify(appLogService).log(appLogDtoCaptor.capture());
+        AppLogDto savedDto = appLogDtoCaptor.getValue();
+        assertThat(savedDto.getErrorType()).isEqualTo("Exception");
     }
 
     private void checkBody(ApiResponse<?> body, int status, String message) {
