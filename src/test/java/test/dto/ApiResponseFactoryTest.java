@@ -54,7 +54,7 @@ public class ApiResponseFactoryTest {
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         var body = result.getBody();
         assertThat(body).isNotNull();
-        assertThat(body.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));//Method invocation 'getTimestamp' may produce 'NullPointerException'  - чё за бред? Я проверил!
+        assertThat(body.getTimestamp()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
         assertThat(body.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
         assertThat(body.getError()).isEqualTo(error);
         assertThat(body.getMessage()).isEqualTo(message);

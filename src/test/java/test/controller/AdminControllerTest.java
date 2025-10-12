@@ -256,4 +256,31 @@ public class AdminControllerTest {
         assertThat(ex.getMessage()).isNotBlank();
         verify(adminService).createAdmin(eq(existAdmin), eq(currentUser));
     }
+
+    @Test
+    public void createModer_shouldNewAdmin_whenDataValid() {
+        RegisterDto newModer = TestData.registerDto();
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
+        User user = TestData.moderator();
+        when(adminService.createModerator(newModer, currentUser)).thenReturn(user);
+
+        var response = adminController.createModer(newModer, currentUser, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(adminService).createModerator(eq(newModer), eq(currentUser));
+    }
+
+    @Test
+    public void createModer_shouldThrowException_whenAdminAlreadyExists() {
+        RegisterDto existModer = TestData.registerDto();
+        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
+        when(adminService.createModerator(eq(existModer), eq(currentUser)))
+                .thenThrow(new EntityExistsException(TEST_MESSAGE));
+
+        EntityExistsException ex = assertThrows(EntityExistsException.class,
+                () -> adminController.createModer(existModer, currentUser, request));
+
+        assertThat(ex.getMessage()).isNotBlank();
+        verify(adminService).createModerator(eq(existModer), eq(currentUser));
+    }
 }

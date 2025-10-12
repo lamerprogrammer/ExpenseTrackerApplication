@@ -5,7 +5,6 @@ import com.example.expensetracker.model.User;
 import com.example.expensetracker.security.CustomUserDetailsService;
 import com.example.expensetracker.security.JwtAuthFilter;
 import com.example.expensetracker.security.JwtUtil;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,8 +24,6 @@ import test.util.TestData;
 import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 import static test.util.Constants.USER_EMAIL;
 
