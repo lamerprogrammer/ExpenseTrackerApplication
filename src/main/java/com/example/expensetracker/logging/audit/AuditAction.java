@@ -6,5 +6,6 @@ public enum AuditAction {
     DELETE,
     CREATE,
     PROMOTE,
-    DEMOTE
+    DEMOTE,
+    CHANGE_PASSWORD
 }

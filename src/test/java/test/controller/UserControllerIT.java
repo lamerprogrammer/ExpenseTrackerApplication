@@ -1,8 +1,11 @@
 package test.controller;
 
 import com.example.expensetracker.ExpenseTrackerApplication;
+import com.example.expensetracker.dto.ChangePasswordRequest;
 import com.example.expensetracker.model.Role;
+import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +13,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import test.security.WithMockCustomUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
@@ -39,6 +45,12 @@ public class UserControllerIT {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
@@ -70,6 +82,60 @@ public class UserControllerIT {
     void getCurrentUser_shouldReturnUnauthorized_whenNoUserLoggedIn() throws Exception {
         mockMvc.perform(get(API_USERS_ME))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
+    void changePassword_shouldReturnOk_whenAllFieldsValid() throws Exception {
+        User user = createUser(USER_EMAIL, Role.USER, userRepository);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        ChangePasswordRequest req = new ChangePasswordRequest(USER_PASSWORD, "newPass");
+        mockMvc.perform(put(API_USERS_CHANGE_PASSWORD)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("password.changed.success")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
+    void changePassword_shouldThrowException_whenPasswordNotMatches() throws Exception {
+        User user = createUser(USER_EMAIL, Role.USER, userRepository);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        ChangePasswordRequest req = new ChangePasswordRequest("invalidPassword", "newPass");
+        mockMvc.perform(put(API_USERS_CHANGE_PASSWORD)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(msg("handle.bad.credentials")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
+    void changePassword_shouldThrowException_whenOldPasswordEmpty() throws Exception {
+        createUser(USER_EMAIL, Role.USER, userRepository);
+        ChangePasswordRequest req = new ChangePasswordRequest("", "newPass");
+        mockMvc.perform(put(API_USERS_CHANGE_PASSWORD)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("user.password.old.not-blank")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
+    void changePassword_shouldReturnOk_whenNewPasswordEmpty() throws Exception {
+        User user = createUser(USER_EMAIL, Role.USER, userRepository);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        ChangePasswordRequest req = new ChangePasswordRequest(USER_PASSWORD, "");
+        mockMvc.perform(put(API_USERS_CHANGE_PASSWORD)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("user.password.new.not-blank")));
     }
 
     private String msg(String code) {

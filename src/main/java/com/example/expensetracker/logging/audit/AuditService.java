@@ -5,6 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
+import static com.example.expensetracker.logging.audit.AuditAction.CHANGE_PASSWORD;
+
 @Service
 public class AuditService {
     
@@ -25,5 +29,11 @@ public class AuditService {
 
     public Page<AuditDto> getByAdmin(Long adminId, Pageable pageable) {
         return auditRepository.findByPerformedBy_Id(adminId, pageable).map(AuditDto::from);
+    }
+
+    public void logPasswordChange(User user) {
+        Audit audit = new Audit(CHANGE_PASSWORD, user, user);
+        audit.setTimeStamp(Instant.now());
+        auditRepository.save(audit);
     }
 }
