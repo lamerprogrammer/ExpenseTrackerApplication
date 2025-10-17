@@ -126,7 +126,7 @@ public class UserControllerIT {
 
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
-    void changePassword_shouldReturnOk_whenNewPasswordEmpty() throws Exception {
+    void changePassword_shouldThrowException_whenNewPasswordEmpty() throws Exception {
         User user = createUser(USER_EMAIL, Role.USER, userRepository);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -92,13 +93,20 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.CONFLICT, msg("handle.entity.exists"), request, ex);
     }
 
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ApiResponse<UserDto>> handleHandlerMethodValidation(HandlerMethodValidationException ex,
+                                                                   HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, msg("handle.handler.method.validation"), request, ex);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<UserDto>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                     HttpServletRequest request) {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> Objects.requireNonNullElse(error.getDefaultMessage(), msg("validation.error")))
+                .map(error -> Objects.requireNonNullElse(error.getDefaultMessage(),
+                        msg("handle.validation.error")))
                 .toList();
-        String message = errors.isEmpty() ? msg("validation.error") : String.join(". ", errors);
+        String message = errors.isEmpty() ? msg("handle.validation.error") : String.join(". ", errors);
         
         log.warn("Validation error: user={} path={} errors={}",
                 request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous",
@@ -113,7 +121,7 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
                 .toList();
-        String message = errors.isEmpty() ? msg("validation.error") : String.join(". ", errors);
+        String message = errors.isEmpty() ? msg("handle.validation.error") : String.join(". ", errors);
         return buildResponse(HttpStatus.BAD_REQUEST, message, request, ex);
     }
 

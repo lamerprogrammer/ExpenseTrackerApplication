@@ -40,7 +40,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         log.info("Мы внутри фильтра! URI: {}", request.getRequestURI());
         String token = resolveToken(request);
-            log.info("Заголовок входящей авторизации: {}", request.getHeader("Authorization"));
+        log.info("Заголовок входящей авторизации: {}", request.getHeader("Authorization"));
+
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/api/auth") ||
+                uri.startsWith("/swagger-ui") ||
+                uri.startsWith("/v3/api-docs") ||
+                uri.startsWith("/webjars")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (token == null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            log.warn("Отсутствует токен - пользователь не аутентифицирован");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid token");
+            return;
+        }
+
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 String email = jwtUtil.getSubject(token);

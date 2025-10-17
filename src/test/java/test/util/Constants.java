@@ -19,6 +19,8 @@ public final class Constants {
     public static final String API_ADMIN_USERS_CREATE_ADMINISTRATOR = "/api/admin/users/create/administrator";
     public static final String API_USERS_ME = "/api/users/me";
     public static final String API_USERS_CHANGE_PASSWORD = "/api/users/change-password";
+    public static final String API_EXPENSES_REPORT = "/api/expenses/report";
+    public static final String API_EXPENSES_TOTAL = "/api/expenses/total";
     
     
     public static final String TYPE_ERROR_WARN = "WARN";

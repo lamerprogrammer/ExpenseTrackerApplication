@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="003-expenses-table" author="lamer">
+    <createTable tableName="expenses">
+        <column name="id" type="bigserial">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="user_id" type="bigint">
+            <constraints nullable="false"/>
+        </column>
+        <column name="amount" type="numeric(19,2)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="occurred_at" type="timestamp">
+            <constraints nullable="false"/>
+        </column>
+        <column name="category_id" type="bigint"/>
+        <column name="description" type="text"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="expenses"
+                             baseColumnNames="user_id"
+                             referencedTableName="users"
+                             referencedColumnNames="id"
+                             constraintName="fk_expense_user"/>
+
+        <addForeignKeyConstraint baseTableName="expenses"
+                                 baseColumnNames="category_id"
+                                 referencedTableName="categories"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_expense_category"/>
+</changeSet>
+        </databaseChangeLog>

@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static test.util.Constants.USER_NAME;
 import static test.util.Constants.USER_PASSWORD;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
@@ -55,7 +56,7 @@ public class AuthControllerIT {
 
     @Test
     void fullFlow_register_login_refresh() throws Exception {
-        RegisterDto registerDto = new RegisterDto("Test User", email, password);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, email, password);
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerDto)))
@@ -86,7 +87,7 @@ public class AuthControllerIT {
     
     @Test
     void register_shouldThrowException_whenUserAlreadyExist() throws Exception {
-        RegisterDto registerDto = new RegisterDto("Test User", email, password);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, email, password);
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerDto)));
@@ -98,7 +99,7 @@ public class AuthControllerIT {
 
     @Test
     void register_shouldThrowException_whenEmailIsEmpty() throws Exception {
-        RegisterDto registerDto = new RegisterDto("Test User", "", password);
+        RegisterDto registerDto = new RegisterDto(USER_NAME, "", password);
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerDto)))

@@ -47,6 +47,8 @@ public final class TestUtils {
         User user = new User();
         user.setEmail(mail);
         user.setPassword(USER_PASSWORD);
+        user.setBanned(false);
+        user.setDeleted(false);
         user.getRoles().add(role);
         return userRepository.save(user);
     }

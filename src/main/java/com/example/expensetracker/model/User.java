@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.Where;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,11 +32,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @Column(nullable = false)
+    @Column(name = "banned", nullable = false)
     private boolean banned = false;
     
-    @Column(nullable = false)
-    private boolean deleted = false; 
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
+    @Column(name = "total_expenses", nullable = false, precision = 19, scale = 2)
+    private BigDecimal totalExpenses = BigDecimal.ZERO;
 
     public User() {}
 
@@ -93,6 +97,22 @@ public class User {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public BigDecimal getTotalExpenses() {
+        return totalExpenses;
+    }
+
+    public void setTotalExpenses(BigDecimal totalExpenses) {
+        this.totalExpenses = totalExpenses;
+    }
+
+    public void increaseTotalExpenses(BigDecimal amount) {
+        this.totalExpenses = this.totalExpenses.add(amount);
+    }
+
+    public void decreaseTotalExpenses(BigDecimal amount) {
+        this.totalExpenses = this.totalExpenses.subtract(amount);
     }
 
     public static class UserBuilder {
