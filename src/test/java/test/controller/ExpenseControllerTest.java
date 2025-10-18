@@ -39,7 +39,7 @@ public class ExpenseControllerTest {
     private UserService userService;
 
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
     @InjectMocks
     private ExpenseController expenseController;

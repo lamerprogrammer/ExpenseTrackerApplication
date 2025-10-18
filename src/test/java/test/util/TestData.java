@@ -9,6 +9,8 @@ import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogLevel;
 import com.example.expensetracker.logging.audit.AuditAction;
 import com.example.expensetracker.logging.audit.AuditDto;
+import com.example.expensetracker.model.Category;
+import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +42,11 @@ public class TestData {
 
     public static User user() {
         return user(ID_VALID, USER_EMAIL, USER_PASSWORD, new HashSet<Role>(Set.of(USER)), false);
+    }
+
+    public static Expense expense() {
+        return new Expense(ID_EXPENSE, new User(), new BigDecimal(1000), Instant.now(), new Category(), 
+                "description");
     }
 
     public static User userBanned() {

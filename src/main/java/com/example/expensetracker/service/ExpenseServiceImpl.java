@@ -20,12 +20,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final UserRepository userRepository;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserRepository userRepository, UserServiceImpl userServiceImpl) {
+    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserRepository userRepository, UserService userService) {
         this.expenseRepository = expenseRepository;
         this.userRepository = userRepository;
-        this.userServiceImpl = userServiceImpl;
+        this.userService = userService;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense saved = expenseRepository.save(expense);
         
         user.increaseTotalExpenses(expense.getAmount());
-        userServiceImpl.clearTotalExpensesCache(user.getId());
+        userService.clearTotalExpensesCache(user.getId());
         return saved;
     }
 
@@ -62,6 +62,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         user.decreaseTotalExpenses(expense.getAmount());
         userRepository.save(user);
         expenseRepository.delete(expense);
-        userServiceImpl.clearTotalExpensesCache(user.getId());
+        userService.clearTotalExpensesCache(user.getId());
     }
 }

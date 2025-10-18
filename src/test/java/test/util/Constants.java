@@ -13,6 +13,7 @@ public final class Constants {
     public static final Long ID_VALID = 42L;
     public static final Long ID_ADMIN = 777L;
     public static final String ID_STRING = "42";
+    public static final Long ID_EXPENSE = 80L;
 
     public static final String API_TEST_ENDPOINT = "/api/test";
     public static final String API_ADMIN_USERS_CREATE_MODERATOR = "/api/admin/users/create/moderator";

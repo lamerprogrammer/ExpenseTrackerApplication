@@ -24,7 +24,7 @@ public class Expense {
     
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;//'Many To One' attribute type should not be 'Category' а если убрать собачку мэни ту ван, то 'Basic' attribute type should not be 'Category' 
+    private Category category; 
     
     private String description;
 
