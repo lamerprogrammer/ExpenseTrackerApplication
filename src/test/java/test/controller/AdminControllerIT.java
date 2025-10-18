@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -422,6 +423,6 @@ public class AdminControllerIT {
     }
 
     private String msg(String key) {
-        return messageSource.getMessage(key, null, Locale.getDefault());
+        return messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
     }
 }

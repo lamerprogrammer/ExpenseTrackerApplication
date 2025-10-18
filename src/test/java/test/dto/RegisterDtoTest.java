@@ -16,6 +16,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static test.util.Constants.*;
+import static test.util.TestMessageSource.msg;
 
 public class RegisterDtoTest {
 
@@ -44,8 +45,7 @@ public class RegisterDtoTest {
         Set<ConstraintViolation<RegisterDto>> violations = validator.validate(registerDto);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "name", 
-                "Имя пользователя не может быть пустым");
+        TestUtils.assertHasViolation(violations, "name", msg("user.name.not-blank"));
     }
 
     @Test

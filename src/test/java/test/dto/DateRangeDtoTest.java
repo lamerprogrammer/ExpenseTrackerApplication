@@ -1,18 +1,19 @@
 package test.dto;
 
 import com.example.expensetracker.dto.DateRangeDto;
-import com.example.expensetracker.dto.LoginDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import test.util.TestUtils;
 
 import java.time.Instant;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static test.util.TestMessageSource.msg;
 
 public class DateRangeDtoTest {
     private static Validator validator;
@@ -39,6 +40,7 @@ public class DateRangeDtoTest {
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(dto);
 
         assertThat(violations).hasSize(1);
+        TestUtils.assertHasViolation(violations, "validRange", msg("is.valid.range"));
     }
 
     @Test
@@ -47,7 +49,9 @@ public class DateRangeDtoTest {
         
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(dto);
 
-        assertThat(violations).hasSize(2);//вот тут два нарушения, но я не знаю как проверить message
+        assertThat(violations).hasSize(2);
+        TestUtils.assertHasViolation(violations, "from", msg("from.not.null"));
+        TestUtils.assertHasViolation(violations, "validRange", msg("is.valid.range"));
     }
 
     @Test
@@ -56,7 +60,9 @@ public class DateRangeDtoTest {
         
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(dto);
 
-        assertThat(violations).hasSize(2);//вот тут два нарушения, но я не знаю как проверить message
+        assertThat(violations).hasSize(2);
+        TestUtils.assertHasViolation(violations, "to", msg("to.not.null"));
+        TestUtils.assertHasViolation(violations, "validRange", msg("is.valid.range"));
     }
 
     @Test

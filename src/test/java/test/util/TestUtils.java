@@ -3,14 +3,11 @@ package test.util;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.DelegatingServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,20 +24,20 @@ public final class TestUtils {
 
     public static <T> void assertHasViolation(Set<ConstraintViolation<T>> violations,
                                               String field,
-                                              String expectedMessageFragment) {
+                                              String expectedMessage) {
         assertThat(violations)
-                .as("Ожидалась ошибка на поле '%s', содержащая '%s'", field, expectedMessageFragment)
+                .as("Ожидалась ошибка на поле '%s', содержащая '%s'", field, expectedMessage)
                 .anySatisfy(v -> {
                     assertThat(v.getPropertyPath().toString()).isEqualTo(field);
-                    assertThat(v.getMessage()).containsIgnoringCase(expectedMessageFragment);
+                    assertThat(v.getMessage()).containsIgnoringCase(expectedMessage);
                 });
         
         boolean found = violations.stream()
                 .anyMatch(v -> v.getPropertyPath().toString().equals(field)
-                        && v.getMessage().toLowerCase().contains(expectedMessageFragment.toLowerCase()));
+                        && v.getMessage().toLowerCase().contains(expectedMessage.toLowerCase()));
         assertTrue(found, () -> String.format(
                 "Ожидалась ошика на поле '%s', содержащая '%s'. Но имеем: '%s'",
-                field, expectedMessageFragment, violations));
+                field, expectedMessage, violations));
     }
 
     public static User createUser(String mail, Role role, UserRepository userRepository) {

@@ -14,6 +14,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static test.util.Constants.*;
+import static test.util.TestMessageSource.msg;
 
 public class UserTest {
 
@@ -27,7 +28,7 @@ public class UserTest {
 
     @Test
     void shouldPass_whenAllFieldsValid() {
-        User user = new User(42L, USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), true);
+        User user = new User(ID_VALID, USER_EMAIL, USER_PASSWORD, Set.of(Role.USER), true);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).isEmpty();
@@ -35,51 +36,47 @@ public class UserTest {
 
     @Test
     void shouldFail_whenEmailInvalid() {
-        User user = new User(42L, "not-email", USER_PASSWORD, Set.of(Role.USER), true);
+        User user = new User(ID_VALID, "not-email", USER_PASSWORD, Set.of(Role.USER), true);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "email", "Некорректная почта");
+        TestUtils.assertHasViolation(violations, "email", msg("user.email.invalid")); 
     }
 
     @Test
     void shouldFail_whenEmailIsNull() {
-        User user = new User(42L, null, USER_PASSWORD, Set.of(Role.USER), true);
+        User user = new User(ID_VALID, null, USER_PASSWORD, Set.of(Role.USER), true);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "email",
-                "Почта обязательна");
+        TestUtils.assertHasViolation(violations, "email", msg("user.email.not-blank"));
     }
 
     @Test
     void shouldFail_whenEmailIsEmpty() {
-        User user = new User(42L, "", USER_PASSWORD, Set.of(Role.USER), true);
+        User user = new User(ID_VALID, "", USER_PASSWORD, Set.of(Role.USER), true);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "email",
-                "Почта обязательна");
+        TestUtils.assertHasViolation(violations, "email", msg("user.email.not-blank"));
     }
 
     @Test
     void shouldFail_whenPasswordIsNull() {
-        User user = new User(42L, USER_EMAIL, null, Set.of(Role.USER), true);
+        User user = new User(ID_VALID, USER_EMAIL, null, Set.of(Role.USER), true);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "password",
-                "Пароль обязателен");
+        TestUtils.assertHasViolation(violations, "password", msg("user.password.not-blank"));
     }
 
     @Test
     void shouldFail_whenPasswordIsEmpty() {
-        User user = new User(42L, USER_EMAIL, "", Set.of(Role.USER), true);
+        User user = new User(ID_VALID, USER_EMAIL, "", Set.of(Role.USER), true);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "password",
-                "Пароль обязателен");
+        TestUtils.assertHasViolation(violations, "password", msg("user.password.not-blank"));
     }
 
     @Test
@@ -93,13 +90,13 @@ public class UserTest {
     void setters_shouldSetAllFieldsCorrectly() {
         User user = new User();
 
-        user.setId(42L);
+        user.setId(ID_VALID);
         user.setEmail(MODERATOR_EMAIL);
         user.setPassword(USER_PASSWORD);
         user.setRoles(Set.of(Role.MODERATOR));
         user.setBanned(false);
 
-        assertThat(user.getId()).isEqualTo(42L);
+        assertThat(user.getId()).isEqualTo(ID_VALID);
         assertThat(user.getEmail()).isEqualTo(MODERATOR_EMAIL);
         assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
         assertThat(user.getRoles().iterator().next()).isEqualTo(Role.MODERATOR);
@@ -109,14 +106,14 @@ public class UserTest {
     @Test
     void shouldBuildUserUsingBuilder() {
         User user = User.builder()
-                .id(42L)
+                .id(ID_VALID)
                 .email(USER_EMAIL)
                 .password(USER_PASSWORD)
                 .roles(Set.of(Role.USER))
                 .banned(true)
                 .build();
 
-        assertThat(user.getId()).isEqualTo(42L);
+        assertThat(user.getId()).isEqualTo(ID_VALID);
         assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
         assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
         assertThat(user.getRoles()).containsExactly(Role.USER);

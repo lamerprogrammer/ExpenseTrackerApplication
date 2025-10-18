@@ -1,6 +1,5 @@
 package test.dto;
 
-import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.dto.UserDto;
 import com.example.expensetracker.model.User;
 import org.junit.jupiter.api.Test;

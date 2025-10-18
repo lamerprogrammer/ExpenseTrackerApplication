@@ -7,13 +7,13 @@ import java.time.Instant;
 
 public class DateRangeDto {
     
-    @NotNull
+    @NotNull(message = "{from.not.null}")
     private Instant from;
     
-    @NotNull
+    @NotNull(message = "{to.not.null}")
     private Instant to;
     
-    @AssertTrue(message = "from должен быть раньше to")
+    @AssertTrue(message = "{is.valid.range}")
     public boolean isValidRange() {
         return from != null && to != null && from.isBefore(to);
     }
