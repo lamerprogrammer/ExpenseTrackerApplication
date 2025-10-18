@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import test.util.TestUtils;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,6 +89,7 @@ public class UserTest {
 
     @Test
     void setters_shouldSetAllFieldsCorrectly() {
+        BigDecimal amount = new BigDecimal("0");
         User user = new User();
 
         user.setId(ID_VALID);
@@ -95,12 +97,14 @@ public class UserTest {
         user.setPassword(USER_PASSWORD);
         user.setRoles(Set.of(Role.MODERATOR));
         user.setBanned(false);
+        user.setTotalExpenses(amount);
 
         assertThat(user.getId()).isEqualTo(ID_VALID);
         assertThat(user.getEmail()).isEqualTo(MODERATOR_EMAIL);
         assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
         assertThat(user.getRoles().iterator().next()).isEqualTo(Role.MODERATOR);
         assertThat(user.isBanned()).isFalse();
+        assertThat(user.getTotalExpenses()).isEqualByComparingTo(amount);
     }
 
     @Test

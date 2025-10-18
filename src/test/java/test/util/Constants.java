@@ -27,6 +27,8 @@ public final class Constants {
     public static final String TYPE_ERROR_WARN = "WARN";
     public static final String TEST_MESSAGE = "Test message";
     public static final String LOGGER_TEST_DATA = "LoggerTestData";
+    
+    public static final String DESCRIPTION = "description";
 
     private Constants() {
     }
