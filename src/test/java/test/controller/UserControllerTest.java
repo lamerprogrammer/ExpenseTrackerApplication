@@ -2,6 +2,7 @@ package test.controller;
 
 import com.example.expensetracker.controller.UserController;
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.ChangePasswordRequest;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,10 @@ import test.util.TestData;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static test.util.Constants.USER_PASSWORD;
+import static test.util.Constants.USER_PASSWORD_NEW;
 
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
@@ -37,12 +41,11 @@ public class UserControllerTest {
     @Test
     void getCurrentUser_shouldReturnAuthenticatedUser_whenUserLoggedIn() {
         User user = TestData.user();
-        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        UserDetailsImpl currentUser = new UserDetailsImpl(user);
         when(userService.getCurrentUser(any())).thenReturn(user);
-        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
-                invocation.getArgument(0));
-        
-        var result = userController.getCurrentUser(userDetails, request);
+        mockMessage();
+
+        var result = userController.getCurrentUser(currentUser, request);
         
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         var body = result.getBody();
@@ -50,5 +53,27 @@ public class UserControllerTest {
         assertThat(body.getData().getId()).isEqualTo(user.getId());
         assertThat(body.getData().getEmail()).isEqualTo(user.getEmail());
         assertThat(body.getMessage()).isEqualTo("get.current.user");
+        verify(userService).getCurrentUser(currentUser);
+    }
+
+    @Test
+    void changePassword_shouldReturnSuccessResponse() {
+        ChangePasswordRequest requestDto = new ChangePasswordRequest(USER_PASSWORD, USER_PASSWORD_NEW);
+        User user = TestData.user();
+        UserDetailsImpl currentUser = new UserDetailsImpl(user);
+        mockMessage();
+
+        var result = userController.changePassword(requestDto, currentUser, request);
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getMessage()).isEqualTo("password.changed.success");
+        verify(userService).changePassword(currentUser, requestDto);
+    }
+
+    private void mockMessage() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
     }
 }

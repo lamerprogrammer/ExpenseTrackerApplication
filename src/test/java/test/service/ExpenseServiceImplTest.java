@@ -25,7 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static test.util.Constants.TEST_MESSAGE;
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceImplTest {
@@ -81,8 +80,7 @@ public class ExpenseServiceImplTest {
         User user = TestData.user();
         UserDetailsImpl currentUser = new UserDetailsImpl(user);
         Expense expense = TestData.expense();
-        when(userRepository.findById(currentUser.getDomainUser().getId())).thenThrow(
-                new UsernameNotFoundException(TEST_MESSAGE));
+        when(userRepository.findById(currentUser.getDomainUser().getId())).thenReturn(Optional.empty());
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> expenseService.addExpense(currentUser, expense));
@@ -112,7 +110,7 @@ public class ExpenseServiceImplTest {
         User user = TestData.user();
         UserDetailsImpl currentUser = new UserDetailsImpl(user);
         Expense expense = TestData.expense();
-        when(expenseRepository.findById(expense.getId())).thenThrow(new IllegalArgumentException(TEST_MESSAGE));
+        when(expenseRepository.findById(expense.getId())).thenReturn(Optional.empty());
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> expenseService.deleteExpense(currentUser, expense.getId()));

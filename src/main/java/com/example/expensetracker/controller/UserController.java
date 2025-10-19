@@ -31,18 +31,18 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserDto>> getCurrentUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<ApiResponse<UserDto>> getCurrentUser(@AuthenticationPrincipal UserDetailsImpl currentUser,
                                                                HttpServletRequest request) {
-        User user = userService.getCurrentUser(userDetails);
+        User user = userService.getCurrentUser(currentUser);
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
                 msg("get.current.user"), request));
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<ApiResponse<String>> changePassword(@Valid @RequestBody ChangePasswordRequest dto,
+    public ResponseEntity<ApiResponse<String>> changePassword(@Valid @RequestBody ChangePasswordRequest requestDto,
                                                                @AuthenticationPrincipal UserDetailsImpl currentUser,
                                                                HttpServletRequest request) {
-        userService.changePassword(currentUser, dto);
+        userService.changePassword(currentUser, requestDto);
         return ResponseEntity.ok(ApiResponseFactory.success(null,
                 msg("password.changed.success"), request));
     }
