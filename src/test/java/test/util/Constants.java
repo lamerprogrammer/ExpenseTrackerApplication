@@ -8,6 +8,7 @@ public final class Constants {
 
     public static final String USER_NAME = "User";
     public static final String USER_PASSWORD = "123";
+    public static final String USER_PASSWORD_NEW = "12345";
 
     public static final Long ID_INVALID = 99999L;
     public static final Long ID_VALID = 42L;
