@@ -8,11 +8,11 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserDto {
+public final class UserDto {
     
-    private Long id;
+    private final Long id;
 
-    private String email;
+    private final String email;
 
     public UserDto(@JsonProperty("id") Long id,
                    @JsonProperty("email") String email) {

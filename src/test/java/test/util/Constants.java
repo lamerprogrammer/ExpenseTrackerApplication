@@ -15,6 +15,7 @@ public final class Constants {
     public static final Long ID_ADMIN = 777L;
     public static final String ID_STRING = "42";
     public static final Long ID_EXPENSE = 80L;
+    public static final Long ID_TRANSACTION = 50L;
 
     public static final String API_TEST_ENDPOINT = "/api/test";
     public static final String API_ADMIN_USERS_CREATE_MODERATOR = "/api/admin/users/create/moderator";
@@ -30,6 +31,8 @@ public final class Constants {
     public static final String LOGGER_TEST_DATA = "LoggerTestData";
     
     public static final String DESCRIPTION = "description";
+    public static final int INTERVAL_DAYS = 30;
+    public static final int AMOUNT = 500;
 
     private Constants() {
     }

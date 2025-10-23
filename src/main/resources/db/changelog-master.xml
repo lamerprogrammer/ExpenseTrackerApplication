@@ -8,7 +8,8 @@
 
     <include file="db/changelog/001-create-users.xml"/>
     <include file="db/changelog/002-add-audit-table.xml"/>
-    <include file="/db/changelog/003-create-categories-table.xml"/>
-    <include file="/db/changelog/004-add-expenses-table.xml"/>
-    <include file="/db/changelog/005-add-deleted-total-expenses.xml"/>
+    <include file="db/changelog/003-create-categories-table.xml"/>
+    <include file="db/changelog/004-add-expenses-table.xml"/>
+    <include file="db/changelog/005-add-deleted-total-expenses.xml"/>
+    <include file="db/changelog/006-create-recurring_transactions-table.xml"/>
 </databaseChangeLog>

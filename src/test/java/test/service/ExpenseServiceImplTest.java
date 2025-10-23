@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static test.util.Constants.AMOUNT;
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceImplTest {
@@ -71,7 +72,7 @@ public class ExpenseServiceImplTest {
 
         var result = expenseService.addExpense(currentUser, expense);
 
-        assertThat(result.getAmount()).isEqualByComparingTo("1000");
+        assertThat(result.getAmount()).isEqualByComparingTo(new BigDecimal(AMOUNT));
         verify(userService).clearTotalExpensesCache(anyLong());
     }
 

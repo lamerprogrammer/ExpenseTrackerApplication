@@ -1,3 +1,57 @@
-Docker используется для локального окружения
-Testcontainers выпилен из-за CVE и лишних зависимостей
-Для тестов запускается один контейнер Elasticsearch 8.15.0 (docker-compose up)
+# Expense Tracker Application
+
+Spring Boot приложение для учёта расходов с поддержкой JWT-аутентификации, ролей пользователей, аудита действий и аналитики по тратам.  
+Проект создан для портфолио.
+
+---
+
+## Основные возможности
+
+- Регистрация и аутентификация пользователей (Spring Security + JWT)
+- CRUD для пользователей, расходов и категорий
+- Подсчёт общей суммы расходов
+- Аналитика и отчёты по периодам и категориям
+- Логирование действий пользователя (Audit пишется в Elasticsearch 8.15.0)
+- Полное покрытие тестами (Jacoco ~99–100%)
+- Swagger UI для визуальной документации API
+
+---
+
+## Технологии
+
+| Компонент | Технология |
+
+| Язык | Java 17 |
+| Фреймворк | Spring Boot 3.5.x |
+| ORM | Spring Data JPA (Hibernate) |
+| Безопасность | Spring Security + JWT |
+| База данных | PostgreSQL 15 |
+| Логирование и аудит | Elasticsearch 8.15.0 + Kibana |
+| Сборка | Maven |
+| Контейнеризация | Docker / Docker Compose |
+| Тестирование | JUnit 5, Mockito, SpringBootTest |
+| Отчёты о покрытии | JaCoCo |
+
+---
+
+## Docker окружение
+
+Проект запускается локально через Docker Compose.
+
+Сервисы:
+- `postgres` — основная база данных (PostgreSQL 15)
+- `elasticsearch` — хранение логов аудита (Elasticsearch 8.15.0)
+- `kibana` — визуализация аудита
+- `expense-tracker` — само Spring Boot приложение
+
+Команды:
+# Сборка артефакта и запуск контейнеров
+mvn clean package -DskipTests
+docker-compose up --build
+
+Jacoco coverage:
+mvn clean verify → отчёт в target/site/jacoco/index.html
+
+Контакты:
+Telegram - @lex_teg
+Discord - lamer1863

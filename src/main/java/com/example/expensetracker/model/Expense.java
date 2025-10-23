@@ -22,7 +22,7 @@ public class Expense {
     @Column(name = "occurred_at", nullable = false)
     private Instant occurredAt;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category; 
     
