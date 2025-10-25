@@ -164,7 +164,6 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserNotExists() throws Exception {
-        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
@@ -177,7 +176,6 @@ public class ModeratorControllerIT {
         User user = createUser(email, Role.USER, userRepository);
         user.setBanned(true);
         userRepository.save(user);
-        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("unban.user")))
@@ -191,7 +189,6 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));

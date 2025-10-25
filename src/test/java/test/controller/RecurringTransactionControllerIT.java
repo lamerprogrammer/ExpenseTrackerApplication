@@ -102,7 +102,22 @@ public class RecurringTransactionControllerIT {
     @Test
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void create_shouldReturnSuccess() throws Exception {
+    void create_shouldReturnSuccess_whenAllFieldsValid() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), DESCRIPTION,
+                category.getId(), INTERVAL_DAYS);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.create")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldThrowException_whenReturnSuccess() throws Exception {
         Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), DESCRIPTION,
                 category.getId(), INTERVAL_DAYS);

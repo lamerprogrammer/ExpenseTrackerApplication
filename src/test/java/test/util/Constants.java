@@ -37,6 +37,7 @@ public final class Constants {
     public static final String DESCRIPTION = "description";
     public static final int INTERVAL_DAYS = 30;
     public static final int AMOUNT = 500;
+    public static final int AMOUNT_NEGATIVE = -500;
 
     private Constants() {
     }

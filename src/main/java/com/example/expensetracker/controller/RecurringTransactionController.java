@@ -6,6 +6,7 @@ import com.example.expensetracker.dto.RecurringTransactionDto;
 import com.example.expensetracker.dto.RecurringTransactionRequestDto;
 import com.example.expensetracker.service.RecurringTransactionService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class RecurringTransactionController {
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<RecurringTransactionDto>> create(
             @AuthenticationPrincipal UserDetails currentUser,
-            @RequestBody RecurringTransactionRequestDto dto,
+            @Valid @RequestBody RecurringTransactionRequestDto dto,
             HttpServletRequest request) {
         RecurringTransactionDto created = recurringTransactionService.createRecurringTransaction(currentUser, dto);
         return ResponseEntity.ok(ApiResponseFactory.success(created, msg("recurring.transaction.create"), request));
