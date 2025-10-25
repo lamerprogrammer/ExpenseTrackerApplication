@@ -16,6 +16,7 @@ public final class Constants {
     public static final String ID_STRING = "42";
     public static final Long ID_EXPENSE = 80L;
     public static final Long ID_TRANSACTION = 50L;
+    public static final Long ID_CATEGORY = 60L;
 
     public static final String API_TEST_ENDPOINT = "/api/test";
     public static final String API_ADMIN_USERS_CREATE_MODERATOR = "/api/admin/users/create/moderator";
@@ -24,6 +25,8 @@ public final class Constants {
     public static final String API_USERS_CHANGE_PASSWORD = "/api/users/change-password";
     public static final String API_EXPENSES_REPORT = "/api/expenses/report";
     public static final String API_EXPENSES_TOTAL = "/api/expenses/total";
+    public static final String API_RECURRING_TRANSACTION = "/api/recurring-transaction";
+    public static final String API_RECURRING_TRANSACTION_CREATE = "/api/recurring-transaction/create";
     
     
     public static final String TYPE_ERROR_WARN = "WARN";

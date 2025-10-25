@@ -4,7 +4,6 @@ import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.dto.ApiResponseFactory;
 import com.example.expensetracker.dto.RecurringTransactionDto;
 import com.example.expensetracker.dto.RecurringTransactionRequestDto;
-import com.example.expensetracker.model.RecurringTransaction;
 import com.example.expensetracker.service.RecurringTransactionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
@@ -49,7 +48,7 @@ public class RecurringTransactionController {
     public ResponseEntity<ApiResponse<RecurringTransactionDto>> toggleActive(@PathVariable Long id,
             HttpServletRequest request) {
         RecurringTransactionDto update = recurringTransactionService.toggleActive(id);
-        return ResponseEntity.ok(ApiResponseFactory.success(update, msg("recurring.transaction.create"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(update, msg("recurring.transaction.toggle.active"), request));
     }
 
     private String msg(String key) {

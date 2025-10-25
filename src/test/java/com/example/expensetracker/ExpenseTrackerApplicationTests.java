@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(
         properties = {
                 "spring.profiles.active=test",
-                "spring.liquibase.enabled=false"
+                "spring.liquibase.enabled=true"
         })
 class ExpenseTrackerApplicationTests {
 

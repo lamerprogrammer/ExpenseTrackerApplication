@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
-import static test.util.TestUtils.cleanDB;
 import static test.util.TestUtils.createUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
@@ -61,11 +60,6 @@ public class AdminControllerIT {
     private String name = "newAdmin";
     private String email = UUID.randomUUID() + "@example.com";
     private String password = "pass";
-
-    @BeforeEach
-    void setUp() {
-        cleanDB(jdbcTemplate);
-    }
 
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})

@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
-import static test.util.TestUtils.cleanDB;
 import static test.util.TestUtils.createUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
@@ -51,11 +50,6 @@ public class UserControllerIT {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @BeforeEach
-    void setUp() {
-        cleanDB(jdbcTemplate);
-    }
 
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})

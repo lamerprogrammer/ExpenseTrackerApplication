@@ -16,7 +16,8 @@ import static test.util.Constants.USER_PASSWORD;
 
 public final class TestUtils {
 
-    private TestUtils() {}
+    private TestUtils() {
+    }
 
     public static DelegatingServletOutputStream writeByteToStream(ByteArrayOutputStream outputStream) {
         return new DelegatingServletOutputStream(outputStream);
@@ -31,7 +32,7 @@ public final class TestUtils {
                     assertThat(v.getPropertyPath().toString()).isEqualTo(field);
                     assertThat(v.getMessage()).containsIgnoringCase(expectedMessage);
                 });
-        
+
         boolean found = violations.stream()
                 .anyMatch(v -> v.getPropertyPath().toString().equals(field)
                         && v.getMessage().toLowerCase().contains(expectedMessage.toLowerCase()));
@@ -49,10 +50,5 @@ public final class TestUtils {
         user.getRoles().add(Role.USER);
         user.getRoles().add(role);
         return userRepository.save(user);
-    }
-
-    public static void cleanDB(JdbcTemplate jdbcTemplate) {
-        jdbcTemplate.execute("TRUNCATE TABLE admin_audit CASCADE");
-        jdbcTemplate.execute("TRUNCATE TABLE users CASCADE");
     }
 }

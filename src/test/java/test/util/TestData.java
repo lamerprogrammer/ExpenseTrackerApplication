@@ -1,9 +1,6 @@
 package test.util;
 
-import com.example.expensetracker.dto.LoginDto;
-import com.example.expensetracker.dto.LoginRequest;
-import com.example.expensetracker.dto.RegisterDto;
-import com.example.expensetracker.dto.UserDto;
+import com.example.expensetracker.dto.*;
 import com.example.expensetracker.logging.applog.AppLog;
 import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogLevel;
@@ -43,8 +40,8 @@ public class TestData {
     }
 
     public static Expense expense() {
-        return new Expense(ID_EXPENSE, new User(), new BigDecimal(AMOUNT), Instant.now(), new Category(), 
-                "description");
+        return new Expense(ID_EXPENSE, new User(), new BigDecimal(AMOUNT), Instant.now(), new Category(),
+                DESCRIPTION);
     }
 
     public static RecurringTransaction recurringTransaction() {
@@ -52,11 +49,17 @@ public class TestData {
         res.setId(ID_TRANSACTION);
         res.setAmount(new BigDecimal(AMOUNT));
         res.setDescription(DESCRIPTION);
-        res.setCategory(new Category());
-        res.setUser(new User());
+        res.setCategory(category());
+        res.setUser(user());
         res.setIntervalDays(INTERVAL_DAYS);
         res.setNextExecutionDate(LocalDate.now().minusDays(1));
         return res;
+    }
+
+    public static Category category() {
+        Category category = new Category("food");
+        category.setId(ID_CATEGORY);
+        return category;
     }
 
     public static User userBanned() {
@@ -114,7 +117,7 @@ public class TestData {
     }
 
     public static AppLog appLog() {
-        return appLog("42",
+        return appLog(ID_STRING,
                 Instant.now(),
                 INFO,
                 LOGGER_TEST_DATA,
@@ -143,32 +146,32 @@ public class TestData {
     }
 
     public static AppLogDto appLogDto() {
-        return appLogDto("42",
+        return appLogDto(ID_STRING,
                 Instant.now(),
                 INFO,
                 LOGGER_TEST_DATA,
-                "WARN",
+                TYPE_ERROR_WARN,
                 TEST_MESSAGE,
                 USER_EMAIL,
                 API_TEST_ENDPOINT);
     }
-    
+
     public static Page<AppLogDto> appLogDtoPage() {
         return new PageImpl<>(List.of(appLogDto()));
     }
 
     public static User user(UserRepository userRepository, PasswordEncoder encoder) {
         User user = new User();
-        user.setId(42L);
+        user.setId(ID_VALID);
         user.setEmail(USER_EMAIL);
         user.setRoles(Set.of(USER));
         user.setPassword(encoder.encode(USER_PASSWORD));
         userRepository.save(user);
         return user;
     }
-    
+
     public static UserDto userResponseDto() {
-        return userResponseDto(42L, USER_EMAIL);
+        return userResponseDto(ID_VALID, USER_EMAIL);
     }
 
     public static UserDto userResponseDto(Long id, String email) {
@@ -176,9 +179,9 @@ public class TestData {
     }
 
     public static AuditDto auditDto(
-            Long id, 
-            AuditAction action, 
-            String targetUserEmail, 
+            Long id,
+            AuditAction action,
+            String targetUserEmail,
             String performedByEmail,
             Instant timeStamp) {
         return new AuditDto(id, action, targetUserEmail, performedByEmail, timeStamp);

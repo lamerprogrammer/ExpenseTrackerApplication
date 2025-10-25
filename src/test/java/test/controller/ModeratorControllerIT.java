@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
-import static test.util.TestUtils.cleanDB;
 import static test.util.TestUtils.createUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
@@ -62,7 +61,6 @@ public class ModeratorControllerIT {
 
     @BeforeEach
     void setUp() {
-        cleanDB(jdbcTemplate);
         User moderator = createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         idModerator = moderator.getId();
     }
@@ -166,7 +164,6 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserNotExists() throws Exception {
-        cleanDB(jdbcTemplate);
         createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/ban", ID_INVALID))
                 .andExpect(status().isNotFound())
@@ -177,7 +174,6 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void unbanUser_shouldUserUnbanned_whenUserExists() throws Exception {
-        cleanDB(jdbcTemplate);
         User user = createUser(email, Role.USER, userRepository);
         user.setBanned(true);
         userRepository.save(user);
@@ -195,7 +191,6 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        cleanDB(jdbcTemplate);
         createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/moderator/users/{id}/unban", ID_INVALID))
                 .andExpect(status().isNotFound())

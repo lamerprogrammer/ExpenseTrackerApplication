@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
-import static test.util.TestUtils.cleanDB;
+import static test.util.TestMessageSource.msg;
 import static test.util.TestUtils.createUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
@@ -54,7 +54,6 @@ public class ExpenseControllerIT {
 
     @BeforeEach
     void setUp() {
-        cleanDB(jdbcTemplate);
         createUser(USER_EMAIL, Role.USER, userRepository);
     }
 
@@ -69,7 +68,7 @@ public class ExpenseControllerIT {
                         .param("from", from)
                         .param("to", to))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").isNotEmpty());
+                .andExpect(jsonPath("$.message").value(msg("expenses.report.ok")));
     }
 
     @Test
@@ -91,6 +90,6 @@ public class ExpenseControllerIT {
     void getTotal_shouldReturnTotalExpenses() throws Exception {
         mockMvc.perform(get(API_EXPENSES_TOTAL))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").isNotEmpty());
+                .andExpect(jsonPath("$.message").value(msg("expense.total.ok")));
     }
 }

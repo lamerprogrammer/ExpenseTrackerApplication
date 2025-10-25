@@ -37,6 +37,18 @@ public class RecurringTransaction {
     @Column(nullable = false)
     private boolean active = true;
 
+    public RecurringTransaction() {}
+
+    public RecurringTransaction(BigDecimal amount, String description, Category category, User user, int intervalDays,
+                                LocalDate nextExecutionDate) {
+        this.amount = amount;
+        this.description = description;
+        this.category = category;
+        this.user = user;
+        this.intervalDays = intervalDays;
+        this.nextExecutionDate = nextExecutionDate;
+    }
+
     public Long getId() {
         return id;
     }
