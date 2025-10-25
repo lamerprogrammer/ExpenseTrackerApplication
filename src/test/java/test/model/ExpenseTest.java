@@ -21,7 +21,7 @@ public class ExpenseTest {
         BigDecimal amount = new BigDecimal("0");
         Expense expense = new Expense();
         Instant occurredAt = Instant.now();
-        Category category = new Category("food");
+        Category category = new Category(CATEGORY_NAME);
         
         expense.setId(ID_EXPENSE);
         expense.setUser(user);
@@ -47,7 +47,7 @@ public class ExpenseTest {
     @Test
     void allArgsConstructor_shouldSetAllFields() {
         User user = TestData.user();
-        Category category = new Category("food");
+        Category category = new Category(CATEGORY_NAME);
         BigDecimal amount = new BigDecimal("0");
         Instant now = Instant.now();
         

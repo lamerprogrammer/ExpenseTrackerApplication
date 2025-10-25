@@ -24,7 +24,7 @@ public class AppLogTest {
     }
 
     @Test
-    void shouldSetFieldsUsingConstructor() {
+    void shouldSetFieldsUsingSetters() {
         AppLog applog = new AppLog();
         applog.setId(ID_STRING);
         applog.setTimestamp(Instant.now());

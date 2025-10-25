@@ -57,7 +57,7 @@ public class TestData {
     }
 
     public static Category category() {
-        Category category = new Category("food");
+        Category category = new Category(CATEGORY_NAME);
         category.setId(ID_CATEGORY);
         return category;
     }

@@ -87,7 +87,7 @@ public class RecurringTransactionControllerIT {
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getAll_shouldReturnListRecurringTransaction_whenTransactionsExist() throws Exception {
-        Category category = categoryRepository.save(new Category("food"));
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransaction recurringTransaction = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
                 category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));
         recurringTransactionRepository.save(recurringTransaction);
@@ -103,7 +103,7 @@ public class RecurringTransactionControllerIT {
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void create_shouldReturnSuccess() throws Exception {
-        Category category = categoryRepository.save(new Category("food"));
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), DESCRIPTION,
                 category.getId(), INTERVAL_DAYS);
         mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
@@ -118,7 +118,7 @@ public class RecurringTransactionControllerIT {
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void toggleActive_shouldSwitchActive() throws Exception {
-        Category category = categoryRepository.save(new Category("food"));
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransaction recurringTransaction = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
                 category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));
         RecurringTransaction saved = recurringTransactionRepository.save(recurringTransaction);

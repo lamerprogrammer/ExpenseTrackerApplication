@@ -23,6 +23,9 @@ public final class RecurringTransactionDto {
 
     public RecurringTransactionDto(Long id, BigDecimal amount, String description, Long categoryId,
                                    String categoryName, int intervalDays, LocalDate nextExecutionDate) {
+        if (amount == null || description == null || categoryId == null || nextExecutionDate == null) {
+            throw new IllegalArgumentException("RecurringTransactionDto: mandatory field is null");
+        }
         this.id = id;
         this.amount = amount;
         this.description = description;

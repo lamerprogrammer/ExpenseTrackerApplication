@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static test.util.Constants.AMOUNT;
+import static test.util.Constants.CATEGORY_NAME;
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceImplTest {
@@ -49,7 +50,7 @@ public class ExpenseServiceImplTest {
         Instant from = Instant.now();
         Instant to = Instant.now();
         when(expenseRepository.sumByCategoryForUserBetween(user.getId(), from, to)).thenReturn(List.of(
-                new CategorySumDto("food", new BigDecimal("500")),
+                new CategorySumDto(CATEGORY_NAME, new BigDecimal("500")),
                 new CategorySumDto("drink", new BigDecimal("300"))));
         when(expenseRepository.totalForUserBetween(user.getId(), from, to)).thenReturn(new BigDecimal("800"));
 
