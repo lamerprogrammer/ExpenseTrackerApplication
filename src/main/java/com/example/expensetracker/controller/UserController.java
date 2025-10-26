@@ -7,7 +7,6 @@ import com.example.expensetracker.dto.ApiResponseFactory;
 import com.example.expensetracker.dto.ChangePasswordRequest;
 import com.example.expensetracker.dto.UserDto;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.service.AdminService;
 import com.example.expensetracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -35,7 +34,7 @@ public class UserController {
                                                                HttpServletRequest request) {
         User user = userService.getCurrentUser(currentUser);
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
-                msg("get.current.user"), request));
+                msg("user.controller.get.current.user"), request));
     }
 
     @PutMapping("/change-password")
@@ -44,7 +43,7 @@ public class UserController {
                                                                HttpServletRequest request) {
         userService.changePassword(currentUser, requestDto);
         return ResponseEntity.ok(ApiResponseFactory.success(null,
-                msg("password.changed.success"), request));
+                msg("user.controller.password.changed.success"), request));
     }
 
     private String msg(String code) {

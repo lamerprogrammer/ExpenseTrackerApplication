@@ -36,7 +36,7 @@ public class AuditController {
             @PageableDefault(sort = "timeStamp", direction = Sort.Direction.DESC) Pageable pageable, 
             HttpServletRequest request) {
         Page<AuditDto> logs = auditService.getAll(pageable);
-        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("audit.get.all"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("audit.controller.get.all"), request));
     }
 
     @GetMapping("/{id}")
@@ -45,7 +45,7 @@ public class AuditController {
             @PageableDefault(sort = "timeStamp", direction = Sort.Direction.DESC) Pageable pageable, 
             HttpServletRequest request) {
         Page<AuditDto> logs = auditService.getByAdmin(id, pageable);
-        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("audit.get.by.admin"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("audit.controller.get.by.admin"), request));
     }
 
     private String msg(String code) {

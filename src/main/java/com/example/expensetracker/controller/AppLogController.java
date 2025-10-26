@@ -34,7 +34,7 @@ public class AppLogController {
     public ResponseEntity<ApiResponse<Page<AppLogDto>>> getAllLogs(Pageable pageable,
                                                                    HttpServletRequest request) {
         Page<AppLogDto> logs = appLogService.findAll(pageable);
-        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("logs.get.all"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("app.log.controller.logs.get.all"), request));
     }
 
     @GetMapping("/user/{email}")
@@ -42,7 +42,7 @@ public class AppLogController {
                                                                   Pageable pageable,
                                                                   HttpServletRequest request) {
         Page<AppLogDto> logs = appLogService.findByUserEmail(email, pageable);
-        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("logs.get.by.user"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(logs, msg("app.log.controller.logs.get.by.user"), request));
     }
 
     private String msg(String code) {

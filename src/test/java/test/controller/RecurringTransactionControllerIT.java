@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,7 +79,7 @@ public class RecurringTransactionControllerIT {
     void getAll_shouldReturnEmptyList_whenNoTransactions() throws Exception {
         mockMvc.perform(get(API_RECURRING_TRANSACTION))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.get.all")))
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.controller.get.all")))
                 .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION))
                 .andExpect(jsonPath("$.data").isEmpty());
     }
@@ -93,7 +94,7 @@ public class RecurringTransactionControllerIT {
         recurringTransactionRepository.save(recurringTransaction);
         mockMvc.perform(get(API_RECURRING_TRANSACTION))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.get.all")))
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.controller.get.all")))
                 .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION))
                 .andExpect(jsonPath("$.data").isNotEmpty())
                 .andExpect(jsonPath("$.data[0].categoryId").value(category.getId()));
@@ -110,22 +111,113 @@ public class RecurringTransactionControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.create")))
-                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.controller.create")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE))
+                .andExpect(jsonPath("$.data.amount").value(dto.amount()))
+                .andExpect(jsonPath("$.data.categoryId").value(dto.categoryId()));
     }
 
     @Test
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void create_shouldThrowException_whenReturnSuccess() throws Exception {
+    void create_shouldReturnNotFound_whenUserNotExists() throws Exception {
+        userRepository.delete(user);
         Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), DESCRIPTION,
                 category.getId(), INTERVAL_DAYS);
         mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.create")))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(msg("handle.user.not.found.by.id")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldReturnBadRequest_whenCategoryNotExists() throws Exception {
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), DESCRIPTION,
+                ID_INVALID, INTERVAL_DAYS);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("handle.illegal.argument")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldReturnBadRequest_whenAmountIsNegative() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT_NEGATIVE), 
+                DESCRIPTION, category.getId(), INTERVAL_DAYS);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.request.amount.positive")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldReturnBadRequest_whenDescriptionIsNull() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), null,
+                category.getId(), INTERVAL_DAYS);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.request.description.not.blank")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldReturnBadRequest_whenDescriptionIsEmpty() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT),
+                "", category.getId(), INTERVAL_DAYS);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.request.description.not.blank")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldReturnBadRequest_whenCategoryIdIsNull() throws Exception {
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT),
+                DESCRIPTION, null, INTERVAL_DAYS);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.request.category.id.not.null")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void create_shouldReturnBadRequest_whenIntervalDaysLessThanOne() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT),
+                DESCRIPTION, category.getId(), 0);
+        mockMvc.perform(post(API_RECURRING_TRANSACTION_CREATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(containsString("1")))
                 .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE));
     }
 
@@ -139,9 +231,23 @@ public class RecurringTransactionControllerIT {
         RecurringTransaction saved = recurringTransactionRepository.save(recurringTransaction);
         mockMvc.perform(patch(API_RECURRING_TRANSACTION + "/" + saved.getId() + "/toggle"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.toggle.active")))
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.controller.toggle.active")))
                 .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION +
                         "/" + saved.getId() + "/toggle"));
         assertThat(recurringTransactionRepository.findById(saved.getId()).orElseThrow().isActive()).isFalse();
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void toggleActive_shouldReturnBadRequest_whenSwitchActive() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransaction unSave = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
+                category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));
+        mockMvc.perform(patch(API_RECURRING_TRANSACTION + "/" + ID_INVALID + "/toggle"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("handle.illegal.argument")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION +
+                        "/" + ID_INVALID + "/toggle"));
     }
 }

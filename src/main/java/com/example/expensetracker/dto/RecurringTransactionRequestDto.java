@@ -8,14 +8,14 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public record RecurringTransactionRequestDto(
-        @NotNull(message = "{recurring.transaction.request.dto.amount.not.null}")
-        @Positive(message = "{recurring.transaction.request.dto.amount.positive}")
+        @NotNull(message = "{recurring.transaction.request.amount.not.null}")
+        @Positive(message = "{recurring.transaction.request.amount.positive}")
         BigDecimal amount,
         
-        @NotBlank(message = "{recurring.transaction.request.dto.description}")
+        @NotBlank(message = "{recurring.transaction.request.description.not.blank}")
         String description,
         
-        @NotNull(message = "{recurring.transaction.request.dto.categoryId}")
+        @NotNull(message = "{recurring.transaction.request.category.id.not.null}")
         Long categoryId,
         
         @Min(1)

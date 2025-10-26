@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import test.security.WithMockCustomUser;
 import test.util.TestData;
 
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -71,7 +70,7 @@ public class AuditControllerIT {
         auditService.logAction(AuditAction.BAN, user, admin);
         mockMvc.perform(get("/api/admin/audit"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("audit.get.all")))
+                .andExpect(jsonPath("$.message").value(msg("audit.controller.get.all")))
                 .andExpect(jsonPath("$.path").value("/api/admin/audit"))
                 .andExpect(jsonPath("$.data.content").isArray());
     }
@@ -88,7 +87,7 @@ public class AuditControllerIT {
         auditService.logAction(AuditAction.CREATE, moderator, admin);
         mockMvc.perform(get("/api/admin/audit/{id}", admin.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("audit.get.by.admin")))
+                .andExpect(jsonPath("$.message").value(msg("audit.controller.get.by.admin")))
                 .andExpect(jsonPath("$.path").value("/api/admin/audit/" + admin.getId()))
                 .andExpect(jsonPath("$.data.content").isArray());
     }
@@ -107,7 +106,7 @@ public class AuditControllerIT {
         auditService.logAction(AuditAction.UNBAN, user, admin);
         mockMvc.perform(get("/api/admin/audit"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("audit.get.all")))
+                .andExpect(jsonPath("$.message").value(msg("audit.controller.get.all")))
                 .andExpect(jsonPath("$.path").value("/api/admin/audit"))
                 .andExpect(jsonPath("$.data.content[0].action").value("UNBAN"));
     }
@@ -126,7 +125,7 @@ public class AuditControllerIT {
         auditService.logAction(AuditAction.DELETE, moderator, admin);
         mockMvc.perform(get("/api/admin/audit/{id}", admin.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("audit.get.by.admin")))
+                .andExpect(jsonPath("$.message").value(msg("audit.controller.get.by.admin")))
                 .andExpect(jsonPath("$.path").value("/api/admin/audit/" + admin.getId()))
                 .andExpect(jsonPath("$.data.content[0].action").value("DELETE"));
     }

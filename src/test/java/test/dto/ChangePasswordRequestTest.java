@@ -40,7 +40,7 @@ public class ChangePasswordRequestTest {
         Set<ConstraintViolation<ChangePasswordRequest>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "oldPassword", msg("user.password.old.not-blank"));
+        TestUtils.assertHasViolation(violations, "oldPassword", msg("user.controller.user.password.old.not-blank"));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ChangePasswordRequestTest {
         Set<ConstraintViolation<ChangePasswordRequest>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "oldPassword", msg("user.password.old.not-blank"));
+        TestUtils.assertHasViolation(violations, "oldPassword", msg("user.controller.user.password.old.not-blank"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ChangePasswordRequestTest {
         Set<ConstraintViolation<ChangePasswordRequest>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "newPassword", msg("user.password.new.not-blank"));
+        TestUtils.assertHasViolation(violations, "newPassword", msg("user.controller.user.password.new.not-blank"));
     }
 
     @Test
@@ -67,6 +67,6 @@ public class ChangePasswordRequestTest {
         Set<ConstraintViolation<ChangePasswordRequest>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "newPassword", msg("user.password.new.not-blank"));
+        TestUtils.assertHasViolation(violations, "newPassword", msg("user.controller.user.password.new.not-blank"));
     }
 }

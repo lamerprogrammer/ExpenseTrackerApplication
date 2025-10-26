@@ -68,7 +68,7 @@ public class ExpenseControllerIT {
                         .param("from", from)
                         .param("to", to))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("expenses.report.ok")));
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.ok")));
     }
 
     @Test
@@ -90,6 +90,6 @@ public class ExpenseControllerIT {
     void getTotal_shouldReturnTotalExpenses() throws Exception {
         mockMvc.perform(get(API_EXPENSES_TOTAL))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("expense.total.ok")));
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.total.ok")));
     }
 }

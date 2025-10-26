@@ -40,7 +40,7 @@ public class DateRangeDtoTest {
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(dto);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "validRange", msg("is.valid.range"));
+        TestUtils.assertHasViolation(violations, "validRange", msg("date.range.dto.from.is.valid.range"));
     }
 
     @Test
@@ -50,8 +50,8 @@ public class DateRangeDtoTest {
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(dto);
 
         assertThat(violations).hasSize(2);
-        TestUtils.assertHasViolation(violations, "from", msg("from.not.null"));
-        TestUtils.assertHasViolation(violations, "validRange", msg("is.valid.range"));
+        TestUtils.assertHasViolation(violations, "from", msg("date.range.dto.from.not.null"));
+        TestUtils.assertHasViolation(violations, "validRange", msg("date.range.dto.from.is.valid.range"));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class DateRangeDtoTest {
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(dto);
 
         assertThat(violations).hasSize(2);
-        TestUtils.assertHasViolation(violations, "to", msg("to.not.null"));
-        TestUtils.assertHasViolation(violations, "validRange", msg("is.valid.range"));
+        TestUtils.assertHasViolation(violations, "to", msg("date.range.dto.to.not.null"));
+        TestUtils.assertHasViolation(violations, "validRange", msg("date.range.dto.from.is.valid.range"));
     }
 
     @Test

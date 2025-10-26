@@ -39,7 +39,7 @@ public class ExpenseController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             HttpServletRequest request) {
         var dto = expenseService.getReport(userDetails, range.getFrom(), range.getTo());
-        return ResponseEntity.ok(ApiResponseFactory.success(dto, msg("expenses.report.ok"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(dto, msg("expense.controller.report.ok"), request));
     }
 
     @GetMapping("/total")
@@ -47,7 +47,7 @@ public class ExpenseController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             HttpServletRequest request) {
         var total = userService.getTotalExpenses(userDetails.getDomainUser().getId());
-        return ResponseEntity.ok(ApiResponseFactory.success(total, msg("expense.total.ok"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(total, msg("expense.controller.total.ok"), request));
     }
 
 

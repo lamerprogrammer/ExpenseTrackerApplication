@@ -52,7 +52,7 @@ public class UserControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getData().getId()).isEqualTo(user.getId());
         assertThat(body.getData().getEmail()).isEqualTo(user.getEmail());
-        assertThat(body.getMessage()).isEqualTo("get.current.user");
+        assertThat(body.getMessage()).isEqualTo("user.controller.get.current.user");
         verify(userService).getCurrentUser(currentUser);
     }
 
@@ -68,7 +68,7 @@ public class UserControllerTest {
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         var body = result.getBody();
         assertThat(body).isNotNull();
-        assertThat(body.getMessage()).isEqualTo("password.changed.success");
+        assertThat(body.getMessage()).isEqualTo("user.controller.password.changed.success");
         verify(userService).changePassword(currentUser, requestDto);
     }
 

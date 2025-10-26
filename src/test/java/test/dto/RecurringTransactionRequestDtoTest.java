@@ -1,6 +1,5 @@
 package test.dto;
 
-import com.example.expensetracker.dto.ChangePasswordRequest;
 import com.example.expensetracker.dto.RecurringTransactionRequestDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -43,7 +42,7 @@ public class RecurringTransactionRequestDtoTest {
         Set<ConstraintViolation<RecurringTransactionRequestDto>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "amount", msg("recurring.transaction.request.dto.amount.not.null"));
+        TestUtils.assertHasViolation(violations, "amount", msg("recurring.transaction.request.amount.not.null"));
     }
 
     @Test
@@ -53,7 +52,7 @@ public class RecurringTransactionRequestDtoTest {
         Set<ConstraintViolation<RecurringTransactionRequestDto>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "amount", msg("recurring.transaction.request.dto.amount.positive"));
+        TestUtils.assertHasViolation(violations, "amount", msg("recurring.transaction.request.amount.positive"));
     }
 
     @Test
@@ -63,7 +62,7 @@ public class RecurringTransactionRequestDtoTest {
         Set<ConstraintViolation<RecurringTransactionRequestDto>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "description", msg("recurring.transaction.request.dto.description"));
+        TestUtils.assertHasViolation(violations, "description", msg("recurring.transaction.request.description.not.blank"));
     }
 
     @Test
@@ -73,7 +72,7 @@ public class RecurringTransactionRequestDtoTest {
         Set<ConstraintViolation<RecurringTransactionRequestDto>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "description", msg("recurring.transaction.request.dto.description"));
+        TestUtils.assertHasViolation(violations, "description", msg("recurring.transaction.request.description.not.blank"));
     }
 
     @Test
@@ -83,7 +82,7 @@ public class RecurringTransactionRequestDtoTest {
         Set<ConstraintViolation<RecurringTransactionRequestDto>> violations = validator.validate(request);
 
         assertThat(violations).hasSize(1);
-        TestUtils.assertHasViolation(violations, "categoryId", msg("recurring.transaction.request.dto.categoryId"));
+        TestUtils.assertHasViolation(violations, "categoryId", msg("recurring.transaction.request.category.id.not.null"));
     }
 
     @Test

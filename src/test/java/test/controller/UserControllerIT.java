@@ -6,7 +6,6 @@ import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -89,7 +88,7 @@ public class UserControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("password.changed.success")));
+                .andExpect(jsonPath("$.message").value(msg("user.controller.password.changed.success")));
     }
 
     @Test
@@ -115,7 +114,7 @@ public class UserControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(msg("user.password.old.not-blank")));
+                .andExpect(jsonPath("$.message").value(msg("user.controller.user.password.old.not-blank")));
     }
 
     @Test
@@ -129,7 +128,7 @@ public class UserControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(msg("user.password.new.not-blank")));
+                .andExpect(jsonPath("$.message").value(msg("user.controller.user.password.new.not-blank")));
     }
 
     private String msg(String code) {
@@ -139,7 +138,7 @@ public class UserControllerIT {
     private void performMe(String email) throws Exception {
         mockMvc.perform(get(API_USERS_ME))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("get.current.user")))
+                .andExpect(jsonPath("$.message").value(msg("user.controller.get.current.user")))
                 .andExpect(jsonPath("$.path").value(API_USERS_ME))
                 .andExpect(jsonPath("$.data.email").value(email));
     }
