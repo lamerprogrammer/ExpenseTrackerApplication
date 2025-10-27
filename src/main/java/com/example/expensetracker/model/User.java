@@ -115,6 +115,19 @@ public class User {
         this.totalExpenses = this.totalExpenses.subtract(amount);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id != null ? id.hashCode() : getClass().hashCode();
+    }
+
     public static class UserBuilder {
         private Long id;
         private String email;

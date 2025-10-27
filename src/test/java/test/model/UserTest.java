@@ -1,11 +1,15 @@
 package test.model;
 
+import com.example.expensetracker.dto.LoginDto;
+import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import test.util.TestUtils;
@@ -122,5 +126,13 @@ public class UserTest {
         assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
         assertThat(user.getRoles()).containsExactly(Role.USER);
         assertThat(user.isBanned()).isTrue();
+    }
+
+    @Test
+    void equalsHashCode_contract() {
+        EqualsVerifier.forClass(User.class)
+                .usingGetClass()
+                .suppress(Warning.SURROGATE_KEY, Warning.IDENTICAL_COPY_FOR_VERSIONED_ENTITY)
+                .verify();
     }
 }

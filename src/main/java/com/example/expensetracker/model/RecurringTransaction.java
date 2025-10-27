@@ -118,15 +118,11 @@ public class RecurringTransaction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecurringTransaction that = (RecurringTransaction) o;
-        return intervalDays == that.intervalDays &&
-                Objects.equals(amount, that.amount) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(category, that.category) &&
-                Objects.equals(user, that.user);
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, description, category, user, intervalDays);
+        return this.id != null ? id.hashCode() : getClass().hashCode();
     }
 }

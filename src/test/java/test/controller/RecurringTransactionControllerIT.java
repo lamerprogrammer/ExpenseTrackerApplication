@@ -240,7 +240,7 @@ public class RecurringTransactionControllerIT {
     @Test
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void toggleActive_shouldReturnBadRequest_whenSwitchActive() throws Exception {
+    void toggleActive_shouldReturnBadRequest_whenIdInvalid() throws Exception {
         Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransaction unSave = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
                 category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));

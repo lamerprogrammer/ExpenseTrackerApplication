@@ -75,7 +75,9 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
     @Override
     @Transactional(readOnly = true)
     public List<RecurringTransactionDto> getUserRecurringTransactions(UserDetails currentUser) {
-        List<RecurringTransaction> recurringTransactionList = recurringRepo.findAllByUser_Email(currentUser.getUsername());
+        User user = userRepo.findByEmail(currentUser.getUsername()).orElseThrow(() ->
+                new UserNotFoundByIdException("User not found"));
+        List<RecurringTransaction> recurringTransactionList = recurringRepo.findAllByUser_Email(user.getEmail());
         return recurringTransactionList.stream().map(mapper::toDto).collect(Collectors.toList());
     }
     

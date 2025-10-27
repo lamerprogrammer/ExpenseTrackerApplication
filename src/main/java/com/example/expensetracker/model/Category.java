@@ -47,7 +47,7 @@ public class Category {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return this.id != null ? id.hashCode() : getClass().hashCode();
     }
 
     @Override
