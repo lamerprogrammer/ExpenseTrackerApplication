@@ -19,10 +19,10 @@ public final class RecurringTransactionDto {
 
     private final LocalDate nextExecutionDate;
 
-    private final boolean active = true;
+    private final boolean active;
 
     public RecurringTransactionDto(Long id, BigDecimal amount, String description, Long categoryId,
-                                   String categoryName, int intervalDays, LocalDate nextExecutionDate) {
+                                   String categoryName, int intervalDays, LocalDate nextExecutionDate, boolean active) {
         if (amount == null || description == null || categoryId == null || nextExecutionDate == null) {
             throw new IllegalArgumentException("RecurringTransactionDto: mandatory field is null");
         }
@@ -33,6 +33,7 @@ public final class RecurringTransactionDto {
         this.categoryName = categoryName;
         this.intervalDays = intervalDays;
         this.nextExecutionDate = nextExecutionDate;
+        this.active = active;
     }
 
     public Long getId() {

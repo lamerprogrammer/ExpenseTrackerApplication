@@ -17,7 +17,7 @@ public class RecurringTransactionDtoTest {
         BigDecimal amount = new BigDecimal(AMOUNT);
         LocalDate now = LocalDate.now();
         RecurringTransactionDto result = new RecurringTransactionDto(ID_TRANSACTION, amount,
-                DESCRIPTION, ID_CATEGORY, CATEGORY_NAME, INTERVAL_DAYS, now);
+                DESCRIPTION, ID_CATEGORY, CATEGORY_NAME, INTERVAL_DAYS, now, true);
 
         assertThat(result).extracting(
                 RecurringTransactionDto::getId,
@@ -71,6 +71,6 @@ public class RecurringTransactionDtoTest {
                                              Long categoryId, LocalDate nextExecutionDate) {
         return assertThrows(IllegalArgumentException.class,
                 () -> new RecurringTransactionDto(ID_TRANSACTION, amount,
-                        description, categoryId, CATEGORY_NAME, INTERVAL_DAYS, nextExecutionDate));
+                        description, categoryId, CATEGORY_NAME, INTERVAL_DAYS, nextExecutionDate, true));
     } 
 }

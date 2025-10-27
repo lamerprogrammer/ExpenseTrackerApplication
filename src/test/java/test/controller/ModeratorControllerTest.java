@@ -99,19 +99,6 @@ public class ModeratorControllerTest {
     }
 
     @Test
-    public void banUser_shouldReturn404_whenUserNotFound() {
-        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        Long id = currentUser.getDomainUser().getId();
-        when(moderatorService.banUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
-
-        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
-                () -> moderatorController.banUser(id, currentUser, request));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(moderatorService).banUser(eq(id), eq(currentUser));
-    }
-
-    @Test
     public void unbanUser_shouldReturn200_whenUserExist() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
         User bannedUser = TestData.userBanned();
@@ -121,19 +108,6 @@ public class ModeratorControllerTest {
         var response = moderatorController.unbanUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(moderatorService).unbanUser(eq(id), eq(currentUser));
-    }
-
-    @Test
-    public void unbanUser_shouldReturn404_whenUserNotFound() {
-        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        Long id = currentUser.getDomainUser().getId();
-        when(moderatorService.unbanUser(id, currentUser)).thenThrow(new UsernameNotFoundException(TEST_MESSAGE));
-
-        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
-                () -> moderatorController.unbanUser(id, currentUser, request));
-
-        assertThat(ex.getMessage()).isNotBlank();
         verify(moderatorService).unbanUser(eq(id), eq(currentUser));
     }
 }

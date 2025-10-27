@@ -198,4 +198,39 @@ public class TestData {
     public static Page<AuditDto> auditDtoPage() {
         return new PageImpl<>(List.of(auditDto()));
     }
+
+    public static RecurringTransactionDto recurringTransactionDtoActiveTrue() {
+        return new RecurringTransactionDto(
+                ID_TRANSACTION,
+                new BigDecimal(AMOUNT),
+                DESCRIPTION,
+                ID_CATEGORY,
+                CATEGORY_NAME,
+                INTERVAL_DAYS,
+                LocalDate.now().minusDays(1),
+                true
+        );
+    }
+
+    public static RecurringTransactionDto recurringTransactionDtoActiveFalse() {
+        return new RecurringTransactionDto(
+                ID_TRANSACTION,
+                new BigDecimal(AMOUNT),
+                DESCRIPTION,
+                ID_CATEGORY,
+                CATEGORY_NAME,
+                INTERVAL_DAYS,
+                LocalDate.now().minusDays(1),
+                false
+        );
+    }
+
+    public static RecurringTransactionRequestDto recurringTransactionRequestDto() {
+        return new RecurringTransactionRequestDto(
+                new BigDecimal(AMOUNT),
+                DESCRIPTION,
+                ID_CATEGORY,
+                INTERVAL_DAYS
+        );
+    }
 }

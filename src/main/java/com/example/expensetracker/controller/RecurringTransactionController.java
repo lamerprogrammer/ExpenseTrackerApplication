@@ -33,7 +33,8 @@ public class RecurringTransactionController {
     public ResponseEntity<ApiResponse<List<RecurringTransactionDto>>> getAll(
             @AuthenticationPrincipal UserDetails currentUser, HttpServletRequest request) {
         List<RecurringTransactionDto> list = recurringTransactionService.getUserRecurringTransactions(currentUser);
-        return ResponseEntity.ok(ApiResponseFactory.success(list, msg("recurring.transaction.controller.get.all"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(list, msg("recurring.transaction.controller.get.all"), 
+                request));
     }
 
     @PostMapping("/create")
@@ -42,14 +43,16 @@ public class RecurringTransactionController {
             @Valid @RequestBody RecurringTransactionRequestDto dto,
             HttpServletRequest request) {
         RecurringTransactionDto created = recurringTransactionService.createRecurringTransaction(currentUser, dto);
-        return ResponseEntity.ok(ApiResponseFactory.success(created, msg("recurring.transaction.controller.create"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(created, msg("recurring.transaction.controller.create"),
+                request));
     }
 
     @PatchMapping("/{id}/toggle")
     public ResponseEntity<ApiResponse<RecurringTransactionDto>> toggleActive(@PathVariable Long id,
             HttpServletRequest request) {
         RecurringTransactionDto update = recurringTransactionService.toggleActive(id);
-        return ResponseEntity.ok(ApiResponseFactory.success(update, msg("recurring.transaction.controller.toggle.active"), request));
+        return ResponseEntity.ok(ApiResponseFactory.success(update, msg("recurring.transaction.controller.toggle.active"),
+                request));
     }
 
     private String msg(String key) {
