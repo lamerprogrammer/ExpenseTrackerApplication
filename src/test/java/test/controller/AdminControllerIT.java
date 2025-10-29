@@ -8,7 +8,6 @@ import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,7 +20,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import test.security.WithMockCustomUser;
 
-import java.util.Locale;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -171,7 +169,7 @@ public class AdminControllerIT {
         User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/promote", user.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("increase.user")))
+                .andExpect(jsonPath("$.message").value(msg("promote.user")))
                 .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/promote"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
@@ -192,7 +190,7 @@ public class AdminControllerIT {
         User user = createUser(email, Role.MODERATOR, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/promote", user.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("increase.user")))
+                .andExpect(jsonPath("$.message").value(msg("promote.user")))
                 .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/promote"))
                 .andExpect(jsonPath("$.data.email").value(user.getEmail()));
     }
@@ -204,7 +202,7 @@ public class AdminControllerIT {
         User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/demote", user.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("decrease.user")))
+                .andExpect(jsonPath("$.message").value(msg("demote.user")))
                 .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/demote"))
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
@@ -225,7 +223,7 @@ public class AdminControllerIT {
         User user = createUser(email, Role.USER, userRepository);
         mockMvc.perform(put("/api/admin/users/{id}/demote", user.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("decrease.user")))
+                .andExpect(jsonPath("$.message").value(msg("demote.user")))
                 .andExpect(jsonPath("$.path").value("/api/admin/users/" + user.getId() + "/demote"))
                 .andExpect(jsonPath("$.data.email").value(user.getEmail()));
     }

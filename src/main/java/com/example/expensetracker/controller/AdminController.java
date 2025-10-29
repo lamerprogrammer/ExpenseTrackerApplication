@@ -76,7 +76,7 @@ public class AdminController {
                                                             HttpServletRequest request) {
         User user = adminService.promoteUser(id, currentUser);
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
-                msg("increase.user"), request));
+                msg("promote.user"), request));
     }
 
     @PutMapping("/{id}/demote")
@@ -85,7 +85,7 @@ public class AdminController {
                                                            HttpServletRequest request) {
         User user = adminService.demoteUser(id, currentUser);
         return ResponseEntity.ok(ApiResponseFactory.success(UserDto.fromEntity(user),
-                msg("decrease.user"), request));
+                msg("demote.user"), request));
     }
 
     @DeleteMapping("/{id}/delete")

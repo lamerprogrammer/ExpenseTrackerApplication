@@ -16,8 +16,7 @@ import org.springframework.http.HttpStatus;
 import test.util.TestData;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static test.util.Constants.USER_PASSWORD;
@@ -54,6 +53,7 @@ public class UserControllerTest {
         assertThat(body.getData().getEmail()).isEqualTo(user.getEmail());
         assertThat(body.getMessage()).isEqualTo("user.controller.get.current.user");
         verify(userService).getCurrentUser(currentUser);
+        verify(messageSource).getMessage(eq("user.controller.get.current.user"), any(), any());
     }
 
     @Test
@@ -70,6 +70,7 @@ public class UserControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getMessage()).isEqualTo("user.controller.password.changed.success");
         verify(userService).changePassword(currentUser, requestDto);
+        verify(messageSource).getMessage(eq("user.controller.password.changed.success"), any(), any());
     }
 
     private void mockMessage() {

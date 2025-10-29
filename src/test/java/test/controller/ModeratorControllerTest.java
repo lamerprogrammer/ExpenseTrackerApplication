@@ -2,7 +2,6 @@ package test.controller;
 
 import com.example.expensetracker.controller.ModeratorController;
 import com.example.expensetracker.details.UserDetailsImpl;
-import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.dto.UserDto;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.ModeratorService;
@@ -18,16 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import test.util.TestData;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static test.util.Constants.TEST_MESSAGE;
 
 @ExtendWith(MockitoExtension.class)
 public class ModeratorControllerTest {
@@ -57,6 +53,7 @@ public class ModeratorControllerTest {
         User user = TestData.user();
         Page<User> users = new PageImpl<>(List.of(user));
         when(moderatorService.getAllUsers(pageable)).thenReturn(users);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = moderatorController.getAllUsers(pageable, request);
 
@@ -67,6 +64,7 @@ public class ModeratorControllerTest {
                 .extracting(UserDto::getId, UserDto::getEmail)
                 .containsExactly(tuple(user.getId(), user.getEmail()));
         verify(moderatorService).getAllUsers(pageable);
+        verify(messageSource).getMessage(eq("get.all.users"), any(), any());
     }
 
     @Test
@@ -74,6 +72,7 @@ public class ModeratorControllerTest {
         User user = TestData.user();
         Long id = user.getId();
         when(moderatorService.getUserById(id)).thenReturn(user);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = moderatorController.getUserById(id, request);
 
@@ -83,6 +82,8 @@ public class ModeratorControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getData().getId()).isEqualTo(user.getId());
         assertThat(body.getData().getEmail()).isEqualTo(user.getEmail());
+        verify(moderatorService).getUserById(id);
+        verify(messageSource).getMessage(eq("get.user.by.id"), any(), any());
     }
 
     @Test
@@ -91,11 +92,13 @@ public class ModeratorControllerTest {
         User bannedUser = TestData.userBanned();
         Long id = currentUser.getDomainUser().getId();
         when(moderatorService.banUser(id, currentUser)).thenReturn(bannedUser);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var response = moderatorController.banUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(moderatorService).banUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("ban.user"), any(), any());
     }
 
     @Test
@@ -104,10 +107,12 @@ public class ModeratorControllerTest {
         User bannedUser = TestData.userBanned();
         Long id = currentUser.getDomainUser().getId();
         when(moderatorService.unbanUser(id, currentUser)).thenReturn(bannedUser);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var response = moderatorController.unbanUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(moderatorService).unbanUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("unban.user"), any(), any());
     }
 }

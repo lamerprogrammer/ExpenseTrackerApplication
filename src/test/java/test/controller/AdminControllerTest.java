@@ -54,6 +54,7 @@ public class AdminControllerTest {
         User user = TestData.user();
         Page<User> users = new PageImpl<>(List.of(user));
         when(adminService.getAllUsers(pageable)).thenReturn(users);
+        mockMessage();
 
         var result = adminController.getAllUsers(pageable, request);
 
@@ -65,6 +66,7 @@ public class AdminControllerTest {
                 .extracting(UserDto::getId, UserDto::getEmail)
                 .containsExactly(tuple(user.getId(), user.getEmail()));
         verify(adminService).getAllUsers(pageable);
+        verify(messageSource).getMessage(eq("get.all.users"), any(), any());
     }
 
     @Test
@@ -72,6 +74,7 @@ public class AdminControllerTest {
         User user = TestData.user();
         Long id = user.getId();
         when(adminService.getUserById(id)).thenReturn(user);
+        mockMessage();
 
         var result = adminController.getUserById(id, request);
 
@@ -80,6 +83,8 @@ public class AdminControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData().getId()).isEqualTo(user.getId());
         assertThat(result.getBody().getData().getEmail()).isEqualTo(user.getEmail());
+        verify(adminService).getUserById(id);
+        verify(messageSource).getMessage(eq("get.user.by.id"), any(), any());
     }
 
     @Test
@@ -88,11 +93,13 @@ public class AdminControllerTest {
         User bannedUser = TestData.userBanned();
         Long id = currentUser.getDomainUser().getId();
         when(adminService.banUser(id, currentUser)).thenReturn(bannedUser);
+        mockMessage();
 
         var response = adminController.banUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).banUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("ban.user"), any(), any());
     }
 
     @Test
@@ -101,11 +108,13 @@ public class AdminControllerTest {
         User bannedUser = TestData.userBanned();
         Long id = currentUser.getDomainUser().getId();
         when(adminService.unbanUser(id, currentUser)).thenReturn(bannedUser);
+        mockMessage();
 
         var response = adminController.unbanUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).unbanUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("unban.user"), any(), any());
     }
 
     @Test
@@ -114,11 +123,13 @@ public class AdminControllerTest {
         User user = TestData.user();
         Long id = currentUser.getDomainUser().getId();
         when(adminService.promoteUser(id, currentUser)).thenReturn(user);
+        mockMessage();
 
         var response = adminController.promoteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).promoteUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("promote.user"), any(), any());
     }
 
     @Test
@@ -127,11 +138,13 @@ public class AdminControllerTest {
         User bannedUser = TestData.userBanned();
         Long id = currentUser.getDomainUser().getId();
         when(adminService.demoteUser(id, currentUser)).thenReturn(bannedUser);
+        mockMessage();
 
         var response = adminController.demoteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).demoteUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("demote.user"), any(), any());
     }
 
     @Test
@@ -140,11 +153,13 @@ public class AdminControllerTest {
         User deletedUser = TestData.user();
         Long id = currentUser.getDomainUser().getId();
         when(adminService.deleteUser(id, currentUser)).thenReturn(deletedUser);
+        mockMessage();
 
         var response = adminController.deleteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).deleteUser(eq(id), eq(currentUser));
+        verify(messageSource).getMessage(eq("delete.user"), any(), any());
     }
 
     @Test
@@ -153,11 +168,13 @@ public class AdminControllerTest {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         User user = TestData.admin();
         when(adminService.createAdmin(newAdmin, currentUser)).thenReturn(user);
+        mockMessage();
 
         var response = adminController.createAdmin(newAdmin, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).createAdmin(eq(newAdmin), eq(currentUser));
+        verify(messageSource).getMessage(eq("create.admin"), any(), any());
     }
 
     @Test
@@ -166,10 +183,17 @@ public class AdminControllerTest {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         User user = TestData.moderator();
         when(adminService.createModerator(newModer, currentUser)).thenReturn(user);
+        mockMessage();
 
         var response = adminController.createModer(newModer, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).createModerator(eq(newModer), eq(currentUser));
+        verify(messageSource).getMessage(eq("create.moder"), any(), any());
+    }
+
+    private void mockMessage() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
     }
 }

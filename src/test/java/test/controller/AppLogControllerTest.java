@@ -16,8 +16,7 @@ import org.springframework.http.HttpStatus;
 import test.util.TestData;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static test.util.Constants.USER_EMAIL;
@@ -44,6 +43,7 @@ public class AppLogControllerTest {
     public void getAllLogs_shouldReturnLogs_whenLogsExist() {
         Page<AppLogDto> logs = TestData.appLogDtoPage();
         when(appLogService.findAll(pageable)).thenReturn(logs);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = appLogController.getAllLogs(pageable, request);
 
@@ -52,12 +52,14 @@ public class AppLogControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(appLogService).findAll(any());
+        verify(messageSource).getMessage(eq("app.log.controller.logs.get.all"), any(), any());
     }
 
     @Test
     public void getByUser_shouldReturnLogs_whenLogsExist() {
         Page<AppLogDto> logs = TestData.appLogDtoPage();
         when(appLogService.findByUserEmail(USER_EMAIL, pageable)).thenReturn(logs);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = appLogController.getByUser(USER_EMAIL, pageable, request);
 
@@ -66,5 +68,6 @@ public class AppLogControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(appLogService).findByUserEmail(eq(USER_EMAIL), any());
+        verify(messageSource).getMessage(eq("app.log.controller.logs.get.by.user"), any(), any());
     }
 }

@@ -19,6 +19,8 @@ import test.util.TestData;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static test.util.Constants.*;
 
@@ -44,6 +46,7 @@ public class RecurringTransactionControllerTest {
         RecurringTransactionDto transactionDto = TestData.recurringTransactionDtoActiveTrue();
         List<RecurringTransactionDto> dtoList = List.of(transactionDto);
         when(service.getUserRecurringTransactions(currentUser)).thenReturn(dtoList);
+        mockMessage();
 
         var result = controller.getAll(currentUser, request);
 
@@ -63,6 +66,8 @@ public class RecurringTransactionControllerTest {
                         DESCRIPTION,
                         CATEGORY_NAME
                 );
+        verify(service).getUserRecurringTransactions(currentUser);
+        verify(messageSource).getMessage(eq("recurring.transaction.controller.get.all"), any(), any());
     }
 
     @Test
@@ -72,6 +77,7 @@ public class RecurringTransactionControllerTest {
         RecurringTransactionRequestDto dto = TestData.recurringTransactionRequestDto();
         RecurringTransactionDto created = TestData.recurringTransactionDtoActiveTrue();
         when(service.createRecurringTransaction(currentUser, dto)).thenReturn(created);
+        mockMessage();
 
         var result = controller.create(currentUser, dto, request);
 
@@ -91,13 +97,15 @@ public class RecurringTransactionControllerTest {
                         DESCRIPTION,
                         CATEGORY_NAME
                 );
+        verify(service).createRecurringTransaction(currentUser, dto);
+        verify(messageSource).getMessage(eq("recurring.transaction.controller.create"), any(), any());
     }
 
     @Test
     void toggleActive_shouldReturnAllTransactions() {
         RecurringTransactionDto dto = TestData.recurringTransactionDtoActiveFalse();
-        
         when(service.toggleActive(ID_TRANSACTION)).thenReturn(dto);
+        mockMessage();
 
         var result = controller.toggleActive(ID_TRANSACTION, request);
 
@@ -119,5 +127,12 @@ public class RecurringTransactionControllerTest {
                         CATEGORY_NAME,
                         false
                 );
+        verify(service).toggleActive(ID_TRANSACTION);
+        verify(messageSource).getMessage(eq("recurring.transaction.controller.toggle.active"), any(), any());
+    }
+
+    private void mockMessage() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
     }
 }

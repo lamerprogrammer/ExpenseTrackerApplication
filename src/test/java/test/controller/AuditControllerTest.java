@@ -45,6 +45,7 @@ public class AuditControllerTest {
     public void getAllAudit_shouldReturnListOfLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getAll(any())).thenReturn(logs);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getAllAudit(pageable, request);
         
@@ -53,12 +54,14 @@ public class AuditControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(auditService, times(1)).getAll(any());
+        verify(messageSource).getMessage(eq("audit.controller.get.all"), any(), any());
     }
 
     @Test
     public void getAllAudit_shouldReturnEmptyList_whenNoLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getAll(any())).thenReturn(logs);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getAllAudit(pageable, request);
         
@@ -67,12 +70,14 @@ public class AuditControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEmpty();
         verify(auditService, times(1)).getAll(any());
+        verify(messageSource).getMessage(eq("audit.controller.get.all"), any(), any());
     }
 
     @Test
     public void getByAdmin_shouldReturnListOfLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getByAdmin(anyLong(), any())).thenReturn(logs);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getByAdmin(ID_VALID, pageable, request);
 
@@ -81,12 +86,14 @@ public class AuditControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(auditService, times(1)).getByAdmin(eq(ID_VALID), any());
+        verify(messageSource).getMessage(eq("audit.controller.get.by.admin"), any(), any());
     }
 
     @Test
     public void getByAdmin_shouldReturnEmptyList_whenNoLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getByAdmin(anyLong(), any())).thenReturn(logs);
+        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getByAdmin(ID_INVALID, pageable, request);
 
@@ -95,5 +102,6 @@ public class AuditControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEmpty();
         verify(auditService, times(1)).getByAdmin(eq(ID_INVALID), any());
+        verify(messageSource).getMessage(eq("audit.controller.get.by.admin"), any(), any());
     }
 }
