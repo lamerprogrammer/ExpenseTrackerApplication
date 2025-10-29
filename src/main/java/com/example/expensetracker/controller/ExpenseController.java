@@ -5,6 +5,7 @@ import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.dto.ApiResponseFactory;
 import com.example.expensetracker.dto.DateRangeDto;
 import com.example.expensetracker.dto.ExpensesReportDto;
+import com.example.expensetracker.model.Month;
 import com.example.expensetracker.service.ExpenseService;
 import com.example.expensetracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -36,17 +38,27 @@ public class ExpenseController {
     @GetMapping("/report")
     public ResponseEntity<ApiResponse<ExpensesReportDto>> report(
             @Valid DateRangeDto range,
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
             HttpServletRequest request) {
-        var dto = expenseService.getReport(userDetails, range.getFrom(), range.getTo());
+        var dto = expenseService.getReport(currentUser, range.getFrom(), range.getTo());
         return ResponseEntity.ok(ApiResponseFactory.success(dto, msg("expense.controller.report.ok"), request));
+    }
+
+    @GetMapping("/stats/monthly")
+    public ResponseEntity<ApiResponse<ExpensesReportDto>> reportMonthly(
+            Month month,
+            @RequestParam(required = false) Integer year,
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
+            HttpServletRequest request) {
+        ExpensesReportDto dto = expenseService.getReportMonthly(month, year, currentUser);
+        return ResponseEntity.ok(ApiResponseFactory.success(dto, msg("expense.controller.report.monthly"), request));
     }
 
     @GetMapping("/total")
     public ResponseEntity<ApiResponse<BigDecimal>> getTotal(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
             HttpServletRequest request) {
-        var total = userService.getTotalExpenses(userDetails.getDomainUser().getId());
+        var total = userService.getTotalExpenses(currentUser.getDomainUser().getId());
         return ResponseEntity.ok(ApiResponseFactory.success(total, msg("expense.controller.total.ok"), request));
     }
 

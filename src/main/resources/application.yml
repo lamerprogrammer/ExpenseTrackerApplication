@@ -1,4 +1,8 @@
 spring:
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000, expireAfterWrite=1h
   scheduler:
     recurring-cron: 0 0 3 * * *
     zone: Europe/Moscow

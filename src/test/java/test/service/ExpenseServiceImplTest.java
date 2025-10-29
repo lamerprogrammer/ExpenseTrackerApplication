@@ -3,6 +3,7 @@ package test.service;
 import com.example.expensetracker.details.UserDetailsImpl;
 import com.example.expensetracker.dto.CategorySumDto;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.model.Month;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.ExpenseRepository;
 import com.example.expensetracker.repository.UserRepository;
@@ -18,6 +19,7 @@ import test.util.TestData;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,5 +141,60 @@ public class ExpenseServiceImplTest {
         verify(userRepository, never()).save(any(User.class));
         verify(expenseRepository, never()).delete(any(Expense.class));
         verify(userService, never()).clearTotalExpensesCache(anyLong());
+    }
+
+    @Test
+    void getReportMonthly_shouldReturnExpensesForMonth_whenUserExists() {
+        Month september = Month.SEPTEMBER;
+        Integer year = 2025;
+        User user = TestData.user();
+        UserDetailsImpl currentUser = new UserDetailsImpl(user);
+        CategorySumDto categorySumDto = new CategorySumDto(CATEGORY_NAME, new BigDecimal(AMOUNT));
+        List<CategorySumDto> items = List.of(categorySumDto);
+        when(userRepository.findByEmail(currentUser.getUsername())).thenReturn(Optional.of(user));
+        when(expenseRepository.getMonthlyReport(eq(user), any(), any())).thenReturn(items);
+        
+        var result = expenseService.getReportMonthly(september, year, currentUser);
+        
+        assertThat(result.total()).isEqualByComparingTo(new BigDecimal(AMOUNT));
+        assertThat(result.byCategory().get(0)).extracting(CategorySumDto::categoryName, CategorySumDto::sum)
+                .containsExactly(categorySumDto.categoryName(), categorySumDto.sum());
+        verify(userRepository).findByEmail(currentUser.getUsername());
+        verify(expenseRepository).getMonthlyReport(eq(user), any(), any());
+    }
+
+    @Test
+    void getReportMonthly_shouldReturnExpensesForMonth_whenUserNotFound() {
+        Month september = Month.SEPTEMBER;
+        Integer year = 2025;
+        User user = TestData.user();
+        UserDetailsImpl currentUser = new UserDetailsImpl(user);
+        when(userRepository.findByEmail(currentUser.getUsername())).thenReturn(Optional.empty());
+
+        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
+                () -> expenseService.getReportMonthly(september, year, currentUser));
+
+        assertThat(ex.getMessage()).isEqualTo("User not found");
+        verify(userRepository).findByEmail(currentUser.getUsername());
+        verify(expenseRepository, never()).getMonthlyReport(any(), any(), any());
+    }
+
+    @Test
+    void getReportMonthly_shouldReturnExpensesForMonth_whenUserExistsAndYearIsNull() {
+        Month september = Month.SEPTEMBER;
+        User user = TestData.user();
+        UserDetailsImpl currentUser = new UserDetailsImpl(user);
+        CategorySumDto categorySumDto = new CategorySumDto(CATEGORY_NAME, new BigDecimal(AMOUNT));
+        List<CategorySumDto> items = List.of(categorySumDto);
+        when(userRepository.findByEmail(currentUser.getUsername())).thenReturn(Optional.of(user));
+        when(expenseRepository.getMonthlyReport(eq(user), any(), any())).thenReturn(items);
+
+        var result = expenseService.getReportMonthly(september, null, currentUser);
+
+        assertThat(result.total()).isEqualByComparingTo(new BigDecimal(AMOUNT));
+        assertThat(result.byCategory().get(0)).extracting(CategorySumDto::categoryName, CategorySumDto::sum)
+                .containsExactly(categorySumDto.categoryName(), categorySumDto.sum());
+        verify(userRepository).findByEmail(currentUser.getUsername());
+        verify(expenseRepository).getMonthlyReport(eq(user), any(), any());
     }
 }
