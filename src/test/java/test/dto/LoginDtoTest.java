@@ -78,6 +78,14 @@ public class LoginDtoTest {
         assertThat(violations).hasSize(1);
         TestUtils.assertHasViolation(violations, "password", "Пароль обязателен");
     }
+    
+    @Test
+    void constructor_shouldSetAllFieldsCorrectly() {
+        LoginDto loginDto = new LoginDto(USER_EMAIL, USER_PASSWORD);
+        
+        assertThat(loginDto.getEmail()).isEqualTo(USER_EMAIL);
+        assertThat(loginDto.getPassword()).isEqualTo(USER_PASSWORD);
+    }
 
     @Test
     void equalsHashCode_contract() {

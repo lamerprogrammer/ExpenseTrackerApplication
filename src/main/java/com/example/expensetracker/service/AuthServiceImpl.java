@@ -1,9 +1,6 @@
 package com.example.expensetracker.service;
 
-import com.example.expensetracker.dto.LoginDto;
-import com.example.expensetracker.dto.RefreshRequest;
-import com.example.expensetracker.dto.RegisterDto;
-import com.example.expensetracker.dto.TokenResponse;
+import com.example.expensetracker.dto.*;
 import com.example.expensetracker.logging.applog.AppLogService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
@@ -59,18 +56,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public TokenResponse login(LoginDto dto) {
-        log.debug("Попытка авторизации: {}", dto.getEmail());
-        User user = userRepository.findByEmail(dto.getEmail())
+    public TokenResponse login(LoginRequest dto) {
+        log.debug("Попытка авторизации: {}", dto.email());
+        User user = userRepository.findByEmail(dto.email())
                 .orElseThrow(() -> {
-                    log.warn("Авторизация провалилась: почта {} не найдена", dto.getEmail());
-                    return new BadCredentialsException("Неверная почта");
+                    log.warn("Авторизация провалилась: почта {} не найдена", dto.email());
+                    return new BadCredentialsException("Invalid email");
                 });
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            log.warn("Авторизация провалилась: не верный пароль для почты {}", dto.getEmail());
-            throw new BadCredentialsException("Неверный пароль");
+        if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
+            log.warn("Авторизация провалилась: не верный пароль для почты {}", dto.email());
+            throw new BadCredentialsException("Incorrect password");
         }
-        log.info("Успешная авторизация: {}", dto.getEmail());
+        log.info("Успешная авторизация: {}", dto.email());
         return generateTokens(user);
     }
 

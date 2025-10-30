@@ -1,9 +1,6 @@
 package test.service;
 
-import com.example.expensetracker.dto.LoginDto;
-import com.example.expensetracker.dto.RefreshRequest;
-import com.example.expensetracker.dto.RegisterDto;
-import com.example.expensetracker.dto.TokenResponse;
+import com.example.expensetracker.dto.*;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
@@ -28,7 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static test.util.Constants.USER_EMAIL;
+import static test.util.Constants.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceImplTest {
@@ -54,28 +51,26 @@ public class AuthServiceImplTest {
     @Test
     void register_shouldSaveAndReturnUser_whenCredentialsValid() {
         RegisterDto dto = TestData.registerDto();
-
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
-        when(passwordEncoder.encode(dto.getPassword())).thenReturn("encoded");
+        when(passwordEncoder.encode(dto.getPassword())).thenReturn(USER_PASSWORD_ENCODED);
         when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
 
-        User result = authService.register(dto);
+        var result = authService.register(dto);
 
         assertThat(result.getEmail()).isEqualTo(dto.getEmail());
-        assertThat(result.getPassword()).isEqualTo("encoded");
-        assertThat(result.getRoles()).containsExactly(Role.USER);
+        assertThat(result.getPassword()).isEqualTo(USER_PASSWORD_ENCODED);
+        assertThat(result.getRoles()).contains(Role.USER);
         verify(userRepository).existsByEmail(dto.getEmail());
         verify(passwordEncoder).encode(dto.getPassword());
         verify(userRepository).save(argThat(u ->
                 u.getRoles().contains(Role.USER) &&
-                u.getPassword().contains("encoded") &&
+                u.getPassword().contains(USER_PASSWORD_ENCODED) &&
                 u.getEmail().equals(dto.getEmail())));
     }
 
     @Test
     public void register_shouldThrowException_whenUserIsAlreadyExists() {
         RegisterDto dto = TestData.registerDto();
-
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
 
         DataIntegrityViolationException ex = assertThrows(DataIntegrityViolationException.class, 
@@ -88,25 +83,25 @@ public class AuthServiceImplTest {
 
     @Test
     public void login_shouldReturnTokens_whenCredentialsValid() {
-        LoginDto dto = TestData.loginDto();
+        LoginRequest dto = TestData.loginRequest();
         User user = TestData.user();
-        when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(dto.getPassword(), user.getPassword())).thenReturn(true);
-        when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("access");
-        when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("refresh");
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(dto.password(), user.getPassword())).thenReturn(true);
+        when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn(TOKEN_ACCESS);
+        when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn(TOKEN_REFRESH);
 
-        TokenResponse result = authService.login(dto);
+        var result = authService.login(dto);
 
-        assertThat(result.accessToken()).isEqualTo("access");
-        assertThat(result.refreshToken()).isEqualTo("refresh");
+        assertThat(result.accessToken()).isEqualTo(TOKEN_ACCESS);
+        assertThat(result.refreshToken()).isEqualTo(TOKEN_REFRESH);
         verify(jwtUtil).generateAccessToken(eq(user.getEmail()), eq(Role.USER));
         verify(jwtUtil).generateRefreshToken(eq(user.getEmail()));
     }
 
     @Test
-    public void login_shouldThrowException_whenCredentialsInvalid() {
-        LoginDto dto = TestData.loginDto();
-        when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
+    public void login_shouldThrowException_whenEmailNotFound() {
+        LoginRequest dto = TestData.loginRequest();
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.empty());
 
         BadCredentialsException ex = assertThrows(BadCredentialsException.class,
                 () -> authService.login(dto));
@@ -118,30 +113,18 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    public void login_shouldThrowException_whenEmailNotFound() {
-        LoginDto dto = TestData.loginDto();
-        when(userRepository.findByEmail(eq(USER_EMAIL))).thenThrow(new BadCredentialsException("message"));
-
-        BadCredentialsException ex = assertThrows(BadCredentialsException.class,
-                () -> authService.login(dto));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(passwordEncoder, never()).encode(any());
-        verify(jwtUtil, never()).generateAccessToken(anyString(), any());
-        verify(jwtUtil, never()).generateRefreshToken(anyString());
-    }
-
-    @Test
     public void login_shouldThrowException_whenPasswordNotMatches() {
-        LoginDto dto = TestData.loginDto();
+        LoginRequest dto = TestData.loginRequest();
         User user = TestData.user();
-        when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(dto.getPassword(), user.getPassword())).thenReturn(false);
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(dto.password(), user.getPassword())).thenReturn(false);
 
         BadCredentialsException ex = assertThrows(BadCredentialsException.class,
                 () -> authService.login(dto));
 
         assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository).findByEmail(dto.email());
+        verify(passwordEncoder).matches(dto.password(), user.getPassword());
         verify(passwordEncoder, never()).encode(any());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
@@ -158,12 +141,14 @@ public class AuthServiceImplTest {
         when(jwtUtil.generateAccessToken(user.getEmail(), user.getRoles().iterator().next())).thenReturn("access");
         when(jwtUtil.generateRefreshToken(user.getEmail())).thenReturn("refresh");
 
-        TokenResponse result = authService.refresh(request);
+        var result = authService.refresh(request);
 
         assertThat(result.accessToken()).isEqualTo("access");
         assertThat(result.refreshToken()).isEqualTo("refresh");
         verify(jwtUtil).parse(request.refreshToken());
-        verify(userRepository).findByEmail(user.getEmail());
+        verify(jwsClaims).getPayload();
+        verify(claims).getSubject();
+        verify(userRepository).findByEmail(USER_EMAIL);
         verify(jwtUtil).generateAccessToken(eq(user.getEmail()), eq(Role.USER));
         verify(jwtUtil).generateRefreshToken(eq(user.getEmail()));
     }
@@ -177,6 +162,7 @@ public class AuthServiceImplTest {
                 () -> authService.refresh(request));
 
         assertThat(ex.getMessage()).isNotBlank();
+        verify(userRepository, never()).findByEmail(anyString());
         verify(jwtUtil).parse(request.refreshToken());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());

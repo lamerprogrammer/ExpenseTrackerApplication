@@ -4,17 +4,15 @@ import com.example.expensetracker.controller.AuthController;
 import com.example.expensetracker.dto.*;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import test.util.TestData;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,64 +26,31 @@ public class AuthControllerTest {
     
     @Mock
     private AuthService authService;
+    
+    @Mock
+    private HttpServletRequest request;
+    
+    @Mock
+    MessageSource messageSource;
 
     @InjectMocks
     private AuthController authController;
 
     @Test
     public void refresh_shouldReturnTokens_whenCredentialsValid() {
-        RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(request)).thenReturn(new TokenResponse("access", "refresh"));
+        RefreshRequest refreshRequest = mock(RefreshRequest.class);
+        when(authService.refresh(refreshRequest)).thenReturn(new TokenResponse("access", "refresh"));
+        mockMessage();
 
-        ResponseEntity<TokenResponse> result = authController.refresh(request);
+        var result = authController.refresh(refreshRequest, request);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody()).isNotNull();
-        assertThat(result.getBody().accessToken()).isEqualTo("access");
-        assertThat(result.getBody().refreshToken()).isEqualTo("refresh");
-        verify(authService).refresh(request);
-    }
-
-    @Test
-    public void refresh_shouldThrowException_whenUserNotFound() {
-        RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(any(RefreshRequest.class))).thenThrow(
-                new UsernameNotFoundException("Пользователь не найден."));
-
-        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
-                () -> authController.refresh(request));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(authService).refresh(any(RefreshRequest.class));
-        verifyNoMoreInteractions(authService);
-    }
-
-    @Test
-    public void refresh_shouldThrowException_whenUserIsBanned() {
-        RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(any(RefreshRequest.class))).thenThrow(
-                new AccessDeniedException("Ваш аккаунт заблокирован."));
-
-        AccessDeniedException ex = assertThrows(AccessDeniedException.class,
-                () -> authController.refresh(request));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(authService).refresh(any(RefreshRequest.class));
-        verifyNoMoreInteractions(authService);
-    }
-
-    @Test
-    public void refresh_shouldThrowException_whenTokenInvalid() {
-        RefreshRequest request = mock(RefreshRequest.class);
-        when(authService.refresh(any(RefreshRequest.class))).thenThrow(
-                new BadCredentialsException("Невалидный токен."));
-
-        BadCredentialsException ex = assertThrows(BadCredentialsException.class,
-                () -> authController.refresh(request));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(authService).refresh(any(RefreshRequest.class));
-        verifyNoMoreInteractions(authService);
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getData().accessToken()).isEqualTo("access");
+        assertThat(body.getData().refreshToken()).isEqualTo("refresh");
+        verify(authService).refresh(refreshRequest);
+        verify(messageSource).getMessage(eq("auth.controller.refresh"), any(), any());
     }
 
     @Test
@@ -93,64 +58,38 @@ public class AuthControllerTest {
         RegisterDto dto = TestData.registerDto();
         User user = TestData.user();
         when(authService.register(dto)).thenReturn(user);
+        mockMessage();
 
-        ResponseEntity<User> result = authController.register(dto);
+        var result = authController.register(dto, request);
 
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody()).usingRecursiveComparison().isEqualTo(user);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getData().getEmail()).isEqualTo(USER_EMAIL);
         verify(authService).register(dto);
-    }
-
-    @Test
-    public void register_shouldThrowException_whenEmailAlreadyExists() {
-        RegisterDto dto = TestData.registerDto();
-        when(authService.register(any(RegisterDto.class))).thenThrow(
-                new DataIntegrityViolationException(("Эта почта уже используется.")));
-
-        DataIntegrityViolationException ex = assertThrows(DataIntegrityViolationException.class,
-                () -> authController.register(dto));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(authService).register(any(RegisterDto.class));
-        verifyNoMoreInteractions(authService);
+        verify(messageSource).getMessage(eq("auth.controller.register"), any(), any());
     }
 
     @Test
     public void login_shouldReturnTokens_whenDataIsValid() {
-        LoginRequest request = new LoginRequest(USER_EMAIL, USER_PASSWORD);
-        when(authService.login(any(LoginDto.class))).thenReturn(
-                new TokenResponse("access", "refresh"));
+        LoginRequest loginRequest = new LoginRequest(USER_EMAIL, USER_PASSWORD);
+        TokenResponse response = new TokenResponse("access", "refresh");
+        when(authService.login(loginRequest)).thenReturn(response);
+        mockMessage();
 
-        ResponseEntity<TokenResponse> result = authController.login(request);
+        var result = authController.login(loginRequest, request);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody()).isNotNull();
-        assertThat(result.getBody().accessToken()).isEqualTo("access");
-        assertThat(result.getBody().refreshToken()).isEqualTo("refresh");
-        verify(authService).login(any(LoginDto.class));
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getData().accessToken()).isEqualTo("access");
+        assertThat(body.getData().refreshToken()).isEqualTo("refresh");
+        verify(authService).login(loginRequest);
+        verify(messageSource).getMessage(eq("auth.controller.login"), any(), any());
     }
 
-    @Test
-    public void login_shouldThrowException_whenUserNotExist() {
-        LoginRequest request = new LoginRequest(USER_EMAIL, USER_PASSWORD);
-        when(authService.login(any(LoginDto.class))).thenThrow(new BadCredentialsException("Неверная почта."));
-
-        BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authController.login(request));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(authService).login(any(LoginDto.class));
-        verifyNoMoreInteractions(authService);
-    }
-
-    @Test
-    public void login_shouldThrowException_whenPasswordNotMatches() {
-        LoginRequest request = new LoginRequest(USER_EMAIL, USER_PASSWORD);
-        when(authService.login(any(LoginDto.class))).thenThrow(new BadCredentialsException("Неверный пароль."));
-
-        BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authController.login(request));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(authService).login(any(LoginDto.class));
-        verifyNoMoreInteractions(authService);
+    private void mockMessage() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
     }
 }

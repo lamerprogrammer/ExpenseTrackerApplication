@@ -46,9 +46,6 @@ public class RecurringTransactionControllerIT {
     private RecurringTransactionService recurringTransactionService;
 
     @Autowired
-    private MessageSource messageSource;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -224,7 +221,7 @@ public class RecurringTransactionControllerIT {
     @Test
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void toggleActive_shouldSwitchActive() throws Exception {
+    void toggleActive_shouldSwitchActive_whenIdValid() throws Exception {
         Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransaction recurringTransaction = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
                 category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));
@@ -241,9 +238,6 @@ public class RecurringTransactionControllerIT {
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void toggleActive_shouldReturnBadRequest_whenIdInvalid() throws Exception {
-        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
-        RecurringTransaction unSave = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
-                category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));
         mockMvc.perform(patch(API_RECURRING_TRANSACTION + "/" + ID_INVALID + "/toggle"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(msg("handle.illegal.argument")))

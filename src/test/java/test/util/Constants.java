@@ -4,11 +4,11 @@ public final class Constants {
     public static final String ADMIN_EMAIL = "admin@example.com";
     public static final String MODERATOR_EMAIL = "moderator@example.com";
     public static final String USER_EMAIL = "user@example.com";
-    public static final String NOT_EXISTS_EMAIL = "notfound@example.com";
 
     public static final String USER_NAME = "User";
     public static final String USER_PASSWORD = "123";
     public static final String USER_PASSWORD_NEW = "12345";
+    public static final String USER_PASSWORD_ENCODED = "encoded";
 
     public static final Long ID_INVALID = 99999L;
     public static final Long ID_VALID = 42L;
@@ -19,6 +19,9 @@ public final class Constants {
     public static final Long ID_CATEGORY = 60L;
 
     public static final String API_TEST_ENDPOINT = "/api/test";
+    public static final String API_AUTH_REGISTER = "/api/auth/register";
+    public static final String API_AUTH_LOGIN = "/api/auth/login";
+    public static final String API_AUTH_REFRESH = "/api/auth/refresh";
     public static final String API_ADMIN_USERS_CREATE_MODERATOR = "/api/admin/users/create/moderator";
     public static final String API_ADMIN_USERS_CREATE_ADMINISTRATOR = "/api/admin/users/create/administrator";
     public static final String API_USERS_ME = "/api/users/me";
@@ -38,6 +41,9 @@ public final class Constants {
     public static final int INTERVAL_DAYS = 30;
     public static final int AMOUNT = 500;
     public static final int AMOUNT_NEGATIVE = -500;
+
+    public static final String TOKEN_ACCESS = "access token";
+    public static final String TOKEN_REFRESH = "refresh token";
 
     private Constants() {
     }
