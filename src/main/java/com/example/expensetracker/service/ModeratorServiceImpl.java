@@ -36,7 +36,7 @@ public class ModeratorServiceImpl implements ModeratorService {
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new UserNotFoundByIdException("Пользователь с ID " + id + " не найден"));
+                new UserNotFoundByIdException("User not found"));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ModeratorServiceImpl implements ModeratorService {
                     userRepository.save(user);
                     auditService.logAction(BAN, user, userEntity);
                     return user;
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -66,21 +66,21 @@ public class ModeratorServiceImpl implements ModeratorService {
                     userRepository.save(user);
                     auditService.logAction(UNBAN, user, userEntity);
                     return user;
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     private User userEntity(Long id, UserDetailsImpl currentUser) {
         User userEntity = userRepository.findByEmail(currentUser.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Не найден " + currentUser.getUsername()));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (id.equals(userEntity.getId())) {
-            throw new IllegalArgumentException("Нельзя выполнить действие над самим собой");
+            throw new IllegalArgumentException("You cannot perform an action on yourself");
         }
         return userEntity;
     }
 
     private void checkRole(User user) {
         if (user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.MODERATOR)) {
-            throw new AccessDeniedException("Отказано в доступе");
+            throw new AccessDeniedException("Access denied");
         }
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.example.expensetracker.model.Month.SEPTEMBER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -91,5 +92,28 @@ public class ExpenseControllerIT {
         mockMvc.perform(get(API_EXPENSES_TOTAL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("expense.controller.total.ok")));
+    }
+    
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void reportMonthly_shouldReturnTotalExpenses() throws Exception {
+        mockMvc.perform(get(API_EXPENSES_STATS_MONTHLY)
+                        .param("month", SEPTEMBER.name())
+                        .param("year", "2025"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.monthly")));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void reportMonthly_shouldReturnUnauthorized_whenUserNotFound() throws Exception {
+        userRepository.deleteAll();
+        mockMvc.perform(get(API_EXPENSES_STATS_MONTHLY)
+                        .param("month", SEPTEMBER.name())
+                        .param("year", "2025"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(msg("handle.username.not.found")));
     }
 }

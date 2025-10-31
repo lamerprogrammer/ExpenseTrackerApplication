@@ -79,6 +79,15 @@ public class UserControllerIT {
 
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
+    void getCurrentUser_shouldReturnAuthenticatedAdmin_whenUserNotFound() throws Exception {
+        userRepository.deleteAll();
+        mockMvc.perform(get(API_USERS_ME))
+                .andExpect(status().isUnauthorized())//если только этот тест запускаю, то он зелёный, а если все, то он красный Status expected:<401> but was:<200> 
+                .andExpect(jsonPath("$.message").value(msg("handle.username.not.found")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
     void changePassword_shouldReturnOk_whenAllFieldsValid() throws Exception {
         User user = createUser(USER_EMAIL, Role.USER, userRepository);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -129,6 +138,17 @@ public class UserControllerIT {
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(msg("user.controller.user.password.new.not-blank")));
+    }
+
+    @Test
+    @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
+    void changePassword_shouldThrowException_whenUserNotFound() throws Exception {
+        ChangePasswordRequest req = new ChangePasswordRequest(USER_PASSWORD, USER_PASSWORD_NEW);
+        mockMvc.perform(put(API_USERS_CHANGE_PASSWORD)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(msg("handle.username.not.found")));
     }
 
     private String msg(String code) {

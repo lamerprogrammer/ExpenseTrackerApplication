@@ -70,7 +70,7 @@ public class ModeratorControllerIT {
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getAllUsers_shouldReturnListUsers_whenUsersExist() throws Exception {
         createUser(email, Role.USER, userRepository);
-        mockMvc.perform(get("/api/moderator/users")
+        mockMvc.perform(get(API_MODERATOR_USERS)
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ public class ModeratorControllerIT {
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getUserById_shouldReturnUser_whenUserExists() throws Exception {
         User user = createUser(email, Role.USER, userRepository);
-        mockMvc.perform(get("/api/moderator/users/{id}", user.getId()))
+        mockMvc.perform(get(API_MODERATOR_USERS + "/{id}", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("get.user.by.id")))
                 .andExpect(jsonPath("$.path").value(userPath(user.getId())))
@@ -96,7 +96,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getUserById_shouldThrowException_whenUserNotExists() throws Exception {
-        mockMvc.perform(get("/api/moderator/users/{id}", ID_INVALID))
+        mockMvc.perform(get(API_MODERATOR_USERS + "/{id}", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andExpect(jsonPath("$.message").value(msg("handle.user.not.found.by.id")))
@@ -107,7 +107,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getUserById_shouldThrowException_whenIdInvalid() throws Exception {
-        mockMvc.perform(get("/api/moderator/users/{id}", -1L))
+        mockMvc.perform(get(API_MODERATOR_USERS + "/{id}", -1L))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("должно быть больше 0"))
                 .andExpect(jsonPath("$.path").value(userPath(-1L)));
@@ -118,7 +118,7 @@ public class ModeratorControllerIT {
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldUserBanned_whenUserExists() throws Exception {
         User user = createUser(email, Role.USER, userRepository);
-        mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
                 .andExpect(jsonPath("$.path").value(userPath(user.getId()) + "/ban"))
@@ -130,9 +130,25 @@ public class ModeratorControllerIT {
     @Test
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void banUser_shouldReturnOk_whenUserAlreadyBanned() throws Exception {
+        User user = createUser(email, Role.USER, userRepository);
+        user.setBanned(true);
+        userRepository.save(user);
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("ban.user")))
+                .andExpect(jsonPath("$.path").value(userPath(user.getId()) + "/ban"))
+                .andExpect(jsonPath("$.data").isNotEmpty());
+        assertThat(auditRepository.findAll()).isEmpty();
+        AssertionsForClassTypes.assertThat(userRepository.findById(user.getId()).get().isBanned()).isTrue();
+    }
+
+    @Test
+    @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserIsModer() throws Exception {
         User user = createUser(email, Role.MODERATOR, userRepository);
-        mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
                 .andExpect(jsonPath("$.path").value(userPath(user.getId()) + "/ban"));
@@ -143,7 +159,7 @@ public class ModeratorControllerIT {
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserIsAdmin() throws Exception {
         User user = createUser(email, Role.ADMIN, userRepository);
-        mockMvc.perform(put("/api/moderator/users/{id}/ban", user.getId()))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
                 .andExpect(jsonPath("$.path").value(userPath(user.getId()) + "/ban"));
@@ -153,7 +169,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenIdMatches() throws Exception {
-        mockMvc.perform(put("/api/moderator/users/{id}/ban", idModerator))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", idModerator))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("IllegalArgumentException"))
                 .andExpect(jsonPath("$.message").value(msg("handle.illegal.argument")))
@@ -164,9 +180,19 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserNotExists() throws Exception {
-        mockMvc.perform(put("/api/moderator/users/{id}/ban", ID_INVALID))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
+    }
+
+    @Test
+    @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void banUser_shouldThrowException_whenCurrentUserNotExists() throws Exception {
+        userRepository.deleteAll();
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", ID_INVALID))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(msg("handle.username.not.found")));
     }
 
     @Test
@@ -176,7 +202,7 @@ public class ModeratorControllerIT {
         User user = createUser(email, Role.USER, userRepository);
         user.setBanned(true);
         userRepository.save(user);
-        mockMvc.perform(put("/api/moderator/users/{id}/unban", user.getId()))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/unban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("unban.user")))
                 .andExpect(jsonPath("$.path").value(userPath(user.getId()) + "/unban"))
@@ -188,10 +214,36 @@ public class ModeratorControllerIT {
     @Test
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void unbanUser_shouldReturnOk_whenUserAlreadyUnbanned() throws Exception {
+        User user = createUser(email, Role.USER, userRepository);
+        user.setBanned(false);
+        userRepository.save(user);
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/unban", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("unban.user")))
+                .andExpect(jsonPath("$.path").value(userPath(user.getId()) + "/unban"))
+                .andExpect(jsonPath("$.data").isNotEmpty());
+        assertThat(auditRepository.findAll()).isEmpty();
+        AssertionsForClassTypes.assertThat(userRepository.findById(user.getId()).get().isBanned()).isFalse();
+    }
+
+    @Test
+    @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void unbanUser_shouldReturnNotFound_whenUserNotExists() throws Exception {
-        mockMvc.perform(put("/api/moderator/users/{id}/unban", ID_INVALID))
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/unban", ID_INVALID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(msg("handle.entity.not.found")));
+    }
+
+    @Test
+    @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void unbanUser_shouldThrowException_whenCurrentUserNotExists() throws Exception {
+        userRepository.deleteAll();
+        mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/unban", ID_INVALID))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(msg("handle.username.not.found")));
     }
 
     private String msg(String key) {
@@ -199,6 +251,6 @@ public class ModeratorControllerIT {
     }
 
     private String userPath(Long id) {
-        return "/api/moderator/users/" + id;
+        return API_MODERATOR_USERS + "/" + id;
     }
 }

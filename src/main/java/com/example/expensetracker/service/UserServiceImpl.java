@@ -35,16 +35,16 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser(UserDetailsImpl userDetails) {
         String email = userDetails.getUsername();
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь " + email + " не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
     public void changePassword(UserDetailsImpl currentUser, ChangePasswordRequest dto) {
         User user = userRepository.findByEmail(currentUser.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (!passwordEncoder.matches(dto.oldPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Неверный старый пароль");
+            throw new BadCredentialsException("Incorrect old password");
         }
         user.setPassword(passwordEncoder.encode(dto.newPassword()));
         userRepository.save(user);

@@ -28,8 +28,10 @@ public final class Constants {
     public static final String API_USERS_CHANGE_PASSWORD = "/api/users/change-password";
     public static final String API_EXPENSES_REPORT = "/api/expenses/report";
     public static final String API_EXPENSES_TOTAL = "/api/expenses/total";
+    public static final String API_EXPENSES_STATS_MONTHLY = "/api/expenses/stats/monthly";
     public static final String API_RECURRING_TRANSACTION = "/api/recurring-transaction";
     public static final String API_RECURRING_TRANSACTION_CREATE = "/api/recurring-transaction/create";
+    public static final String API_MODERATOR_USERS = "/api/moderator/users";
     
     
     public static final String TYPE_ERROR_WARN = "WARN";

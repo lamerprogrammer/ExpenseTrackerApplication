@@ -1,6 +1,6 @@
 spring:
   cache:
-    type: simple
+    type: none
   scheduler:
     recurring-cron: 0 0 1 * * *
   datasource:

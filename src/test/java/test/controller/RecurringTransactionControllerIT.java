@@ -100,6 +100,16 @@ public class RecurringTransactionControllerIT {
     @Test
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void getAll_shouldReturnNotFound_whenUserNotExists() throws Exception {
+        userRepository.deleteAll();
+        mockMvc.perform(get(API_RECURRING_TRANSACTION))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(msg("handle.user.not.found.by.id")));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void create_shouldReturnSuccess_whenAllFieldsValid() throws Exception {
         Category category = categoryRepository.save(new Category(CATEGORY_NAME));
         RecurringTransactionRequestDto dto = new RecurringTransactionRequestDto(new BigDecimal(AMOUNT), DESCRIPTION,
