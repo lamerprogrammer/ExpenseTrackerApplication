@@ -22,6 +22,7 @@ public final class Constants {
     public static final String API_AUTH_REGISTER = "/api/auth/register";
     public static final String API_AUTH_LOGIN = "/api/auth/login";
     public static final String API_AUTH_REFRESH = "/api/auth/refresh";
+    public static final String API_ADMIN_USERS = "/api/admin/users";
     public static final String API_ADMIN_USERS_CREATE_MODERATOR = "/api/admin/users/create/moderator";
     public static final String API_ADMIN_USERS_CREATE_ADMINISTRATOR = "/api/admin/users/create/administrator";
     public static final String API_USERS_ME = "/api/users/me";

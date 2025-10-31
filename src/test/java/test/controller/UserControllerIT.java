@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
-import static test.util.TestUtils.createUser;
+import static test.util.TestUtils.createAndSaveUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,21 +53,21 @@ public class UserControllerIT {
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
     void getCurrentUser_shouldReturnAuthenticatedUser_whenUserLoggedIn() throws Exception {
-        createUser(USER_EMAIL, Role.USER, userRepository);
+        createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
         performMe(USER_EMAIL);
     }
 
     @Test
     @WithMockCustomUser(email = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void getCurrentUser_shouldReturnAuthenticatedModerator_whenModeratorLoggedIn() throws Exception {
-        createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
+        createAndSaveUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         performMe(MODERATOR_EMAIL);
     }
 
     @Test
     @WithMockCustomUser(email = ADMIN_EMAIL, roles = {"ADMIN"})
     void getCurrentUser_shouldReturnAuthenticatedAdmin_whenAdminLoggedIn() throws Exception {
-        createUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
+        createAndSaveUser(ADMIN_EMAIL, Role.ADMIN, userRepository);
         performMe(ADMIN_EMAIL);
     }
 
@@ -82,14 +82,14 @@ public class UserControllerIT {
     void getCurrentUser_shouldReturnAuthenticatedAdmin_whenUserNotFound() throws Exception {
         userRepository.deleteAll();
         mockMvc.perform(get(API_USERS_ME))
-                .andExpect(status().isUnauthorized())//если только этот тест запускаю, то он зелёный, а если все, то он красный Status expected:<401> but was:<200> 
+                .andExpect(status().isUnauthorized()) 
                 .andExpect(jsonPath("$.message").value(msg("handle.username.not.found")));
     }
 
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
     void changePassword_shouldReturnOk_whenAllFieldsValid() throws Exception {
-        User user = createUser(USER_EMAIL, Role.USER, userRepository);
+        User user = createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         ChangePasswordRequest req = new ChangePasswordRequest(USER_PASSWORD, "newPass");
@@ -103,7 +103,7 @@ public class UserControllerIT {
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
     void changePassword_shouldThrowException_whenPasswordNotMatches() throws Exception {
-        User user = createUser(USER_EMAIL, Role.USER, userRepository);
+        User user = createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         ChangePasswordRequest req = new ChangePasswordRequest("invalidPassword", "newPass");
@@ -117,7 +117,7 @@ public class UserControllerIT {
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
     void changePassword_shouldThrowException_whenOldPasswordEmpty() throws Exception {
-        createUser(USER_EMAIL, Role.USER, userRepository);
+        createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
         ChangePasswordRequest req = new ChangePasswordRequest("", "newPass");
         mockMvc.perform(put(API_USERS_CHANGE_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ public class UserControllerIT {
     @Test
     @WithMockCustomUser(email = USER_EMAIL, roles = {"USER"})
     void changePassword_shouldThrowException_whenNewPasswordEmpty() throws Exception {
-        User user = createUser(USER_EMAIL, Role.USER, userRepository);
+        User user = createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         ChangePasswordRequest req = new ChangePasswordRequest(USER_PASSWORD, "");

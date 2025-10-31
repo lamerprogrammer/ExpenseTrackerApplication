@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
                     userRepository.save(user);
                     auditService.logAction(PROMOTE, user, userEntity);
                     return user;
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class AdminServiceImpl implements AdminService {
                     userRepository.save(user);
                     auditService.logAction(DEMOTE, user, userEntity);
                     return user;
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AdminServiceImpl implements AdminService {
                     userRepository.save(user);
                     auditService.logAction(BAN, user, userEntity);
                     return user;
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -103,7 +103,7 @@ public class AdminServiceImpl implements AdminService {
                     userRepository.save(user);
                     auditService.logAction(UNBAN, user, userEntity);
                     return user;
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -115,7 +115,7 @@ public class AdminServiceImpl implements AdminService {
                     user.setDeleted(true);
                     auditService.logAction(DELETE, user, userEntity);
                     return userRepository.save(user);
-                }).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -148,21 +148,21 @@ public class AdminServiceImpl implements AdminService {
 
     private void existenceCheck(RegisterDto dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new EntityExistsException("Эта почта уже используется.");
+            throw new EntityExistsException("This email is already in use");
         }
     }
 
     private User userEntity(Long id, UserDetailsImpl currentUser) {
         User userEntity = userRepository.findByEmail(currentUser.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Не найден " + currentUser.getUsername()));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (id.equals(userEntity.getId())) {
-            throw new IllegalArgumentException("Нельзя выполнить действие над самим собой");
+            throw new IllegalArgumentException("You cannot perform an action on yourself");
         }
         return userEntity;
     }
 
     private User userEntity(UserDetailsImpl currentUser) {
         return userRepository.findByEmail(currentUser.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Не найден " + currentUser.getUsername()));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

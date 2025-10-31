@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
 import static test.util.TestMessageSource.msg;
-import static test.util.TestUtils.createUser;
+import static test.util.TestUtils.createAndSaveUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,7 +55,7 @@ public class ExpenseControllerIT {
 
     @BeforeEach
     void setUp() {
-        createUser(USER_EMAIL, Role.USER, userRepository);
+        createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
     }
 
     @Test

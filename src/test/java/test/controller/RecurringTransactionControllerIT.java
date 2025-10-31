@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.TestExecutionEvent;
@@ -34,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
 import static test.util.TestMessageSource.msg;
-import static test.util.TestUtils.createUser;
+import static test.util.TestUtils.createAndSaveUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -67,7 +66,7 @@ public class RecurringTransactionControllerIT {
 
     @BeforeEach
     void setUp() {
-        user = createUser(USER_EMAIL, Role.USER, userRepository);
+        user = createAndSaveUser(USER_EMAIL, Role.USER, userRepository);
     }
 
     @Test

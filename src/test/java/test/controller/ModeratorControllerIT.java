@@ -18,9 +18,7 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import test.security.WithMockCustomUser;
 
-import java.util.Locale;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -31,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.util.Constants.*;
-import static test.util.TestUtils.createUser;
+import static test.util.TestUtils.createAndSaveUser;
 
 @SpringBootTest(classes = {ExpenseTrackerApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -61,7 +59,7 @@ public class ModeratorControllerIT {
 
     @BeforeEach
     void setUp() {
-        User moderator = createUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
+        User moderator = createAndSaveUser(MODERATOR_EMAIL, Role.MODERATOR, userRepository);
         idModerator = moderator.getId();
     }
 
@@ -69,7 +67,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getAllUsers_shouldReturnListUsers_whenUsersExist() throws Exception {
-        createUser(email, Role.USER, userRepository);
+        createAndSaveUser(email, Role.USER, userRepository);
         mockMvc.perform(get(API_MODERATOR_USERS)
                         .param("page", "0")
                         .param("size", "10"))
@@ -83,7 +81,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void getUserById_shouldReturnUser_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER, userRepository);
+        User user = createAndSaveUser(email, Role.USER, userRepository);
         mockMvc.perform(get(API_MODERATOR_USERS + "/{id}", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("get.user.by.id")))
@@ -117,7 +115,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldUserBanned_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER, userRepository);
+        User user = createAndSaveUser(email, Role.USER, userRepository);
         mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(msg("ban.user")))
@@ -131,7 +129,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldReturnOk_whenUserAlreadyBanned() throws Exception {
-        User user = createUser(email, Role.USER, userRepository);
+        User user = createAndSaveUser(email, Role.USER, userRepository);
         user.setBanned(true);
         userRepository.save(user);
         mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
@@ -147,7 +145,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserIsModer() throws Exception {
-        User user = createUser(email, Role.MODERATOR, userRepository);
+        User user = createAndSaveUser(email, Role.MODERATOR, userRepository);
         mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
@@ -158,7 +156,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void banUser_shouldThrowException_whenUserIsAdmin() throws Exception {
-        User user = createUser(email, Role.ADMIN, userRepository);
+        User user = createAndSaveUser(email, Role.ADMIN, userRepository);
         mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/ban", user.getId()))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value(msg("handle.access.denied")))
@@ -199,7 +197,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void unbanUser_shouldUserUnbanned_whenUserExists() throws Exception {
-        User user = createUser(email, Role.USER, userRepository);
+        User user = createAndSaveUser(email, Role.USER, userRepository);
         user.setBanned(true);
         userRepository.save(user);
         mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/unban", user.getId()))
@@ -215,7 +213,7 @@ public class ModeratorControllerIT {
     @WithUserDetails(value = MODERATOR_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void unbanUser_shouldReturnOk_whenUserAlreadyUnbanned() throws Exception {
-        User user = createUser(email, Role.USER, userRepository);
+        User user = createAndSaveUser(email, Role.USER, userRepository);
         user.setBanned(false);
         userRepository.save(user);
         mockMvc.perform(put(API_MODERATOR_USERS + "/{id}/unban", user.getId()))

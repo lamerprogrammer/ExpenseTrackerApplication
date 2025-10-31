@@ -4,7 +4,6 @@ import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
 import jakarta.validation.ConstraintViolation;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.DelegatingServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -41,7 +40,7 @@ public final class TestUtils {
                 field, expectedMessage, violations));
     }
 
-    public static User createUser(String mail, Role role, UserRepository userRepository) {
+    public static User createAndSaveUser(String mail, Role role, UserRepository userRepository) {
         User user = new User();
         user.setEmail(mail);
         user.setPassword(USER_PASSWORD);
