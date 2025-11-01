@@ -22,6 +22,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
@@ -123,6 +124,12 @@ public class GlobalExceptionHandler {
                 .toList();
         String message = errors.isEmpty() ? msg("handle.validation.error") : String.join(". ", errors);
         return buildResponse(HttpStatus.BAD_REQUEST, message, request, ex);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiResponse<UserDto>> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
+                                                                       HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, msg("handle.handler.method.validation"), request, ex);
     }
 
     @ExceptionHandler(Exception.class)

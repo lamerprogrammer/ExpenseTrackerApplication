@@ -33,9 +33,6 @@ import static test.util.TestUtils.createAndSaveUser;
 public class ExpenseControllerIT {
 
     @Autowired
-    private ExpenseService expenseService;
-
-    @Autowired
     private MessageSource messageSource;
 
     @Autowired
@@ -69,7 +66,8 @@ public class ExpenseControllerIT {
                         .param("from", from)
                         .param("to", to))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.ok")));
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.ok")))
+                .andExpect(jsonPath("$.path").value(API_EXPENSES_REPORT));
     }
 
     @Test
@@ -82,7 +80,8 @@ public class ExpenseControllerIT {
         mockMvc.perform(get(API_EXPENSES_REPORT)
                         .param("from", invalidFrom)
                         .param("to", invalidTo))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("date.range.dto.from.is.valid.range")));
     }
 
     @Test
@@ -91,18 +90,42 @@ public class ExpenseControllerIT {
     void getTotal_shouldReturnTotalExpenses() throws Exception {
         mockMvc.perform(get(API_EXPENSES_TOTAL))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("expense.controller.total.ok")));
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.total.ok")))
+                .andExpect(jsonPath("$.path").value(API_EXPENSES_TOTAL));
     }
     
     @Test
     @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void reportMonthly_shouldReturnTotalExpenses() throws Exception {
+    void reportMonthly_shouldReturnTotalExpenses_whenAllFieldsValid() throws Exception {
         mockMvc.perform(get(API_EXPENSES_STATS_MONTHLY)
                         .param("month", SEPTEMBER.name())
                         .param("year", "2025"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.monthly")));
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.monthly")))
+                .andExpect(jsonPath("$.path").value(API_EXPENSES_STATS_MONTHLY));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void reportMonthly_shouldReturnBadRequest_whenMonthMissed() throws Exception {
+        mockMvc.perform(get(API_EXPENSES_STATS_MONTHLY)
+                        .param("year", "2025"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(msg("handle.handler.method.validation")))
+                .andExpect(jsonPath("$.path").value(API_EXPENSES_STATS_MONTHLY));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void reportMonthly_shouldUseCurrentYear_whenYearMissed() throws Exception {
+        mockMvc.perform(get(API_EXPENSES_STATS_MONTHLY)
+                        .param("month", SEPTEMBER.name()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("expense.controller.report.monthly")))
+                .andExpect(jsonPath("$.path").value(API_EXPENSES_STATS_MONTHLY));
     }
 
     @Test

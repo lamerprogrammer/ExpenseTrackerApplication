@@ -10,6 +10,7 @@ import com.example.expensetracker.service.ExpenseService;
 import com.example.expensetracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class ExpenseController {
 
     @GetMapping("/stats/monthly")
     public ResponseEntity<ApiResponse<ExpensesReportDto>> reportMonthly(
-            Month month,
+            @RequestParam(name = "month") @NotNull Month month,
             @RequestParam(required = false) Integer year,
             @AuthenticationPrincipal UserDetailsImpl currentUser,
             HttpServletRequest request) {
