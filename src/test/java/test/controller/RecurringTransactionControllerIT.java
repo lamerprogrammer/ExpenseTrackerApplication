@@ -121,6 +121,7 @@ public class RecurringTransactionControllerIT {
                 .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION_CREATE))
                 .andExpect(jsonPath("$.data.amount").value(dto.amount()))
                 .andExpect(jsonPath("$.data.categoryId").value(dto.categoryId()));
+        assertThat(recurringTransactionRepository.findAll()).hasSize(1);
     }
 
     @Test
@@ -241,6 +242,23 @@ public class RecurringTransactionControllerIT {
                 .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION +
                         "/" + saved.getId() + "/toggle"));
         assertThat(recurringTransactionRepository.findById(saved.getId()).orElseThrow().isActive()).isFalse();
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL, userDetailsServiceBeanName = "customUserDetailsService",
+            setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void toggleActive_shouldSwitchBackToActive_whenPreviouslyInactive() throws Exception {
+        Category category = categoryRepository.save(new Category(CATEGORY_NAME));
+        RecurringTransaction recurringTransaction = new RecurringTransaction(new BigDecimal(AMOUNT), DESCRIPTION,
+                category, user, INTERVAL_DAYS, LocalDate.now().minusDays(1));
+        recurringTransaction.setActive(false);
+        RecurringTransaction saved = recurringTransactionRepository.save(recurringTransaction);
+        mockMvc.perform(patch(API_RECURRING_TRANSACTION + "/" + saved.getId() + "/toggle"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(msg("recurring.transaction.controller.toggle.active")))
+                .andExpect(jsonPath("$.path").value(API_RECURRING_TRANSACTION +
+                        "/" + saved.getId() + "/toggle"));
+        assertThat(recurringTransactionRepository.findById(saved.getId()).orElseThrow().isActive()).isTrue();
     }
 
     @Test
