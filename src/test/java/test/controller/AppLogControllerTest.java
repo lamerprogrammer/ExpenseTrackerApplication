@@ -4,6 +4,7 @@ import com.example.expensetracker.controller.AppLogController;
 import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,11 +40,16 @@ public class AppLogControllerTest {
     @InjectMocks
     private AppLogController appLogController;
 
+    @BeforeEach
+    void setUp() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+    }
+
     @Test
     public void getAllLogs_shouldReturnLogs_whenLogsExist() {
         Page<AppLogDto> logs = TestData.appLogDtoPage();
         when(appLogService.findAll(pageable)).thenReturn(logs);
-        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = appLogController.getAllLogs(pageable, request);
 
@@ -52,14 +58,13 @@ public class AppLogControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(appLogService).findAll(any());
-        verify(messageSource).getMessage(eq("app.log.controller.logs.get.all"), any(), any());
+        verify(messageSource).getMessage(eq("app.log.controller.logs.get.all"), isNull(), any());
     }
 
     @Test
     public void getByUser_shouldReturnLogs_whenLogsExist() {
         Page<AppLogDto> logs = TestData.appLogDtoPage();
         when(appLogService.findByUserEmail(USER_EMAIL, pageable)).thenReturn(logs);
-        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = appLogController.getByUser(USER_EMAIL, pageable, request);
 
@@ -68,6 +73,7 @@ public class AppLogControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(appLogService).findByUserEmail(eq(USER_EMAIL), any());
-        verify(messageSource).getMessage(eq("app.log.controller.logs.get.by.user"), any(), any());
+        verify(messageSource).getMessage(eq("app.log.controller.logs.get.by.user"), isNull(), any());
     }
 }
+

@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Set;
 
 @Configuration
-@Profile("prod")
+@Profile({"prod", "dev"})
 public class DataSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
@@ -32,7 +32,7 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (userRepository.findByEmail("admin@example.com").isEmpty()) {
+        if (userRepository.findByEmail(adminEmail).isEmpty()) {
             User admin = new User();
             admin.setEmail(adminEmail);
             admin.setPassword(encoder.encode(adminPassword));
@@ -44,3 +44,4 @@ public class DataSeeder implements CommandLineRunner {
         }
     }
 }
+

@@ -26,19 +26,19 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecurringTransactionServiceImpl implements RecurringTransactionService {
-    
+
     private static final Logger log = LoggerFactory.getLogger(RecurringTransactionServiceImpl.class);
-    
+
     private final RecurringTransactionRepository recurringRepo;
     private final ExpenseRepository expenseRepo;
     private final UserRepository userRepo;
     private final CategoryRepository categoryRepo;
     private final RecurringTransactionMapper mapper;
 
-    public RecurringTransactionServiceImpl(RecurringTransactionRepository recurringRepo, 
-                                           ExpenseRepository expenseRepo, 
-                                           UserRepository userRepo, 
-                                           CategoryRepository categoryRepo, 
+    public RecurringTransactionServiceImpl(RecurringTransactionRepository recurringRepo,
+                                           ExpenseRepository expenseRepo,
+                                           UserRepository userRepo,
+                                           CategoryRepository categoryRepo,
                                            RecurringTransactionMapper mapper) {
         this.recurringRepo = recurringRepo;
         this.expenseRepo = expenseRepo;
@@ -53,7 +53,7 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
         LocalDate today = LocalDate.now();
         List<RecurringTransaction> dueTransactions = recurringRepo
                 .findAllByNextExecutionDateLessThanEqual(today);
-        
+
         for (RecurringTransaction recurring : dueTransactions) {
             Expense expense = new Expense();
             expense.setAmount(recurring.getAmount());
@@ -63,15 +63,15 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
             expense.setOccurredAt(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             expenseRepo.save(expense);
-            
+
             recurring.setNextExecutionDate(today.plusDays(recurring.getIntervalDays()));
             recurringRepo.save(recurring);
-            
+
             log.info("Создана повторяющаяся транзакция для пользователя {} на сумму {}", recurring.getUser().getEmail(),
                     recurring.getAmount());
         }
     }
-    
+
     @Override
     @Transactional(readOnly = true)
     public List<RecurringTransactionDto> getUserRecurringTransactions(UserDetails currentUser) {
@@ -80,7 +80,7 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
         List<RecurringTransaction> recurringTransactionList = recurringRepo.findAllByUser_Email(user.getEmail());
         return recurringTransactionList.stream().map(mapper::toDto).collect(Collectors.toList());
     }
-    
+
     @Override
     @Transactional
     public RecurringTransactionDto createRecurringTransaction(UserDetails currentUser,
@@ -95,7 +95,7 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
         entity.setActive(true);
         return mapper.toDto(recurringRepo.save(entity));
     }
-    
+
     @Override
     @Transactional
     public RecurringTransactionDto toggleActive(Long id) {
@@ -106,3 +106,4 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
         return mapper.toDto(saved);
     }
 }
+

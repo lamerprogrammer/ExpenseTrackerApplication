@@ -1,6 +1,7 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.ModeratorUserDto;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.model.User;
 import org.springframework.data.domain.Page;
@@ -10,11 +11,12 @@ import java.util.List;
 
 public interface ModeratorService {
 
-    Page<User> getAllUsers(Pageable pageable);
+    Page<ModeratorUserDto> getAllUsers(Pageable pageable);
 
-    User banUser(Long id, UserDetailsImpl currentUser);
+    ModeratorUserDto banUser(Long id, UserDetailsImpl currentUser);
 
-    User unbanUser(Long id, UserDetailsImpl currentUser);
+    ModeratorUserDto unbanUser(Long id, UserDetailsImpl currentUser);
 
-    User getUserById(Long id);
+    ModeratorUserDto getUserById(Long id);
 }
+

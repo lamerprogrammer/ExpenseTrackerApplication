@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         auditService.logPasswordChange(user);
     }
-    
+
     @Override
     @Cacheable(value = "totalExpenses", key = "#userId")
     public BigDecimal getTotalExpenses(Long userId) {
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
                 .map(User::getTotalExpenses)
                 .orElse(BigDecimal.ZERO);
     }
-    
+
     @Override
     @CacheEvict(value = "totalExpenses", key = "#userId")
     public void clearTotalExpensesCache(Long userId) {

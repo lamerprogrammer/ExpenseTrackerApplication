@@ -153,9 +153,9 @@ public class ExpenseServiceImplTest {
         List<CategorySumDto> items = List.of(categorySumDto);
         when(userRepository.findByEmail(currentUser.getUsername())).thenReturn(Optional.of(user));
         when(expenseRepository.getMonthlyReport(eq(user), any(), any())).thenReturn(items);
-        
+
         var result = expenseService.getReportMonthly(september, year, currentUser);
-        
+
         assertThat(result.total()).isEqualByComparingTo(new BigDecimal(AMOUNT));
         assertThat(result.byCategory().get(0)).extracting(CategorySumDto::categoryName, CategorySumDto::sum)
                 .containsExactly(categorySumDto.categoryName(), categorySumDto.sum());
@@ -198,3 +198,4 @@ public class ExpenseServiceImplTest {
         verify(expenseRepository).getMonthlyReport(eq(user), any(), any());
     }
 }
+

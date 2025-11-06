@@ -1,6 +1,7 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.AdminUserDto;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.audit.Audit;
@@ -30,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
     private final PasswordEncoder passwordEncoder;
     private final AuditService auditService;
 
-    public AdminServiceImpl(UserRepository userRepository, 
+    public AdminServiceImpl(UserRepository userRepository,
                             PasswordEncoder passwordEncoder,
                             AuditService auditService) {
         this.userRepository = userRepository;
@@ -39,88 +40,88 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<AdminUserDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(AdminUserDto::fromEntity);
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> 
-                new UserNotFoundByIdException("Пользователь с ID " + id + " не найден"));
+    public AdminUserDto getUserById(Long id) {
+        return userRepository.findById(id).map(AdminUserDto::fromEntity).orElseThrow(() ->
+                new UserNotFoundByIdException("User not found"));
     }
 
     @Override
     @Transactional
-    public User promoteUser(Long id, UserDetailsImpl currentUser) {
+    public AdminUserDto promoteUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
-                    if (user.getRoles().contains(Role.MODERATOR)) return user;
+                    if (user.getRoles().contains(Role.MODERATOR)) return AdminUserDto.fromEntity(user);
                     user.getRoles().add(Role.MODERATOR);
                     userRepository.save(user);
                     auditService.logAction(PROMOTE, user, userEntity);
-                    return user;
+                    return AdminUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
-    public User demoteUser(Long id, UserDetailsImpl currentUser) {
+    public AdminUserDto demoteUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
-                    if (!(user.getRoles().contains(Role.MODERATOR))) return user;
+                    if (!user.getRoles().contains(Role.MODERATOR)) return AdminUserDto.fromEntity(user);
                     user.getRoles().remove(Role.MODERATOR);
                     user.getRoles().add(Role.USER);
                     userRepository.save(user);
                     auditService.logAction(DEMOTE, user, userEntity);
-                    return user;
+                    return AdminUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
-    public User banUser(Long id, UserDetailsImpl currentUser) {
+    public AdminUserDto banUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
-                    if (user.isBanned()) return user;
+                    if (user.isBanned()) return AdminUserDto.fromEntity(user);
                     user.setBanned(true);
                     userRepository.save(user);
                     auditService.logAction(BAN, user, userEntity);
-                    return user;
+                    return AdminUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
-    public User unbanUser(Long id, UserDetailsImpl currentUser) {
+    public AdminUserDto unbanUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
-                    if (!(user.isBanned())) return user;
+                    if (!(user.isBanned())) return AdminUserDto.fromEntity(user);
                     user.setBanned(false);
                     userRepository.save(user);
                     auditService.logAction(UNBAN, user, userEntity);
-                    return user;
+                    return AdminUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
-    public User deleteUser(Long id, UserDetailsImpl currentUser) {
+    public AdminUserDto deleteUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     user.setDeleted(true);
                     auditService.logAction(DELETE, user, userEntity);
-                    return userRepository.save(user);
+                    return AdminUserDto.fromEntity(userRepository.save(user));
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
-    public User createAdmin(RegisterDto dto, UserDetailsImpl currentUser) {
+    public AdminUserDto createAdmin(RegisterDto dto, UserDetailsImpl currentUser) {
         User userEntity = userEntity(currentUser);
         existenceCheck(dto);
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
@@ -129,12 +130,12 @@ public class AdminServiceImpl implements AdminService {
         user.getRoles().add(Role.USER);
         User newAdmin = userRepository.save(user);
         auditService.logAction(CREATE, newAdmin, userEntity);
-        return newAdmin;
+        return AdminUserDto.fromEntity(newAdmin);
     }
 
     @Override
     @Transactional
-    public User createModerator(RegisterDto dto, UserDetailsImpl currentUser) {
+    public AdminUserDto createModerator(RegisterDto dto, UserDetailsImpl currentUser) {
         User userEntity = userEntity(currentUser);
         existenceCheck(dto);
         User user = User.builder().email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).build();
@@ -143,7 +144,7 @@ public class AdminServiceImpl implements AdminService {
         user.getRoles().add(Role.USER);
         User newModerator = userRepository.save(user);
         auditService.logAction(CREATE, newModerator, userEntity);
-        return newModerator;
+        return AdminUserDto.fromEntity(newModerator);
     }
 
     private void existenceCheck(RegisterDto dto) {
@@ -166,3 +167,4 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
+

@@ -2,12 +2,12 @@ package test.controller;
 
 import com.example.expensetracker.controller.AdminController;
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.AdminUserDto;
 import com.example.expensetracker.dto.RegisterDto;
-import com.example.expensetracker.dto.UserDto;
-import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,6 +44,12 @@ public class AdminControllerTest {
     @InjectMocks
     private AdminController adminController;
 
+    @BeforeEach
+    void setUp() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+    }
+
     @AfterEach
     void tearDown() {
         verifyNoMoreInteractions(adminService);
@@ -51,149 +57,150 @@ public class AdminControllerTest {
 
     @Test
     public void getAllUsers_shouldReturnListOfUsers() {
-        User user = TestData.user();
-        Page<User> users = new PageImpl<>(List.of(user));
+        AdminUserDto dto = TestData.adminUserDto();
+        Page<AdminUserDto> users = new PageImpl<>(List.of(dto));
         when(adminService.getAllUsers(pageable)).thenReturn(users);
-        mockMessage();
 
         var result = adminController.getAllUsers(pageable, request);
 
-        assertThat(result).isNotNull();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         var body = result.getBody();
         assertThat(body).isNotNull();
         assertThat(body.getData().getContent())
-                .extracting(UserDto::getId, UserDto::getEmail)
-                .containsExactly(tuple(user.getId(), user.getEmail()));
+                .extracting(AdminUserDto::getId, AdminUserDto::getEmail)
+                .containsExactly(tuple(dto.getId(), dto.getEmail()));
         verify(adminService).getAllUsers(pageable);
-        verify(messageSource).getMessage(eq("get.all.users"), any(), any());
+        verify(messageSource).getMessage(eq("get.all.users"), isNull(), any());
+    }
+
+    @Test
+    public void getAllUsers_shouldReturnEmptyPage() {
+        when(adminService.getAllUsers(pageable)).thenReturn(Page.empty());
+
+        var result = adminController.getAllUsers(pageable, request);
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getData().getContent()).isEmpty();
+        verify(adminService).getAllUsers(pageable);
+        verify(messageSource).getMessage(eq("get.all.users"), isNull(), any());
     }
 
     @Test
     void getUserById_shouldReturn200_whenUserExists() {
-        User user = TestData.user();
-        Long id = user.getId();
-        when(adminService.getUserById(id)).thenReturn(user);
-        mockMessage();
+        AdminUserDto dto = TestData.adminUserDto();
+        Long id = dto.getId();
+        when(adminService.getUserById(id)).thenReturn(dto);
 
         var result = adminController.getUserById(id, request);
 
-        assertThat(result).isNotNull();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody()).isNotNull();
-        assertThat(result.getBody().getData().getId()).isEqualTo(user.getId());
-        assertThat(result.getBody().getData().getEmail()).isEqualTo(user.getEmail());
+        var body = result.getBody();
+        assertThat(body).isNotNull();
+        assertThat(body.getData().getId()).isEqualTo(dto.getId());
+        assertThat(body.getData().getEmail()).isEqualTo(dto.getEmail());
         verify(adminService).getUserById(id);
-        verify(messageSource).getMessage(eq("get.user.by.id"), any(), any());
+        verify(messageSource).getMessage(eq("get.user.by.id"), isNull(), any());
     }
 
     @Test
     public void banUser_shouldReturn200_whenUserExist() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        User bannedUser = TestData.userBanned();
+        AdminUserDto banned = TestData.adminUserDtoBanned();
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.banUser(id, currentUser)).thenReturn(bannedUser);
-        mockMessage();
+        when(adminService.banUser(id, currentUser)).thenReturn(banned);
 
         var response = adminController.banUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).banUser(eq(id), eq(currentUser));
-        verify(messageSource).getMessage(eq("ban.user"), any(), any());
+        verify(messageSource).getMessage(eq("ban.user"), isNull(), any());
     }
 
     @Test
     public void unbanUser_shouldReturn200_whenUserExist() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        User bannedUser = TestData.userBanned();
+        AdminUserDto banned = TestData.adminUserDtoBanned();
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.unbanUser(id, currentUser)).thenReturn(bannedUser);
-        mockMessage();
+        when(adminService.unbanUser(id, currentUser)).thenReturn(banned);
 
         var response = adminController.unbanUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).unbanUser(eq(id), eq(currentUser));
-        verify(messageSource).getMessage(eq("unban.user"), any(), any());
+        verify(messageSource).getMessage(eq("unban.user"), isNull(), any());
     }
 
     @Test
     public void promoteUser_shouldReturn200_whenUserExist() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        User user = TestData.user();
+        AdminUserDto dto = TestData.adminUserDto();
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.promoteUser(id, currentUser)).thenReturn(user);
-        mockMessage();
+        when(adminService.promoteUser(id, currentUser)).thenReturn(dto);
+
 
         var response = adminController.promoteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).promoteUser(eq(id), eq(currentUser));
-        verify(messageSource).getMessage(eq("promote.user"), any(), any());
+        verify(messageSource).getMessage(eq("promote.user"), isNull(), any());
     }
 
     @Test
     public void demoteUser_shouldReturn200_whenUserExist() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        User bannedUser = TestData.userBanned();
+        AdminUserDto banned = TestData.adminUserDtoBanned();
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.demoteUser(id, currentUser)).thenReturn(bannedUser);
-        mockMessage();
+        when(adminService.demoteUser(id, currentUser)).thenReturn(banned);
 
         var response = adminController.demoteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).demoteUser(eq(id), eq(currentUser));
-        verify(messageSource).getMessage(eq("demote.user"), any(), any());
+        verify(messageSource).getMessage(eq("demote.user"), isNull(), any());
     }
 
     @Test
     public void deleteUser_shouldReturn200_whenUserExist() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.user());
-        User deletedUser = TestData.user();
+        AdminUserDto deleted = TestData.adminUserDtoDeleted();
         Long id = currentUser.getDomainUser().getId();
-        when(adminService.deleteUser(id, currentUser)).thenReturn(deletedUser);
-        mockMessage();
+        when(adminService.deleteUser(id, currentUser)).thenReturn(deleted);
 
         var response = adminController.deleteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).deleteUser(eq(id), eq(currentUser));
-        verify(messageSource).getMessage(eq("delete.user"), any(), any());
+        verify(messageSource).getMessage(eq("delete.user"), isNull(), any());
     }
 
     @Test
-    public void createAdmin_shouldNewAdmin_whenDataValid() {
+    public void createAdmin_shouldReturnNewAdmin_whenDataValid() {
         RegisterDto newAdmin = TestData.registerDto();
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        User user = TestData.admin();
-        when(adminService.createAdmin(newAdmin, currentUser)).thenReturn(user);
-        mockMessage();
+        AdminUserDto admin = TestData.adminUserDtoRoleAdmin();
+        when(adminService.createAdmin(newAdmin, currentUser)).thenReturn(admin);
 
         var response = adminController.createAdmin(newAdmin, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).createAdmin(eq(newAdmin), eq(currentUser));
-        verify(messageSource).getMessage(eq("create.admin"), any(), any());
+        verify(messageSource).getMessage(eq("create.admin"), isNull(), any());
     }
 
     @Test
-    public void createModer_shouldNewAdmin_whenDataValid() {
+    public void createModer_shouldReturnNewModer_whenDataValid() {
         RegisterDto newModer = TestData.registerDto();
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        User user = TestData.moderator();
-        when(adminService.createModerator(newModer, currentUser)).thenReturn(user);
-        mockMessage();
+        AdminUserDto moderator = TestData.adminUserDtoRoleModerator();
+        when(adminService.createModerator(newModer, currentUser)).thenReturn(moderator);
 
         var response = adminController.createModer(newModer, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(adminService).createModerator(eq(newModer), eq(currentUser));
-        verify(messageSource).getMessage(eq("create.moder"), any(), any());
-    }
-
-    private void mockMessage() {
-        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
-                invocation.getArgument(0));
+        verify(messageSource).getMessage(eq("create.moder"), isNull(), any());
     }
 }
+

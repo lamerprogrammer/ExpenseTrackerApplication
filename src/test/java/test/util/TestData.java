@@ -233,4 +233,45 @@ public class TestData {
                 INTERVAL_DAYS
         );
     }
+
+    public static AdminUserDto adminUserDto() {
+        return new AdminUserDto(ID_VALID, USER_EMAIL, Set.of(USER), false, false, new BigDecimal(AMOUNT));
+    }
+
+    public static AdminUserDto adminUserDtoBanned() {
+        return new AdminUserDto(ID_VALID, USER_EMAIL, Set.of(USER), true, false, new BigDecimal(AMOUNT));
+    }
+
+    public static AdminUserDto adminUserDtoDeleted() {
+        return new AdminUserDto(ID_VALID, USER_EMAIL, Set.of(USER), false, true, new BigDecimal(AMOUNT));
+    }
+
+    public static AdminUserDto adminUserDtoRoleAdmin() {
+        return new AdminUserDto(ID_VALID, USER_EMAIL, Set.of(USER, ADMIN), false, false, new BigDecimal(AMOUNT));
+    }
+
+    public static AdminUserDto adminUserDtoRoleModerator() {
+        return new AdminUserDto(ID_VALID, USER_EMAIL, Set.of(USER, MODERATOR), false, false, new BigDecimal(AMOUNT));
+    }
+
+    public static ModeratorUserDto moderUserDto() {
+        return new ModeratorUserDto(ID_VALID, USER_EMAIL, Set.of(USER), false, new BigDecimal(AMOUNT));
+    }
+
+    public static ModeratorUserDto moderUserDtoBanned() {
+        return new ModeratorUserDto(ID_VALID, USER_EMAIL, Set.of(USER), true, new BigDecimal(AMOUNT));
+    }
+
+    public static ModeratorUserDto moderUserDtoDeleted() {
+        return new ModeratorUserDto(ID_VALID, USER_EMAIL, Set.of(USER), false, new BigDecimal(AMOUNT));
+    }
+
+    public static ModeratorUserDto moderUserDtoRoleAdmin() {
+        return new ModeratorUserDto(ID_VALID, USER_EMAIL, Set.of(USER, ADMIN), false, new BigDecimal(AMOUNT));
+    }
+
+    public static ModeratorUserDto moderUserDtoRoleModerator() {
+        return new ModeratorUserDto(ID_VALID, USER_EMAIL, Set.of(USER, MODERATOR), false, new BigDecimal(AMOUNT));
+    }
 }
+

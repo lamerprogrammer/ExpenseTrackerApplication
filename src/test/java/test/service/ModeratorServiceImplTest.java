@@ -1,6 +1,7 @@
 package test.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.ModeratorUserDto;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.audit.Audit;
 import com.example.expensetracker.logging.audit.AuditAction;
@@ -38,7 +39,7 @@ import static test.util.Constants.ADMIN_EMAIL;
 
 @ExtendWith(MockitoExtension.class)
 public class ModeratorServiceImplTest {
-    
+
     @Mock
     private UserRepository userRepository;
 
@@ -47,7 +48,7 @@ public class ModeratorServiceImplTest {
 
     @Mock
     private Pageable pageable;
-    
+
     @InjectMocks
     private ModeratorServiceImpl moderatorService;
 
@@ -60,7 +61,7 @@ public class ModeratorServiceImplTest {
         var result = moderatorService.getAllUsers(pageable);
 
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0)).extracting(User::getId, User::getEmail)
+        assertThat(result.getContent().get(0)).extracting(ModeratorUserDto::getId, ModeratorUserDto::getEmail)
                 .containsExactly(user.getId(), user.getEmail());
         verify(userRepository).findAll(any(Pageable.class));
     }
@@ -79,7 +80,7 @@ public class ModeratorServiceImplTest {
     void getUserById_shouldReturnUser_whenUserExists() {
         User user = TestData.user();
         Long id = user.getId();
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         var result = moderatorService.getUserById(id);
 
@@ -90,7 +91,7 @@ public class ModeratorServiceImplTest {
 
     @Test
     void getUserById_shouldThrowException_whenUserNotExists() {
-        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+        when(userRepository.findById(ID_INVALID)).thenReturn(Optional.empty());
 
         UserNotFoundByIdException ex = assertThrows(UserNotFoundByIdException.class,
                 () -> moderatorService.getUserById(ID_INVALID));
@@ -105,12 +106,12 @@ public class ModeratorServiceImplTest {
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
         AuditDto auditDto = AuditDto.from(new Audit(BAN, user, admin));
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(auditService.logAction(eq(BAN), eq(user), eq(admin))).thenReturn(auditDto);
 
-        User result = moderatorService.banUser(ID_VALID, currentUser);
+        var result = moderatorService.banUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         verify(userRepository).save(argThat(User::isBanned));
@@ -122,10 +123,10 @@ public class ModeratorServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.userBanned();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
-        User result = moderatorService.banUser(ID_VALID, currentUser);
+        var result = moderatorService.banUser(ID_VALID, currentUser);
 
         cacheCheck(result, user, true);
     }
@@ -133,7 +134,7 @@ public class ModeratorServiceImplTest {
     @Test
     void banUser_shouldThrowException_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.empty());
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> moderatorService.banUser(ID_INVALID, currentUser));
@@ -146,7 +147,7 @@ public class ModeratorServiceImplTest {
     @Test
     void banUser_shouldThrowException_whenAdminNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenThrow(new UsernameNotFoundException("message"));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenThrow(new UsernameNotFoundException("message"));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> moderatorService.banUser(ID_INVALID, currentUser));
@@ -160,8 +161,8 @@ public class ModeratorServiceImplTest {
     void banUser_shouldThrowException_whenUserNotExists() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_INVALID)).thenReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
                 () -> moderatorService.banUser(ID_INVALID, currentUser));
@@ -176,8 +177,8 @@ public class ModeratorServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.admin();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> moderatorService.banUser(ID_VALID, currentUser));
@@ -192,8 +193,8 @@ public class ModeratorServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.moderator();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> moderatorService.banUser(ID_VALID, currentUser));
@@ -207,7 +208,7 @@ public class ModeratorServiceImplTest {
     void banUser_shouldThrowException_whenIdsMatched() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> moderatorService.banUser(admin.getId(), currentUser));
@@ -222,11 +223,11 @@ public class ModeratorServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.userBanned();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = moderatorService.unbanUser(ID_VALID, currentUser);
+        var result = moderatorService.unbanUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         assertThat(result.isBanned()).isFalse();
@@ -239,8 +240,8 @@ public class ModeratorServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.admin();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> moderatorService.unbanUser(ID_VALID, currentUser));
@@ -255,8 +256,8 @@ public class ModeratorServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.moderator();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> moderatorService.unbanUser(ID_VALID, currentUser));
@@ -267,14 +268,14 @@ public class ModeratorServiceImplTest {
     }
 
     @Test
-    void unbanUser_shouldReturnUser_whenAlreadyNotUnbanned() {
+    void unbanUser_shouldReturnUser_whenAlreadyUnbanned() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
-        User result = moderatorService.unbanUser(ID_VALID, currentUser);
+        var result = moderatorService.unbanUser(ID_VALID, currentUser);
 
         cacheCheck(result, user, false);
     }
@@ -282,7 +283,7 @@ public class ModeratorServiceImplTest {
     @Test
     void unbanUser_shouldReturn404_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.empty());
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> moderatorService.unbanUser(ID_INVALID, currentUser));
@@ -296,8 +297,8 @@ public class ModeratorServiceImplTest {
     void unbanUser_shouldThrowException_whenUserNotExists() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_INVALID)).thenReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
                 () -> moderatorService.unbanUser(ID_INVALID, currentUser));
@@ -311,7 +312,7 @@ public class ModeratorServiceImplTest {
     void unbanUser_shouldThrowException_whenIdsMatched() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> moderatorService.unbanUser(admin.getId(), currentUser));
@@ -321,7 +322,7 @@ public class ModeratorServiceImplTest {
         verify(auditService, never()).logAction(any(), any(), any());
     }
 
-    private void checkLoggerData(AuditAction action, User targetUser, User performedBy) {
+    private void checkLoggerData(AuditAction action, ModeratorUserDto targetUser, User performedBy) {
         ArgumentCaptor<AuditAction> actionCaptor = ArgumentCaptor.forClass(AuditAction.class);
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         ArgumentCaptor<User> adminCaptor = ArgumentCaptor.forClass(User.class);
@@ -338,7 +339,7 @@ public class ModeratorServiceImplTest {
         assertThat(savedAdmin.getEmail()).isEqualTo(performedBy.getEmail());
     }
 
-    private void cacheCheck(User result, User user, boolean isBanned) {
+    private void cacheCheck(ModeratorUserDto result, User user, boolean isBanned) {
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getEmail()).isEqualTo(user.getEmail());
@@ -347,3 +348,4 @@ public class ModeratorServiceImplTest {
         verify(auditService, never()).logAction(any(), any(), any());
     }
 }
+

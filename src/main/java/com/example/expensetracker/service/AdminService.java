@@ -1,6 +1,7 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.AdminUserDto;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.model.User;
 import org.springframework.data.domain.Page;
@@ -9,21 +10,22 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface AdminService {
-    Page<User> getAllUsers(Pageable pageable);
-    
-    User banUser(Long id, UserDetailsImpl currentUser);
+    Page<AdminUserDto> getAllUsers(Pageable pageable);
 
-    User unbanUser(Long id, UserDetailsImpl currentUser);
+    AdminUserDto banUser(Long id, UserDetailsImpl currentUser);
 
-    User deleteUser(Long id, UserDetailsImpl currentUser);
+    AdminUserDto unbanUser(Long id, UserDetailsImpl currentUser);
 
-    User createAdmin(RegisterDto dto, UserDetailsImpl currentUser);
+    AdminUserDto deleteUser(Long id, UserDetailsImpl currentUser);
 
-    User createModerator(RegisterDto dto, UserDetailsImpl currentUser);
+    AdminUserDto createAdmin(RegisterDto dto, UserDetailsImpl currentUser);
 
-    User getUserById(Long id);
+    AdminUserDto createModerator(RegisterDto dto, UserDetailsImpl currentUser);
 
-    User promoteUser(Long id, UserDetailsImpl currentUser);
+    AdminUserDto getUserById(Long id);
 
-    User demoteUser(Long id, UserDetailsImpl currentUser);
+    AdminUserDto promoteUser(Long id, UserDetailsImpl currentUser);
+
+    AdminUserDto demoteUser(Long id, UserDetailsImpl currentUser);
 }
+

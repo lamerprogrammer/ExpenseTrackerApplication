@@ -16,3 +16,4 @@ public interface ExpenseService {
     void deleteExpense(UserDetailsImpl currentUser, Long expenseId);
     ExpensesReportDto getReportMonthly(Month month, Integer year, UserDetailsImpl currentUser);
 }
+

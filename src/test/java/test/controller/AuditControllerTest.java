@@ -4,6 +4,7 @@ import com.example.expensetracker.controller.AuditController;
 import com.example.expensetracker.logging.audit.AuditDto;
 import com.example.expensetracker.logging.audit.AuditService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,43 +42,46 @@ public class AuditControllerTest {
     @InjectMocks
     private AuditController auditController;
 
+    @BeforeEach
+    void setUp() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+    }
+
     @Test
     public void getAllAudit_shouldReturnListOfLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getAll(any())).thenReturn(logs);
-        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getAllAudit(pageable, request);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(auditService, times(1)).getAll(any());
-        verify(messageSource).getMessage(eq("audit.controller.get.all"), any(), any());
+        verify(messageSource).getMessage(eq("audit.controller.get.all"), isNull(), any());
     }
 
     @Test
     public void getAllAudit_shouldReturnEmptyList_whenNoLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getAll(any())).thenReturn(logs);
-        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getAllAudit(pageable, request);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEmpty();
         verify(auditService, times(1)).getAll(any());
-        verify(messageSource).getMessage(eq("audit.controller.get.all"), any(), any());
+        verify(messageSource).getMessage(eq("audit.controller.get.all"), isNull(), any());
     }
 
     @Test
     public void getByAdmin_shouldReturnListOfLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getByAdmin(anyLong(), any())).thenReturn(logs);
-        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getByAdmin(ID_VALID, pageable, request);
 
@@ -86,14 +90,13 @@ public class AuditControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEqualTo(logs);
         verify(auditService, times(1)).getByAdmin(eq(ID_VALID), any());
-        verify(messageSource).getMessage(eq("audit.controller.get.by.admin"), any(), any());
+        verify(messageSource).getMessage(eq("audit.controller.get.by.admin"), isNull(), any());
     }
 
     @Test
     public void getByAdmin_shouldReturnEmptyList_whenNoLogs() {
         Page<AuditDto> logs = new PageImpl<>(List.of());
         when(auditService.getByAdmin(anyLong(), any())).thenReturn(logs);
-        when(messageSource.getMessage(anyString(), any(), any())).thenReturn("ok");
 
         var result = auditController.getByAdmin(ID_INVALID, pageable, request);
 
@@ -102,6 +105,7 @@ public class AuditControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getData()).isEmpty();
         verify(auditService, times(1)).getByAdmin(eq(ID_INVALID), any());
-        verify(messageSource).getMessage(eq("audit.controller.get.by.admin"), any(), any());
+        verify(messageSource).getMessage(eq("audit.controller.get.by.admin"), isNull(), any());
     }
 }
+

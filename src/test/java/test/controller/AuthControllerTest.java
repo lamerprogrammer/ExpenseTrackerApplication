@@ -5,6 +5,7 @@ import com.example.expensetracker.dto.*;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,24 +24,29 @@ import static test.util.Constants.USER_EMAIL;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthControllerTest {
-    
+
     @Mock
     private AuthService authService;
-    
+
     @Mock
     private HttpServletRequest request;
-    
+
     @Mock
     MessageSource messageSource;
 
     @InjectMocks
     private AuthController authController;
 
+    @BeforeEach
+    void setUp() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+    }
+
     @Test
     public void refresh_shouldReturnTokens_whenCredentialsValid() {
         RefreshRequest refreshRequest = mock(RefreshRequest.class);
         when(authService.refresh(refreshRequest)).thenReturn(new TokenResponse("access", "refresh"));
-        mockMessage();
 
         var result = authController.refresh(refreshRequest, request);
 
@@ -50,7 +56,7 @@ public class AuthControllerTest {
         assertThat(body.getData().accessToken()).isEqualTo("access");
         assertThat(body.getData().refreshToken()).isEqualTo("refresh");
         verify(authService).refresh(refreshRequest);
-        verify(messageSource).getMessage(eq("auth.controller.refresh"), any(), any());
+        verify(messageSource).getMessage(eq("auth.controller.refresh"), isNull(), any());
     }
 
     @Test
@@ -58,7 +64,6 @@ public class AuthControllerTest {
         RegisterDto dto = TestData.registerDto();
         User user = TestData.user();
         when(authService.register(dto)).thenReturn(user);
-        mockMessage();
 
         var result = authController.register(dto, request);
 
@@ -67,7 +72,7 @@ public class AuthControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getData().getEmail()).isEqualTo(USER_EMAIL);
         verify(authService).register(dto);
-        verify(messageSource).getMessage(eq("auth.controller.register"), any(), any());
+        verify(messageSource).getMessage(eq("auth.controller.register"), isNull(), any());
     }
 
     @Test
@@ -75,7 +80,6 @@ public class AuthControllerTest {
         LoginRequest loginRequest = new LoginRequest(USER_EMAIL, USER_PASSWORD);
         TokenResponse response = new TokenResponse("access", "refresh");
         when(authService.login(loginRequest)).thenReturn(response);
-        mockMessage();
 
         var result = authController.login(loginRequest, request);
 
@@ -85,11 +89,7 @@ public class AuthControllerTest {
         assertThat(body.getData().accessToken()).isEqualTo("access");
         assertThat(body.getData().refreshToken()).isEqualTo("refresh");
         verify(authService).login(loginRequest);
-        verify(messageSource).getMessage(eq("auth.controller.login"), any(), any());
-    }
-
-    private void mockMessage() {
-        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
-                invocation.getArgument(0));
+        verify(messageSource).getMessage(eq("auth.controller.login"), isNull(), any());
     }
 }
+

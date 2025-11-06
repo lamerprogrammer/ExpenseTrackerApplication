@@ -143,3 +143,4 @@ public class UserServiceImplTest {
         userService.clearTotalExpensesCache(1L);
     }
 }
+

@@ -7,6 +7,7 @@ import com.example.expensetracker.dto.RecurringTransactionRequestDto;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.RecurringTransactionService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,6 +40,12 @@ public class RecurringTransactionControllerTest {
     @InjectMocks
     RecurringTransactionController controller;
 
+    @BeforeEach
+    void setUp() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+    }
+
     @Test
     void getAll_shouldReturnAllTransactions() {
         User user = TestData.user();
@@ -46,7 +53,6 @@ public class RecurringTransactionControllerTest {
         RecurringTransactionDto transactionDto = TestData.recurringTransactionDtoActiveTrue();
         List<RecurringTransactionDto> dtoList = List.of(transactionDto);
         when(service.getUserRecurringTransactions(currentUser)).thenReturn(dtoList);
-        mockMessage();
 
         var result = controller.getAll(currentUser, request);
 
@@ -67,7 +73,7 @@ public class RecurringTransactionControllerTest {
                         CATEGORY_NAME
                 );
         verify(service).getUserRecurringTransactions(currentUser);
-        verify(messageSource).getMessage(eq("recurring.transaction.controller.get.all"), any(), any());
+        verify(messageSource).getMessage(eq("recurring.transaction.controller.get.all"), isNull(), any());
     }
 
     @Test
@@ -77,7 +83,6 @@ public class RecurringTransactionControllerTest {
         RecurringTransactionRequestDto dto = TestData.recurringTransactionRequestDto();
         RecurringTransactionDto created = TestData.recurringTransactionDtoActiveTrue();
         when(service.createRecurringTransaction(currentUser, dto)).thenReturn(created);
-        mockMessage();
 
         var result = controller.create(currentUser, dto, request);
 
@@ -98,14 +103,13 @@ public class RecurringTransactionControllerTest {
                         CATEGORY_NAME
                 );
         verify(service).createRecurringTransaction(currentUser, dto);
-        verify(messageSource).getMessage(eq("recurring.transaction.controller.create"), any(), any());
+        verify(messageSource).getMessage(eq("recurring.transaction.controller.create"), isNull(), any());
     }
 
     @Test
     void toggleActive_shouldReturnAllTransactions() {
         RecurringTransactionDto dto = TestData.recurringTransactionDtoActiveFalse();
         when(service.toggleActive(ID_TRANSACTION)).thenReturn(dto);
-        mockMessage();
 
         var result = controller.toggleActive(ID_TRANSACTION, request);
 
@@ -128,11 +132,7 @@ public class RecurringTransactionControllerTest {
                         false
                 );
         verify(service).toggleActive(ID_TRANSACTION);
-        verify(messageSource).getMessage(eq("recurring.transaction.controller.toggle.active"), any(), any());
-    }
-
-    private void mockMessage() {
-        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
-                invocation.getArgument(0));
+        verify(messageSource).getMessage(eq("recurring.transaction.controller.toggle.active"), isNull(), any());
     }
 }
+

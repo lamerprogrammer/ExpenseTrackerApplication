@@ -23,14 +23,14 @@ import java.util.HashSet;
 public class AuthServiceImpl implements AuthService {
 
     private final static Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
-    
+
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, 
-                           AppLogService appLogService, 
-                           UserRepository userRepository, 
+    public AuthServiceImpl(JwtUtil jwtUtil,
+                           AppLogService appLogService,
+                           UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
@@ -45,13 +45,13 @@ public class AuthServiceImpl implements AuthService {
             throw new DataIntegrityViolationException("Эта почта уже используется");
         }
         User user = User.builder()
-                    .email(dto.getEmail())
-                    .password(passwordEncoder.encode(dto.getPassword()))
-                    .roles(new HashSet<>())
-                    .build();
-            user.getRoles().add(Role.USER);
-            User saved = userRepository.save(user);
-            log.info("Успешная регистрация: {}", saved.getEmail());
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .roles(new HashSet<>())
+                .build();
+        user.getRoles().add(Role.USER);
+        User saved = userRepository.save(user);
+        log.info("Успешная регистрация: {}", saved.getEmail());
         return saved;
     }
 
@@ -102,3 +102,4 @@ public class AuthServiceImpl implements AuthService {
         return new TokenResponse(accessToken, refreshToken);
     }
 }
+

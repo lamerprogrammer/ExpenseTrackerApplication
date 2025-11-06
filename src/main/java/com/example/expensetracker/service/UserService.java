@@ -15,3 +15,4 @@ public interface UserService {
     BigDecimal getTotalExpenses(Long userId);
     void clearTotalExpensesCache(Long userId);
 }
+

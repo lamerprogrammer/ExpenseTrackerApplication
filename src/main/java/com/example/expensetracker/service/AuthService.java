@@ -7,5 +7,6 @@ public interface AuthService {
     User register(RegisterDto dto);
     TokenResponse login(LoginRequest dto);
     TokenResponse refresh(RefreshRequest request);
-    
+
 }
+

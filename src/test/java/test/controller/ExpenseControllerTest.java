@@ -9,6 +9,7 @@ import com.example.expensetracker.model.User;
 import com.example.expensetracker.service.ExpenseService;
 import com.example.expensetracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,6 +47,12 @@ public class ExpenseControllerTest {
     @InjectMocks
     private ExpenseController expenseController;
 
+    @BeforeEach
+    void setUp() {
+        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
+                invocation.getArgument(0));
+    }
+
     @Test
     void report_shouldReturnExpensesForPeriod() {
         User user = TestData.user();
@@ -57,8 +64,7 @@ public class ExpenseControllerTest {
         range.setTo(to);
         ExpensesReportDto dto = new ExpensesReportDto(new BigDecimal(AMOUNT), List.of());
         when(expenseService.getReport(currentUser, from, to)).thenReturn(dto);
-        mockMessage();
-        
+
         var result = expenseController.report(range, currentUser, request);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -66,7 +72,7 @@ public class ExpenseControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getData().total()).isEqualByComparingTo(new BigDecimal(AMOUNT));
         verify(expenseService).getReport(currentUser, from, to);
-        verify(messageSource).getMessage(eq("expense.controller.report.ok"), any(), any());
+        verify(messageSource).getMessage(eq("expense.controller.report.ok"), isNull(), any());
     }
 
     @Test
@@ -77,7 +83,6 @@ public class ExpenseControllerTest {
         UserDetailsImpl currentUser = new UserDetailsImpl(user);
         ExpensesReportDto dto = new ExpensesReportDto(new BigDecimal(AMOUNT), List.of());
         when(expenseService.getReportMonthly(september, year, currentUser)).thenReturn(dto);
-        mockMessage();
 
         var result = expenseController.reportMonthly(september, year, currentUser, request);
 
@@ -86,7 +91,7 @@ public class ExpenseControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getData().total()).isEqualByComparingTo(new BigDecimal(AMOUNT));
         verify(expenseService).getReportMonthly(september, year, currentUser);
-        verify(messageSource).getMessage(eq("expense.controller.report.monthly"), any(), any());
+        verify(messageSource).getMessage(eq("expense.controller.report.monthly"), isNull(), any());
     }
 
     @Test
@@ -94,7 +99,6 @@ public class ExpenseControllerTest {
         User user = TestData.user();
         UserDetailsImpl details = new UserDetailsImpl(user);
         when(userService.getTotalExpenses(anyLong())).thenReturn(new BigDecimal(AMOUNT));
-        mockMessage();
 
         var result = expenseController.getTotal(details, request);
 
@@ -103,11 +107,7 @@ public class ExpenseControllerTest {
         assertThat(body).isNotNull();
         assertThat(body.getData()).isEqualByComparingTo(new BigDecimal(AMOUNT));
         verify(userService).getTotalExpenses(anyLong());
-        verify(messageSource).getMessage(eq("expense.controller.total.ok"), any(), any());
-    }
-
-    private void mockMessage() {
-        when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
-                invocation.getArgument(0));
+        verify(messageSource).getMessage(eq("expense.controller.total.ok"), isNull(), any());
     }
 }
+

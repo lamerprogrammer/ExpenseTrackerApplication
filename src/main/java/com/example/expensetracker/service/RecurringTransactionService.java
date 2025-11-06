@@ -10,7 +10,8 @@ public interface RecurringTransactionService {
 
     void processRecurringTransactions();
     List<RecurringTransactionDto> getUserRecurringTransactions(UserDetails user);
-    RecurringTransactionDto createRecurringTransaction(UserDetails user, 
+    RecurringTransactionDto createRecurringTransaction(UserDetails user,
                                                        RecurringTransactionRequestDto recurringTransaction);
     RecurringTransactionDto toggleActive(Long id);
 }
+

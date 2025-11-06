@@ -1,6 +1,7 @@
 package test.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.AdminUserDto;
 import com.example.expensetracker.dto.RegisterDto;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.audit.*;
@@ -62,7 +63,7 @@ public class AdminServiceImplTest {
         var result = adminService.getAllUsers(pageable);
 
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0)).extracting(User::getId, User::getEmail)
+        assertThat(result.getContent().get(0)).extracting(AdminUserDto::getId, AdminUserDto::getEmail)
                 .containsExactly(user.getId(), user.getEmail());
         verify(userRepository).findAll(any(Pageable.class));
     }
@@ -110,7 +111,7 @@ public class AdminServiceImplTest {
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = adminService.promoteUser(ID_VALID, currentUser);
+        var result = adminService.promoteUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         verify(userRepository).save(argThat(u -> u.getRoles().contains(MODERATOR)));
@@ -125,7 +126,7 @@ public class AdminServiceImplTest {
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(moderator));
 
-        User result = adminService.promoteUser(ID_VALID, currentUser);
+        var result = adminService.promoteUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(moderator.getId());
@@ -159,7 +160,7 @@ public class AdminServiceImplTest {
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = adminService.demoteUser(ID_VALID, currentUser);
+        var result = adminService.demoteUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         verify(userRepository).save(argThat(u -> !u.getRoles().contains(MODERATOR)));
@@ -174,7 +175,7 @@ public class AdminServiceImplTest {
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
 
-        User result = adminService.demoteUser(ID_VALID, currentUser);
+        var result = adminService.demoteUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(user.getId());
@@ -210,7 +211,7 @@ public class AdminServiceImplTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(auditService.logAction(eq(BAN), eq(user), eq(admin))).thenReturn(auditDto);
 
-        User result = adminService.banUser(ID_VALID, currentUser);
+        var result = adminService.banUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         verify(userRepository).save(argThat(User::isBanned));
@@ -239,7 +240,7 @@ public class AdminServiceImplTest {
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
 
-        User result = adminService.banUser(ID_VALID, currentUser);
+        var result = adminService.banUser(ID_VALID, currentUser);
 
         cacheCheck(result, user, true);
     }
@@ -294,7 +295,7 @@ public class AdminServiceImplTest {
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = adminService.unbanUser(ID_VALID, currentUser);
+        var result = adminService.unbanUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         assertThat(result.isBanned()).isFalse();
@@ -303,14 +304,14 @@ public class AdminServiceImplTest {
     }
 
     @Test
-    void unbanUser_shouldReturnUser_whenAlreadyNotUnbanned() {
+    void unbanUser_shouldReturnUser_whenAlreadyUnbanned() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
 
-        User result = adminService.unbanUser(ID_VALID, currentUser);
+        var result = adminService.unbanUser(ID_VALID, currentUser);
 
         cacheCheck(result, user, false);
     }
@@ -352,7 +353,7 @@ public class AdminServiceImplTest {
         when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = adminService.deleteUser(ID_VALID, currentUser);
+        var result = adminService.deleteUser(ID_VALID, currentUser);
 
         assertThat(result).isNotNull();
         verify(userRepository).save(argThat(User::isDeleted));
@@ -411,10 +412,9 @@ public class AdminServiceImplTest {
         when(passwordEncoder.encode(dto.getPassword())).thenReturn("encoded");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        User result = adminService.createAdmin(dto, currentUser);
+        var result = adminService.createAdmin(dto, currentUser);
 
         assertThat(result.getEmail()).isEqualTo(dto.getEmail());
-        assertThat(result.getPassword()).isEqualTo("encoded");
         assertThat(result.getRoles()).contains(Role.ADMIN);
         verify(userRepository).save(any(User.class));
         checkLoggerData(AuditAction.CREATE, result, admin);
@@ -462,10 +462,9 @@ public class AdminServiceImplTest {
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
         when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
 
-        User result = adminService.createModerator(dto, currentUser);
+        var result = adminService.createModerator(dto, currentUser);
 
         assertThat(result.getEmail()).isEqualTo(dto.getEmail());
-        assertThat(result.getPassword()).isEqualTo("encoded");
         assertThat(result.getRoles()).contains(MODERATOR);
         verify(userRepository).save(any(User.class));
         checkLoggerData(AuditAction.CREATE, result, admin);
@@ -487,7 +486,7 @@ public class AdminServiceImplTest {
     }
 
     @Test
-     void createModerator_shouldThrowException_whenEmailExists() {
+    void createModerator_shouldThrowException_whenEmailExists() {
         RegisterDto dto = TestData.registerDto();
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         User admin = currentUser.getDomainUser();
@@ -503,15 +502,15 @@ public class AdminServiceImplTest {
         verify(auditService, never()).logAction(any(), any(), any());
     }
 
-    private void checkLoggerData(AuditAction action, User targetUser, User performedBy) {
+    private void checkLoggerData(AuditAction action, AdminUserDto targetUser, User performedBy) {
         ArgumentCaptor<AuditAction> actionCaptor = ArgumentCaptor.forClass(AuditAction.class);
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         ArgumentCaptor<User> adminCaptor = ArgumentCaptor.forClass(User.class);
-        
+
         verify(auditService).logAction(actionCaptor.capture(), userCaptor.capture(), adminCaptor.capture());
-        
-        User savedUser = userCaptor.getValue();
-        User savedAdmin = adminCaptor.getValue();
+
+        var savedUser = userCaptor.getValue();
+        var savedAdmin = adminCaptor.getValue();
 
         assertThat(actionCaptor.getValue()).isEqualTo(action);
         assertThat(savedUser).extracting(User::getId, User::getEmail)
@@ -520,7 +519,7 @@ public class AdminServiceImplTest {
                 .containsExactly(performedBy.getId(), performedBy.getEmail());
     }
 
-    private void cacheCheck(User result, User user, boolean isBanned) {
+    private void cacheCheck(AdminUserDto result, User user, boolean isBanned) {
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getEmail()).isEqualTo(user.getEmail());
@@ -529,3 +528,4 @@ public class AdminServiceImplTest {
         verify(auditService, never()).logAction(any(), any(), any());
     }
 }
+

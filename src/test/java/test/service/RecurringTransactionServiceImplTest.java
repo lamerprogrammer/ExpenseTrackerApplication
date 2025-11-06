@@ -34,7 +34,7 @@ import static test.util.Constants.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RecurringTransactionServiceImplTest {
-    
+
     @Mock
     private RecurringTransactionRepository recurringRepo;
 
@@ -43,24 +43,24 @@ public class RecurringTransactionServiceImplTest {
 
     @Mock
     private UserRepository userRepo;
-    
+
     @Mock
     private RecurringTransactionMapper mapper;
-    
+
     @Mock
     private CategoryRepository categoryRepo;
-    
+
     @InjectMocks
     private RecurringTransactionServiceImpl recurringTransactionServiceImpl;
-    
+
     @Test
     void processRecurringTransactions_shouldCreateNewTransactionAndUpdateDate() {
         RecurringTransaction recurring = TestData.recurringTransaction();
         List<RecurringTransaction> list = List.of(recurring);
         when(recurringRepo.findAllByNextExecutionDateLessThanEqual(any(LocalDate.class))).thenReturn(list);
-        
+
         recurringTransactionServiceImpl.processRecurringTransactions();
-        
+
         assertThat(recurring.getNextExecutionDate()).isAfter(LocalDate.now());
         assertThat(recurring.getAmount()).isEqualByComparingTo(new BigDecimal(AMOUNT));
         verify(recurringRepo).findAllByNextExecutionDateLessThanEqual(any());
@@ -137,7 +137,7 @@ public class RecurringTransactionServiceImplTest {
         when(userRepo.findByEmail(currentUser.getUsername())).thenReturn(Optional.empty());
 
         UserNotFoundByIdException ex = assertThrows(UserNotFoundByIdException.class,
-        () -> recurringTransactionServiceImpl.createRecurringTransaction(currentUser, requestDto));
+                () -> recurringTransactionServiceImpl.createRecurringTransaction(currentUser, requestDto));
 
         assertThat(ex.getMessage()).isEqualTo("User not found");
         verify(userRepo).findByEmail(currentUser.getUsername());
@@ -211,3 +211,4 @@ public class RecurringTransactionServiceImplTest {
         verify(mapper, never()).toDto(any());
     }
 }
+

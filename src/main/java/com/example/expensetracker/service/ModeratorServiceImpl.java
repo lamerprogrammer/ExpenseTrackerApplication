@@ -1,6 +1,7 @@
 package com.example.expensetracker.service;
 
 import com.example.expensetracker.details.UserDetailsImpl;
+import com.example.expensetracker.dto.ModeratorUserDto;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.audit.AuditService;
 import com.example.expensetracker.model.Role;
@@ -29,43 +30,44 @@ public class ModeratorServiceImpl implements ModeratorService {
     }
 
     @Override
-    public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<ModeratorUserDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(ModeratorUserDto::fromEntity);
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
+    public ModeratorUserDto getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundByIdException("User not found"));
+        return ModeratorUserDto.fromEntity(user);
     }
 
     @Override
     @Transactional
-    public User banUser(Long id, UserDetailsImpl currentUser) {
+    public ModeratorUserDto banUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     checkRole(user);
-                    if (user.isBanned()) return user;
+                    if (user.isBanned()) return ModeratorUserDto.fromEntity(user);
                     user.setBanned(true);
                     userRepository.save(user);
                     auditService.logAction(BAN, user, userEntity);
-                    return user;
+                    return ModeratorUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
     @Transactional
-    public User unbanUser(Long id, UserDetailsImpl currentUser) {
+    public ModeratorUserDto unbanUser(Long id, UserDetailsImpl currentUser) {
         User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     checkRole(user);
-                    if (!(user.isBanned())) return user;
+                    if (!(user.isBanned())) return ModeratorUserDto.fromEntity(user);
                     user.setBanned(false);
                     userRepository.save(user);
                     auditService.logAction(UNBAN, user, userEntity);
-                    return user;
+                    return ModeratorUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
@@ -84,3 +86,4 @@ public class ModeratorServiceImpl implements ModeratorService {
         }
     }
 }
+

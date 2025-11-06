@@ -99,3 +99,4 @@ public class ExpenseServiceImpl implements ExpenseService {
         return new ExpensesReportDto(total, items);
     }
 }
+
