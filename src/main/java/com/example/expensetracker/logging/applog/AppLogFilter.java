@@ -1,5 +1,6 @@
 package com.example.expensetracker.logging.applog;
 
+import com.example.expensetracker.config.RequestLoggingProperties;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,15 +17,21 @@ import java.time.Instant;
 public class AppLogFilter extends OncePerRequestFilter {
     
     private final AppLogService appLogService;
+    private final RequestLoggingProperties props;
 
-    public AppLogFilter(AppLogService appLogService) {
+    public AppLogFilter(AppLogService appLogService, RequestLoggingProperties props) {
         this.appLogService = appLogService;
+        this.props = props;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, 
                                     HttpServletResponse response, 
                                     FilterChain filterChain) throws ServletException, IOException {
+        if (!props.enabled()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         long start = System.currentTimeMillis();
         try {
             filterChain.doFilter(request, response);

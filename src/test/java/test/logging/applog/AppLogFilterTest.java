@@ -1,5 +1,6 @@
 package test.logging.applog;
 
+import com.example.expensetracker.config.RequestLoggingProperties;
 import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogFilter;
 import com.example.expensetracker.logging.applog.AppLogService;
@@ -37,6 +38,9 @@ public class AppLogFilterTest {
 
     @Mock
     private HttpServletResponse response;
+    
+    @Mock
+    private RequestLoggingProperties props;
 
     @Mock
     private FilterChain filterChain;
@@ -60,6 +64,7 @@ public class AppLogFilterTest {
                 HttpServletRequest.class, HttpServletResponse.class, FilterChain.class);
         method.setAccessible(true);
 
+        when(props.enabled()).thenReturn(true);
         when(request.getMethod()).thenReturn("GET");
         when(request.getRequestURI()).thenReturn(API_TEST_ENDPOINT);
         when(response.getStatus()).thenReturn(200);
@@ -92,6 +97,7 @@ public class AppLogFilterTest {
         when(auth.getName()).thenReturn(USER_EMAIL);
         SecurityContextHolder.setContext(context);
 
+        when(props.enabled()).thenReturn(true);
         when(request.getMethod()).thenReturn("GET");
         when(request.getRequestURI()).thenReturn(API_TEST_ENDPOINT);
         when(response.getStatus()).thenReturn(200);
@@ -121,6 +127,7 @@ public class AppLogFilterTest {
         when(context.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(context);
 
+        when(props.enabled()).thenReturn(true);
         when(request.getMethod()).thenReturn("GET");
         when(request.getRequestURI()).thenReturn(API_TEST_ENDPOINT);
         when(response.getStatus()).thenReturn(200);

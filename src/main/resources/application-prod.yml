@@ -14,3 +14,7 @@ spring:
     change-log: classpath:db/changelog-master.yaml
   elasticsearch:
     uris: ${ELASTIC_URI:http://prod-elastic:9200}
+app:
+  logging:
+    requests:
+      enabled: true
