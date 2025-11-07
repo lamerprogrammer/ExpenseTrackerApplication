@@ -47,7 +47,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @CacheEvict(value = "monthlyReports", key = "T(java.util.Objects).hash(#currentUser.domainUser.id)")
     public Expense addExpense(UserDetailsImpl currentUser, Expense expense) {
         User user = userRepository.findById(currentUser.getDomainUser().getId())
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         expense.setUser(user);
         Expense saved = expenseRepository.save(expense);
 
@@ -61,10 +61,10 @@ public class ExpenseServiceImpl implements ExpenseService {
     @CacheEvict(value = "monthlyReports", key = "T(java.util.Objects).hash(#currentUser.domainUser.id)")
     public void deleteExpense(UserDetailsImpl currentUser, Long expenseId) {
         Expense expense = expenseRepository.findById(expenseId)
-                .orElseThrow(() -> new IllegalArgumentException("Расход не найден"));
+                .orElseThrow(() -> new IllegalArgumentException("Expense not found"));
         User user = expense.getUser();
         if (!user.getId().equals(currentUser.getDomainUser().getId())) {
-            throw new SecurityException("Попытка удалить чужой расход");
+            throw new SecurityException("Attempt to delete someone else's expense");
         }
 
         user.decreaseTotalExpenses(expense.getAmount());

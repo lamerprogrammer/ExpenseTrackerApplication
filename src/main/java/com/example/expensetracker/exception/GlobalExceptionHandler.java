@@ -109,7 +109,7 @@ public class GlobalExceptionHandler {
                 .toList();
         String message = errors.isEmpty() ? msg("handle.validation.error") : String.join(". ", errors);
         
-        log.warn("Validation error: user={} path={} errors={}",
+        log.info("Validation error: user={} path={} errors={}",
                 request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous",
                 request.getRequestURI(),
                 errors);
@@ -144,7 +144,7 @@ public class GlobalExceptionHandler {
         String user = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
 
         AppLogLevel level = (ex instanceof IllegalArgumentException || ex instanceof ConstraintViolationException) ?
-                AppLogLevel.WARN : AppLogLevel.ERROR;
+                AppLogLevel.INFO : AppLogLevel.WARN;
         String logger = ex.getStackTrace().length > 0 ? ex.getStackTrace()[0].getClassName() : 
                 ex.getClass().getSimpleName();
 
@@ -161,14 +161,18 @@ public class GlobalExceptionHandler {
         
         appLogService.log(dto);
 
+        StringWriter writer = new StringWriter();
+        ex.printStackTrace(new PrintWriter(writer));
+
         if (status.is5xxServerError()) {
-            StringWriter writer = new StringWriter();
-            ex.printStackTrace(new PrintWriter(writer));
             log.error("GlobalExceptionHandler | user={} path={} status={} message={}\n{}",
                     user, request.getRequestURI(), status.value(), message, writer);
+        } else if(status.is4xxClientError()) {
+            log.info("GlobalExceptionHandler | user={} path={} status={} message={}\n{}",
+                    user, request.getRequestURI(), status.value(), message, writer);
         } else {
-            log.warn("GlobalExceptionHandler: user: {} path: {} message: {}",
-                    user, request.getRequestURI(), message);
+            log.warn("GlobalExceptionHandler | user: {} status={} path: {} message={}\n{}",
+                    user, request.getRequestURI(), status.value(), message, writer);
         }
         return ApiResponseFactory.error(status, ex.getClass().getSimpleName(), message, request);
     }

@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
         log.debug("Попытка регистрации: {}", dto.getEmail());
         if (userRepository.existsByEmail(dto.getEmail())) {
             log.warn("Регистрации провалилась: почта {} уже используется", dto.getEmail());
-            throw new DataIntegrityViolationException("Эта почта уже используется");
+            throw new DataIntegrityViolationException("This email is already in use");
         }
         User user = User.builder()
                 .email(dto.getEmail())
@@ -80,11 +80,11 @@ public class AuthServiceImpl implements AuthService {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> {
                         log.warn("Неудачная попытка обновления токена, пользователь {} не найден", email);
-                        return new UsernameNotFoundException("Пользователь не найден");
+                        return new UsernameNotFoundException("User not found");
                     });
             if (user.isBanned()) {
                 log.warn("Неудачная попытка обновления токена, пользователь {} заблокирован", email);
-                throw new AccessDeniedException("Ваш аккаунт заблокирован");
+                throw new AccessDeniedException("Your account has been blocked");
             }
             log.info("Успешное обновление токена, пользователя {}", email);
             return generateTokens(user);
@@ -92,7 +92,7 @@ public class AuthServiceImpl implements AuthService {
             throw e;
         } catch (Exception e) {
             log.error("Ошибка обновление токена, пользователя {}", e.getMessage(), e);
-            throw new BadCredentialsException("Невалидный токен");
+            throw new BadCredentialsException("Invalid token");
         }
     }
 
