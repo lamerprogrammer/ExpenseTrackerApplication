@@ -302,7 +302,7 @@
                 <artifactId>gatling-maven-plugin</artifactId>
                 <version>${gatling.plugin.version}</version>
                 <configuration>
-                    <simulationClass>simulations.ExpenseTrackerSimulation</simulationClass>
+                    <simulationClass>simulations.SyntheticSimulation</simulationClass>
                 </configuration>
                 <executions>
                     <execution>

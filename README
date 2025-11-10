@@ -22,6 +22,9 @@ mvn clean package -DskipTests
 docker-compose up --build
 Приложение будет доступно по адресу: http://localhost:8080/swagger-ui/index.html
 
+mvn clean verify → отчёт Jacoco в target/site/jacoco/index.html
+mvn clean gatling:test → запуск Gatling симуляции и отчёта
+
 
 ## Docker окружение
 Проект запускается локально через Docker Compose.
@@ -31,9 +34,6 @@ docker-compose up --build
 - `elasticsearch` — хранение логов аудита (Elasticsearch 8.15.0)
 - `kibana` — визуализация аудита
 - `expense-tracker` — само Spring Boot приложение
-
-## Jacoco coverage:
-mvn clean verify → отчёт в target/site/jacoco/index.html
 
 ## Контакты:
 Telegram - @lex_teg
