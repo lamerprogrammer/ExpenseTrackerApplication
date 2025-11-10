@@ -94,8 +94,8 @@ public class AuthServiceImplTest {
 
         assertThat(result.accessToken()).isEqualTo(TOKEN_ACCESS);
         assertThat(result.refreshToken()).isEqualTo(TOKEN_REFRESH);
-        verify(jwtUtil).generateAccessToken(eq(user.getEmail()), eq(Role.USER));
-        verify(jwtUtil).generateRefreshToken(eq(user.getEmail()));
+        verify(jwtUtil).generateAccessToken(user.getEmail(), Role.USER);
+        verify(jwtUtil).generateRefreshToken(user.getEmail());
     }
 
     @Test
@@ -149,8 +149,8 @@ public class AuthServiceImplTest {
         verify(jwsClaims).getPayload();
         verify(claims).getSubject();
         verify(userRepository).findByEmail(USER_EMAIL);
-        verify(jwtUtil).generateAccessToken(eq(user.getEmail()), eq(Role.USER));
-        verify(jwtUtil).generateRefreshToken(eq(user.getEmail()));
+        verify(jwtUtil).generateAccessToken(user.getEmail(), Role.USER);
+        verify(jwtUtil).generateRefreshToken(user.getEmail());
     }
 
     @Test
@@ -192,14 +192,14 @@ public class AuthServiceImplTest {
         when(jwtUtil.parse(request.refreshToken())).thenReturn(jwsClaims);
         when(jwsClaims.getPayload()).thenReturn(claims);
         when(claims.getSubject()).thenReturn(USER_EMAIL);
-        when(userRepository.findByEmail(eq(USER_EMAIL))).thenReturn(Optional.of(userBanned));
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userBanned));
 
         AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> authService.refresh(request));
 
         assertThat(ex.getMessage()).isNotBlank();
         verify(jwtUtil).parse(request.refreshToken());
-        verify(userRepository).findByEmail(eq(userBanned.getEmail()));
+        verify(userRepository).findByEmail(userBanned.getEmail());
         verify(jwtUtil, never()).generateAccessToken(anyString(), any());
         verify(jwtUtil, never()).generateRefreshToken(anyString());
     }

@@ -60,8 +60,8 @@ public class ExpenseServiceImplTest {
 
         assertThat(result.total()).isEqualByComparingTo("800");
         assertThat(result.byCategory()).hasSize(2);
-        verify(expenseRepository).sumByCategoryForUserBetween(eq(user.getId()), eq(from), eq(to));
-        verify(expenseRepository).totalForUserBetween(eq(user.getId()), eq(from), eq(to));
+        verify(expenseRepository).sumByCategoryForUserBetween(user.getId(), from, to);
+        verify(expenseRepository).totalForUserBetween(user.getId(), from, to);
     }
 
     @Test

@@ -82,7 +82,7 @@ public class AdminServiceImplTest {
     void getUserById_shouldReturnUser_whenUserExists() {
         User user = TestData.user();
         Long id = user.getId();
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         var result = adminService.getUserById(id);
 
@@ -93,7 +93,7 @@ public class AdminServiceImplTest {
 
     @Test
     void getUserById_shouldThrowException_whenUserNotExists() {
-        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+        when(userRepository.findById(ID_INVALID)).thenReturn(Optional.empty());
 
         UserNotFoundByIdException ex = assertThrows(UserNotFoundByIdException.class,
                 () -> adminService.getUserById(ID_INVALID));
@@ -107,8 +107,8 @@ public class AdminServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         var result = adminService.promoteUser(ID_VALID, currentUser);
@@ -123,8 +123,8 @@ public class AdminServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User moderator = TestData.moderator();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(moderator));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(moderator));
 
         var result = adminService.promoteUser(ID_VALID, currentUser);
 
@@ -140,8 +140,8 @@ public class AdminServiceImplTest {
     void promoteUser_shouldThrowException_whenUserNotExists() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_INVALID)).thenReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
                 () -> adminService.promoteUser(ID_INVALID, currentUser));
@@ -156,8 +156,8 @@ public class AdminServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.moderator();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         var result = adminService.demoteUser(ID_VALID, currentUser);
@@ -172,8 +172,8 @@ public class AdminServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         var result = adminService.demoteUser(ID_VALID, currentUser);
 
@@ -189,8 +189,8 @@ public class AdminServiceImplTest {
     void demoteUser_shouldThrowException_whenUserNotExists() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_INVALID)).thenReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
                 () -> adminService.demoteUser(ID_INVALID, currentUser));
@@ -206,10 +206,10 @@ public class AdminServiceImplTest {
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.user();
         AuditDto auditDto = AuditDto.from(new Audit(BAN, user, admin));
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(auditService.logAction(eq(BAN), eq(user), eq(admin))).thenReturn(auditDto);
+        when(auditService.logAction(BAN, user, admin)).thenReturn(auditDto);
 
         var result = adminService.banUser(ID_VALID, currentUser);
 
@@ -222,7 +222,7 @@ public class AdminServiceImplTest {
     void banUser_shouldThrowException_whenIdsMatched() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> adminService.banUser(admin.getId(), currentUser));
@@ -237,8 +237,8 @@ public class AdminServiceImplTest {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
         User user = TestData.userBanned();
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
-        when(userRepository.findById(eq(ID_VALID))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
+        when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
 
         var result = adminService.banUser(ID_VALID, currentUser);
 
@@ -248,20 +248,7 @@ public class AdminServiceImplTest {
     @Test
     void banUser_shouldThrowException_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.empty());
-
-        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
-                () -> adminService.banUser(ID_INVALID, currentUser));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(userRepository, never()).save(any(User.class));
-        verify(auditService, never()).logAction(any(), any(), any());
-    }
-
-    @Test
-    void banUser_shouldThrowException_whenAdminNotFound() {
-        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenThrow(new UsernameNotFoundException("message"));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.empty());
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> adminService.banUser(ID_INVALID, currentUser));
@@ -275,7 +262,7 @@ public class AdminServiceImplTest {
     void banUser_shouldThrowException_whenUserNotExists() {
         User admin = TestData.admin();
         UserDetailsImpl currentUser = new UserDetailsImpl(admin);
-        when(userRepository.findByEmail(eq(ADMIN_EMAIL))).thenReturn(Optional.of(admin));
+        when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
         when(userRepository.findById(eq(ID_INVALID))).thenReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,

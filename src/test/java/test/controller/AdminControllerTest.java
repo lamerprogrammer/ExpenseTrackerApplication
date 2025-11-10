@@ -114,7 +114,7 @@ public class AdminControllerTest {
         var response = adminController.banUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(adminService).banUser(eq(id), eq(currentUser));
+        verify(adminService).banUser(id, currentUser);
         verify(messageSource).getMessage(eq("ban.user"), isNull(), any());
     }
 
@@ -128,7 +128,7 @@ public class AdminControllerTest {
         var response = adminController.unbanUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(adminService).unbanUser(eq(id), eq(currentUser));
+        verify(adminService).unbanUser(id, currentUser);
         verify(messageSource).getMessage(eq("unban.user"), isNull(), any());
     }
 
@@ -143,7 +143,7 @@ public class AdminControllerTest {
         var response = adminController.promoteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(adminService).promoteUser(eq(id), eq(currentUser));
+        verify(adminService).promoteUser(id, currentUser);
         verify(messageSource).getMessage(eq("promote.user"), isNull(), any());
     }
 
@@ -157,7 +157,7 @@ public class AdminControllerTest {
         var response = adminController.demoteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(adminService).demoteUser(eq(id), eq(currentUser));
+        verify(adminService).demoteUser(id, currentUser);
         verify(messageSource).getMessage(eq("demote.user"), isNull(), any());
     }
 
@@ -171,7 +171,7 @@ public class AdminControllerTest {
         var response = adminController.deleteUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(adminService).deleteUser(eq(id), eq(currentUser));
+        verify(adminService).deleteUser(id, currentUser);
         verify(messageSource).getMessage(eq("delete.user"), isNull(), any());
     }
 

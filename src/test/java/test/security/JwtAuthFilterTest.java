@@ -150,7 +150,7 @@ public class JwtAuthFilterTest {
 
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
         verify(jwtUtil, never()).parse(anyString());
-        verify(filterChain, never()).doFilter(eq(request), eq(response));
+        verify(filterChain, never()).doFilter(request, response);
     }
 
     @Test

@@ -101,7 +101,7 @@ public class ModeratorControllerTest {
         var response = moderatorController.banUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(moderatorService).banUser(eq(id), eq(currentUser));
+        verify(moderatorService).banUser(id, currentUser);
         verify(messageSource).getMessage(eq("ban.user"), isNull(), any());
     }
 
@@ -115,7 +115,7 @@ public class ModeratorControllerTest {
         var response = moderatorController.unbanUser(id, currentUser, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(moderatorService).unbanUser(eq(id), eq(currentUser));
+        verify(moderatorService).unbanUser(id, currentUser);
         verify(messageSource).getMessage(eq("unban.user"), isNull(), any());
     }
 }

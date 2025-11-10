@@ -109,7 +109,7 @@ public class ModeratorServiceImplTest {
         when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.of(admin));
         when(userRepository.findById(ID_VALID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(auditService.logAction(eq(BAN), eq(user), eq(admin))).thenReturn(auditDto);
+        when(auditService.logAction(BAN, user, admin)).thenReturn(auditDto);
 
         var result = moderatorService.banUser(ID_VALID, currentUser);
 
@@ -135,19 +135,6 @@ public class ModeratorServiceImplTest {
     void banUser_shouldThrowException_whenUserNotFound() {
         UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
         when(userRepository.findByEmail(ADMIN_EMAIL)).thenReturn(Optional.empty());
-
-        UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
-                () -> moderatorService.banUser(ID_INVALID, currentUser));
-
-        assertThat(ex.getMessage()).isNotBlank();
-        verify(userRepository, never()).save(any(User.class));
-        verify(auditService, never()).logAction(any(), any(), any());
-    }
-
-    @Test
-    void banUser_shouldThrowException_whenAdminNotFound() {
-        UserDetailsImpl currentUser = new UserDetailsImpl(TestData.admin());
-        when(userRepository.findByEmail(ADMIN_EMAIL)).thenThrow(new UsernameNotFoundException("message"));
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> moderatorService.banUser(ID_INVALID, currentUser));

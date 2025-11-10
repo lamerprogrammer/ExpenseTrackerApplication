@@ -45,12 +45,12 @@ public class UserServiceImplTest {
         User user = TestData.user();
         UserDetailsImpl details = new UserDetailsImpl(user);
         String email = details.getUsername();
-        when(userRepository.findByEmail(eq(email))).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
         var result = userService.getCurrentUser(details);
 
         assertThat(result).isSameAs(user);
-        verify(userRepository).findByEmail(eq(email));
+        verify(userRepository).findByEmail(email);
     }
 
     @Test
@@ -58,14 +58,14 @@ public class UserServiceImplTest {
         User user = TestData.user();
         UserDetailsImpl details = new UserDetailsImpl(user);
         String email = details.getUsername();
-        when(userRepository.findByEmail(eq(email))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         UsernameNotFoundException ex = assertThrows(UsernameNotFoundException.class,
                 () -> userService.getCurrentUser(details));
 
         assertThat(ex).isInstanceOf(UsernameNotFoundException.class);
         assertThat(ex.getMessage()).isNotBlank();
-        verify(userRepository).findByEmail(eq(email));
+        verify(userRepository).findByEmail(email);
     }
 
     @Test
