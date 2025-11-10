@@ -7,7 +7,6 @@ import com.example.expensetracker.logging.audit.AuditService;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.UserRepository;
-import com.example.expensetracker.service.util.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +23,10 @@ public class ModeratorServiceImpl implements ModeratorService {
 
     private final UserRepository userRepository;
     private final AuditService auditService;
-    private final UserValidator userValidator;
 
-    public ModeratorServiceImpl(UserRepository userRepository, AuditService auditService, UserValidator userValidator) {
+    public ModeratorServiceImpl(UserRepository userRepository, AuditService auditService) {
         this.userRepository = userRepository;
         this.auditService = auditService;
-        this.userValidator = userValidator;
     }
 
     @Override
@@ -47,7 +44,7 @@ public class ModeratorServiceImpl implements ModeratorService {
     @Override
     @Transactional
     public ModeratorUserDto banUser(Long id, UserDetailsImpl currentUser) {
-        User userEntity = userValidator.validateAndGetActor(id, currentUser);
+        User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     checkRole(user);
@@ -62,7 +59,7 @@ public class ModeratorServiceImpl implements ModeratorService {
     @Override
     @Transactional
     public ModeratorUserDto unbanUser(Long id, UserDetailsImpl currentUser) {
-        User userEntity = userValidator.validateAndGetActor(id, currentUser);
+        User userEntity = userEntity(id, currentUser);
         return userRepository.findById(id)
                 .map(user -> {
                     checkRole(user);
@@ -72,6 +69,15 @@ public class ModeratorServiceImpl implements ModeratorService {
                     auditService.logAction(UNBAN, user, userEntity);
                     return ModeratorUserDto.fromEntity(user);
                 }).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
+    private User userEntity(Long id, UserDetailsImpl currentUser) {
+        User userEntity = userRepository.findByEmail(currentUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (id.equals(userEntity.getId())) {
+            throw new IllegalArgumentException("You cannot perform an action on yourself");
+        }
+        return userEntity;
     }
 
     private void checkRole(User user) {
