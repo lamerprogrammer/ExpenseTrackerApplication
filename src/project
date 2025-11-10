@@ -8524,7 +8524,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
                 <artifactId>gatling-maven-plugin</artifactId>
                 <version>${gatling.plugin.version}</version>
                 <configuration>
-                    <simulationClass>simulations.SyntheticSimulation</simulationClass>
+                    <simulationClass>simulations.ExpenseTrackerSimulation</simulationClass>
                 </configuration>
                 <executions>
                     <execution>

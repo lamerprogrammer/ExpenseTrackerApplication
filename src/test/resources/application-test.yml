@@ -23,4 +23,4 @@ spring:
 app:
   logging:
     requests:
-      enabled: true
+      enabled: false

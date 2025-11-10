@@ -10,7 +10,7 @@ import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
-public class SyntheticSimulation extends Simulation {
+public class ExpenseTrackerSimulation extends Simulation {
 
     HttpProtocolBuilder httpProtocol = http
             .baseUrl("http://localhost:8080/api")
@@ -50,6 +50,6 @@ public class SyntheticSimulation extends Simulation {
             .pause(1, 3);
 
     {
-        setUp(scn.injectOpen(rampUsers(100).during(60))).protocols(httpProtocol);
+        setUp(scn.injectOpen(rampUsers(200).during(60))).protocols(httpProtocol);
     }
 }

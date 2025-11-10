@@ -11,11 +11,9 @@ Expense Tracker — это полнофункциональное приложе
 - Локализация сообщений
 - Swagger UI (OpenAPI) документация
 
-
 ## Технологический стек
 Spring Boot 3.4, Spring Security, JWT, JPA (Hibernate), PostgreSQL, Liquibase, MapStruct, Elasticsearch, Docker, JUnit5, 
 Mockito, Jacoco, Caffeine Cache, Gatling.
-
 
 ##  Запуск
 mvn clean package -DskipTests
@@ -24,7 +22,8 @@ docker-compose up --build
 
 mvn clean verify → отчёт Jacoco в target/site/jacoco/index.html
 mvn clean gatling:test → запуск Gatling симуляции и отчёта
-
+mvn gatling:test -Dgatling.simulationClass=simulations.ExpenseTrackerSimulation -Dspring.profiles.active=test нагрузочное тестирование без логирования
+mvn gatling:test -Dgatling.simulationClass=simulations.ExpenseTrackerSimulation -Dspring.profiles.active=prod нагрузочное тестирование с логированием
 
 ## Docker окружение
 Проект запускается локально через Docker Compose.
@@ -38,3 +37,5 @@ mvn clean gatling:test → запуск Gatling симуляции и отчёт
 ## Контакты:
 Telegram - @lex_teg
 Discord - lamer1863
+GMail - milodermo22490@gmail.com
+EMail - milo_dermo_224_90@mail.ru

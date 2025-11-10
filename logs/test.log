@@ -1,17 +1,17 @@
-14:55:41.570 [main] INFO  i.g.c.config.GatlingConfiguration$ - Gatling will try to load 'gatling.conf' config file as ClassLoader resource.
-14:55:41.940 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-14:55:44.120 [GatlingSystem-akka.actor.default-dispatcher-6] INFO  i.g.c.stats.writer.ConsoleDataWriter - Initializing
-14:55:44.120 [GatlingSystem-akka.actor.default-dispatcher-7] INFO  i.g.c.stats.writer.LogFileDataWriter - Initializing
-14:55:44.124 [GatlingSystem-akka.actor.default-dispatcher-6] INFO  i.g.c.stats.writer.ConsoleDataWriter - Initialized
-14:55:44.125 [GatlingSystem-akka.actor.default-dispatcher-7] INFO  i.g.c.stats.writer.LogFileDataWriter - Initialized
-14:56:42.146 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  i.g.c.c.inject.open.OpenWorkload - Scenario io.gatling.core.scenario.Scenario@1b9a74b has finished injecting
-14:56:42.146 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  i.g.core.controller.inject.Injector - All scenarios have finished injecting
-14:56:45.471 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  i.g.core.controller.inject.Injector - All users of scenario Register -> Login -> Total -> Report (date range) -> Report (monthly) are stopped
-14:56:45.472 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  i.g.core.controller.inject.Injector - Stopping
-14:56:45.472 [GatlingSystem-akka.actor.default-dispatcher-7] INFO  i.gatling.core.controller.Controller - Injector has stopped, initiating graceful stop
-14:56:45.483 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
-14:56:45.506 [main] INFO  i.g.charts.stats.LogFileReader$ - Collected List(C:\Users\lamer\IdeaProjects\expense-tracker\target\gatling\expensetrackersimulation-20251110115543707\simulation.log) from expensetrackersimulation-20251110115543707
-14:56:45.511 [main] INFO  i.gatling.charts.stats.LogFileReader - First pass
-14:56:45.515 [main] INFO  i.gatling.charts.stats.LogFileReader - First pass done: read 701 lines
-14:56:45.520 [main] INFO  i.gatling.charts.stats.LogFileReader - Second pass
-14:56:45.546 [main] INFO  i.gatling.charts.stats.LogFileReader - Second pass: read 701 lines
+16:23:07.399 [main] INFO  i.g.c.config.GatlingConfiguration$ - Gatling will try to load 'gatling.conf' config file as ClassLoader resource.
+16:23:07.770 [GatlingSystem-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+16:23:08.934 [GatlingSystem-akka.actor.default-dispatcher-6] INFO  i.g.c.stats.writer.ConsoleDataWriter - Initializing
+16:23:08.934 [GatlingSystem-akka.actor.default-dispatcher-7] INFO  i.g.c.stats.writer.LogFileDataWriter - Initializing
+16:23:08.938 [GatlingSystem-akka.actor.default-dispatcher-6] INFO  i.g.c.stats.writer.ConsoleDataWriter - Initialized
+16:23:08.939 [GatlingSystem-akka.actor.default-dispatcher-7] INFO  i.g.c.stats.writer.LogFileDataWriter - Initialized
+16:24:07.937 [GatlingSystem-akka.actor.default-dispatcher-8] INFO  i.g.c.c.inject.open.OpenWorkload - Scenario io.gatling.core.scenario.Scenario@5f240ec7 has finished injecting
+16:24:07.937 [GatlingSystem-akka.actor.default-dispatcher-8] INFO  i.g.core.controller.inject.Injector - All scenarios have finished injecting
+16:24:18.555 [GatlingSystem-akka.actor.default-dispatcher-10] INFO  i.g.core.controller.inject.Injector - All users of scenario Register -> Login -> Total -> Report (date range) -> Report (monthly) are stopped
+16:24:18.555 [GatlingSystem-akka.actor.default-dispatcher-10] INFO  i.g.core.controller.inject.Injector - Stopping
+16:24:18.556 [GatlingSystem-akka.actor.default-dispatcher-8] INFO  i.gatling.core.controller.Controller - Injector has stopped, initiating graceful stop
+16:24:18.566 [GatlingSystem-akka.actor.default-dispatcher-10] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+16:24:18.591 [main] INFO  i.g.charts.stats.LogFileReader$ - Collected List(C:\Users\lamer\IdeaProjects\expense-tracker\target\gatling\expensetrackersimulation-20251110132308494\simulation.log) from expensetrackersimulation-20251110132308494
+16:24:18.596 [main] INFO  i.gatling.charts.stats.LogFileReader - First pass
+16:24:18.601 [main] INFO  i.gatling.charts.stats.LogFileReader - First pass done: read 1401 lines
+16:24:18.606 [main] INFO  i.gatling.charts.stats.LogFileReader - Second pass
+16:24:18.635 [main] INFO  i.gatling.charts.stats.LogFileReader - Second pass: read 1401 lines
