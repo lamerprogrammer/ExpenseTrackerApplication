@@ -119,7 +119,7 @@ public class AuthControllerIT {
     }
 
     @Test
-    void login_shouldThrowException_whenPasswordInvalid() throws Exception {
+    void login_shouldThrowException_whenPasswordNotMatches() throws Exception {
         registerUser(name, email, password);
 
         LoginRequest loginRequest = new LoginRequest(email, "invalidPassword");
