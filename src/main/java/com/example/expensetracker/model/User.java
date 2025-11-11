@@ -108,10 +108,12 @@ public class User {
     }
 
     public void increaseTotalExpenses(BigDecimal amount) {
+        if (amount.signum() < 0) throw new IllegalArgumentException("Cannot be less than zero");
         this.totalExpenses = this.totalExpenses.add(amount);
     }
 
     public void decreaseTotalExpenses(BigDecimal amount) {
+        if (amount.signum() < 0) throw new IllegalArgumentException("Cannot be less than zero");
         this.totalExpenses = this.totalExpenses.subtract(amount);
     }
 

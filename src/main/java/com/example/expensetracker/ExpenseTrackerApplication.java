@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @EnableCaching
-@OpenAPIDefinition(info = @Info(title = "Expense Tracker API", version = "1.0"))
+@OpenAPIDefinition(info = @Info(title = "Expense Tracker", version = "1.0"))
 @ConfigurationPropertiesScan("com.example.expensetracker.config")
 public class ExpenseTrackerApplication {
 

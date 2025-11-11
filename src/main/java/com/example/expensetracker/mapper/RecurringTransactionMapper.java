@@ -19,12 +19,5 @@ public interface RecurringTransactionMapper {
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "nextExecutionDate", expression = "java(java.time.LocalDate.now())")
     @Mapping(target = "active", constant = "true")
-    RecurringTransaction toEntity(RecurringTransactionDto dto, Category category);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "category", source = "category")
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "nextExecutionDate", expression = "java(java.time.LocalDate.now())")
-    @Mapping(target = "active", constant = "true")
     RecurringTransaction fromRequest(RecurringTransactionRequestDto dto, Category category);
 }

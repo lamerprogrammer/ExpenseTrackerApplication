@@ -14,7 +14,7 @@ public class SwaggerConfig {
     public OpenAPI expenseTrackerOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Expense Tracker API")
+                        .title("Expense Tracker")
                         .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new io.swagger.v3.oas.models.Components()
