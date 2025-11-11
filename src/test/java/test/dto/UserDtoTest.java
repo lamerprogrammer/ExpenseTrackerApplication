@@ -33,7 +33,7 @@ public class UserDtoTest {
     }
 
     @Test
-    void fromEntities_shouldMapListCorrectly() {
+    void fromEntities_shouldReturnListOfMappedDtos() {
         User user = TestData.user();
         User admin = TestData.user();
         List<UserDto> userDto = fromEntities(List.of(user, admin));

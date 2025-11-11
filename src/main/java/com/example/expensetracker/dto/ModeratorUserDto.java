@@ -5,22 +5,21 @@ import com.example.expensetracker.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ModeratorUserDto {
+public final class ModeratorUserDto {
 
     private final Long id;
 
     private final String email;
 
-    private Set<Role> roles = new HashSet<>();
+    private final Set<Role> roles;
 
-    private boolean banned = false;
+    private final boolean banned;
 
-    private BigDecimal totalExpenses = BigDecimal.ZERO;
+    private final BigDecimal totalExpenses;
 
     public ModeratorUserDto(@JsonProperty("id") Long id,
                             @JsonProperty("email") String email,
@@ -43,7 +42,7 @@ public class ModeratorUserDto {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return Set.copyOf(roles);
     }
 
     public boolean isBanned() {
@@ -61,8 +60,7 @@ public class ModeratorUserDto {
 
     public static List<ModeratorUserDto> fromEntities(List<User> users) {
         return users.stream()
-                .map(user -> new ModeratorUserDto(user.getId(), user.getEmail(), user.getRoles(), user.isBanned(),
-                        user.getTotalExpenses()))
+                .map(ModeratorUserDto::fromEntity)
                 .collect(Collectors.toList());
     }
 }
