@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static test.util.Constants.*;
 import static test.util.TestMessageSource.msg;
 
@@ -126,6 +127,26 @@ public class UserTest {
         assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
         assertThat(user.getRoles()).containsExactly(Role.USER);
         assertThat(user.isBanned()).isTrue();
+    }
+    
+    @Test
+    void increaseTotalExpenses_shouldThrowException_whenAmountSubZero() {
+        BigDecimal amount = new BigDecimal("-1");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> new User().increaseTotalExpenses(amount));
+        
+        assertThat(ex.getMessage()).isNotEmpty();
+    }
+
+    @Test
+    void decreaseTotalExpenses_shouldThrowException_whenAmountSubZero() {
+        BigDecimal amount = new BigDecimal("-1");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> new User().decreaseTotalExpenses(amount));
+
+        assertThat(ex.getMessage()).isNotEmpty();
     }
 
     @Test

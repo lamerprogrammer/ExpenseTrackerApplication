@@ -4,6 +4,7 @@ import com.example.expensetracker.dto.ApiResponse;
 import com.example.expensetracker.exception.GlobalExceptionHandler;
 import com.example.expensetracker.exception.UserNotFoundByIdException;
 import com.example.expensetracker.logging.applog.AppLogDto;
+import com.example.expensetracker.logging.applog.AppLogLevel;
 import com.example.expensetracker.logging.applog.AppLogService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.method.MethodValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.List;
@@ -66,11 +68,11 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         checkBody(response.getBody(), 401, "handle.bad.credentials");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
-    void handleBadCredentials_shouldUsePrincipalNameWhenPresent() {
+    void handleBadCredentials_shouldUsePrincipalNameIfPresent() {
         mockMessage();
         request.setUserPrincipal(() -> "test-user");
         BadCredentialsException ex = new BadCredentialsException("");
@@ -78,7 +80,7 @@ public class GlobalExceptionHandlerTest {
         var response = handler.handleBadCredentials(ex, request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -90,7 +92,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
         checkBody(response.getBody(), 403, "handle.access.denied");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -102,7 +104,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         checkBody(response.getBody(), 404, "handle.entity.not.found");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -114,7 +116,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         checkBody(response.getBody(), 409, "handle.data.integrity.violation");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -126,7 +128,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         checkBody(response.getBody(), 401, "handle.username.not.found");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -138,7 +140,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         checkBody(response.getBody(), 404, "handle.user.not.found.by.id");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -150,7 +152,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         checkBody(response.getBody(), 409, "handle.entity.exists");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -163,7 +165,19 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         checkBody(response.getBody(), 400, "handle.handler.method.validation");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
+    }
+
+    @Test
+    void handleMissingServletRequestParameter_shouldReturnBadRequestResponse() {
+        mockMessage();
+        MissingServletRequestParameterException ex = new MissingServletRequestParameterException("pName", "pType");
+
+        var response = handler.handleMissingServletRequestParameter(ex, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        checkBody(response.getBody(), 400, "handle.handler.method.validation");
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -175,7 +189,7 @@ public class GlobalExceptionHandlerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         checkBody(response.getBody(), 400, "handle.illegal.argument");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.INFO);
     }
 
     @Test
@@ -247,6 +261,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(body).isNotNull();
         assertThat(body.getMessage()).contains("Почта обязательна");
         assertThat(body.getMessage()).contains("Пароль обязателен");
+        checkLevelLog(AppLogLevel.INFO);
     }
 
     @Test
@@ -260,6 +275,7 @@ public class GlobalExceptionHandlerTest {
         var body = response.getBody();
         assertThat(body).isNotNull();
         assertThat(body.getMessage()).contains("validation.error");
+        checkLevelLog(AppLogLevel.INFO);
     }
 
     @Test
@@ -274,7 +290,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(body).isNotNull();
         assertThat(body.getStatus()).isEqualTo(500);
         assertThat(body.getMessage()).contains("handle.generic");
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
@@ -288,11 +304,11 @@ public class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getStatus()).isEqualTo(500);
-        verify(appLogService).log(any());
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     @Test
-    void handleGeneric_shouldUseClassSimpleName_whenNoStackTrace() {
+    void handleGeneric_shouldUseClassSimpleName_whenStackTraceIsEmpty() {
         mockMessage();
 
         Exception ex = new Exception("No stack trace");
@@ -308,6 +324,7 @@ public class GlobalExceptionHandlerTest {
         assertThat(savedDto.getErrorType()).isEqualTo("Exception");
         assertThat(savedDto.getLevel()).isNotNull();
         assertThat(savedDto.getTimestamp()).isNotNull();
+        checkLevelLog(AppLogLevel.WARN);
     }
 
     private void checkBody(ApiResponse<?> body, int status, String message) {
@@ -320,5 +337,11 @@ public class GlobalExceptionHandlerTest {
     private void mockMessage() {
         when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(invocation ->
                 invocation.getArgument(0));
+    }
+
+    private void checkLevelLog(AppLogLevel level) {
+        ArgumentCaptor<AppLogDto> captor = ArgumentCaptor.forClass(AppLogDto.class);
+        verify(appLogService).log(captor.capture());
+        assertThat(captor.getValue().getLevel()).isEqualTo(level);
     }
 }

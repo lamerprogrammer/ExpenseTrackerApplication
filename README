@@ -35,7 +35,7 @@ mvn gatling:test -Dgatling.simulationClass=simulations.ExpenseTrackerSimulation 
 - `expense-tracker` — само Spring Boot приложение
 
 ## Контакты:
+GMail/Zoom - milodermo22490@gmail.com
+EMail - milo_dermo_224_90@mail.ru
 Telegram - @lex_teg
 Discord - lamer1863
-GMail - milodermo22490@gmail.com
-EMail - milo_dermo_224_90@mail.ru

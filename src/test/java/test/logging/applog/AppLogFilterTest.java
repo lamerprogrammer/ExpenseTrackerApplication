@@ -5,9 +5,11 @@ import com.example.expensetracker.logging.applog.AppLogDto;
 import com.example.expensetracker.logging.applog.AppLogFilter;
 import com.example.expensetracker.logging.applog.AppLogService;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import static com.example.expensetracker.logging.applog.AppLogLevel.INFO;
@@ -53,17 +56,23 @@ public class AppLogFilterTest {
         SecurityContextHolder.clearContext();
     }
 
+    private static Method method;
+
+    @BeforeAll
+    static void init() throws NoSuchMethodException {
+        method = AppLogFilter.class.getDeclaredMethod("doFilterInternal",
+                HttpServletRequest.class, HttpServletResponse.class, FilterChain.class);
+        method.setAccessible(true);
+    }
+
     @AfterEach
-    void tearDown() {
+    void tearDown() throws ServletException, IOException {
         SecurityContextHolder.clearContext();
+        verify(filterChain).doFilter(request, response);
     }
 
     @Test
     void doFilterInternal_shouldLogAnonymousUser() throws Exception {
-        Method method = AppLogFilter.class.getDeclaredMethod("doFilterInternal",
-                HttpServletRequest.class, HttpServletResponse.class, FilterChain.class);
-        method.setAccessible(true);
-
         when(props.enabled()).thenReturn(true);
         when(request.getMethod()).thenReturn("GET");
         when(request.getRequestURI()).thenReturn(API_TEST_ENDPOINT);
@@ -83,11 +92,7 @@ public class AppLogFilterTest {
     }
 
     @Test
-    void doFilterInternal_shouldLogAuthenticationUser() throws Exception {
-        Method method = AppLogFilter.class.getDeclaredMethod("doFilterInternal",
-                HttpServletRequest.class, HttpServletResponse.class, FilterChain.class);
-        method.setAccessible(true);
-
+    void doFilterInternal_shouldLogAuthenticatedUser() throws Exception {
         Authentication auth = mock(Authentication.class);
         SecurityContext context = mock(SecurityContext.class);
 
@@ -116,11 +121,7 @@ public class AppLogFilterTest {
     }
 
     @Test
-    void doFilterInternal_shouldLogNotAuthenticationUser() throws Exception {
-        Method method = AppLogFilter.class.getDeclaredMethod("doFilterInternal",
-                HttpServletRequest.class, HttpServletResponse.class, FilterChain.class);
-        method.setAccessible(true);
-
+    void doFilterInternal_shouldLogNotAuthenticatedUser() throws Exception {
         Authentication auth = mock(Authentication.class);
         SecurityContext context = mock(SecurityContext.class);
         
@@ -143,5 +144,15 @@ public class AppLogFilterTest {
                         AppLogDto::getEndPoint)
                 .containsExactly(INFO, "HTTP", "ANONYMOUS", API_TEST_ENDPOINT);
         assertThat(dto.getMessage()).contains("GET " + API_TEST_ENDPOINT + " -> 200 (").endsWith(" ms)");
+    }
+
+    @Test
+    void doFilterInternal_shouldSkipLogging_whenLoggingIsDisabled() throws Exception {
+        when(props.enabled()).thenReturn(false);
+
+        method.invoke(appLogFilter, request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+        verify(appLogService, never()).log(any());
     }
 }

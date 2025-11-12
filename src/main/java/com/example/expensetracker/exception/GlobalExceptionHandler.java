@@ -100,6 +100,12 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, msg("handle.handler.method.validation"), request, ex);
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiResponse<UserDto>> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
+                                                                                     HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, msg("handle.handler.method.validation"), request, ex);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<UserDto>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                     HttpServletRequest request) {
@@ -124,12 +130,6 @@ public class GlobalExceptionHandler {
                 .toList();
         String message = errors.isEmpty() ? msg("handle.validation.error") : String.join(". ", errors);
         return buildResponse(HttpStatus.BAD_REQUEST, message, request, ex);
-    }
-
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ApiResponse<UserDto>> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
-                                                                       HttpServletRequest request) {
-        return buildResponse(HttpStatus.BAD_REQUEST, msg("handle.handler.method.validation"), request, ex);
     }
 
     @ExceptionHandler(Exception.class)
@@ -171,6 +171,7 @@ public class GlobalExceptionHandler {
             log.info("GlobalExceptionHandler | user={} path={} status={} message={}\n{}",
                     user, request.getRequestURI(), status.value(), message, writer);
         } else {
+            //этот блок на всякий случай, чтобы логгер ничего не пропустил
             log.warn("GlobalExceptionHandler | user: {} status={} path: {} message={}\n{}",
                     user, request.getRequestURI(), status.value(), message, writer);
         }

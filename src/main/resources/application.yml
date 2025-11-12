@@ -30,3 +30,6 @@ app:
   admin:
     email: admin@example.com
     password: admin
+  logging:
+    requests:
+      enabled: true
