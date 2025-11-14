@@ -30,21 +30,6 @@ public class JwtUtil {
     @Value("${app.jwt.refresh-expiration}")
     private long refreshExpiration;
 
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    }
-
-    private String buildToken(String email, Role role, long expiration) {
-        return Jwts.builder()
-                .subject(email)
-                .claim("role", role != null ? role.name() : null)
-                .claim("jti", UUID.randomUUID().toString())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey())
-                .compact();
-    }
-
     public String generateAccessToken(String email, Role role) {
         log.info("Создан access-токен для {}", email);
         return buildToken(email, role, accessExpiration);
@@ -65,5 +50,20 @@ public class JwtUtil {
 
     public String getSubject(String token) {
         return parse(token).getPayload().getSubject();
+    }
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String buildToken(String email, Role role, long expiration) {
+        return Jwts.builder()
+                .subject(email)
+                .claim("role", role != null ? role.name() : null)
+                .claim("jti", UUID.randomUUID().toString())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey())
+                .compact();
     }
 }

@@ -1,7 +1,5 @@
 package test.model;
 
-import com.example.expensetracker.dto.LoginDto;
-import com.example.expensetracker.model.Category;
 import com.example.expensetracker.model.Role;
 import com.example.expensetracker.model.User;
 import jakarta.validation.ConstraintViolation;
