@@ -12,7 +12,7 @@ Expense Tracker — это полнофункциональное приложе
 - Swagger UI (OpenAPI) документация
 
 ## Технологический стек
-Spring Boot 3.4, Spring Security, JWT, JPA (Hibernate), PostgreSQL, Liquibase, MapStruct, Elasticsearch, Docker, JUnit5, 
+Spring Boot 3.5, Spring Security, JWT, JPA (Hibernate), PostgreSQL, Liquibase, MapStruct, Elasticsearch, Docker, JUnit5, 
 Mockito, Jacoco, Caffeine Cache, Gatling.
 
 ##  Запуск
